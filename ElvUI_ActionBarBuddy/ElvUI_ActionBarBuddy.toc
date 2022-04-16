@@ -5,8 +5,8 @@
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 ## SavedVariables: ABBDB
-## X-Curse-Project-ID:
-## X-Wago-ID:
+## X-Curse-Project-ID: 614378
+## X-Wago-ID: Mj6j35KR
 
 Profile.lua
 Core.lua
