@@ -1,0 +1,15 @@
+﻿## Interface: 20504
+## Title: |cff1784d1ElvUI|r |cFF16C3F2Actionbar|r Buddy
+## Author: Repooc
+## Version: 1.00
+## RequiredDeps: ElvUI
+## DefaultState: Enabled
+## SavedVariables: ABBDB
+## X-Curse-Project-ID:
+## X-Wago-ID:
+
+Profile.lua
+Core.lua
+Locales\Load_Locales.xml
+Modules\Load_Modules.xml
+Options.lua
