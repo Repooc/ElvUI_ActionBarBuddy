@@ -51,7 +51,7 @@ local function configTable()
 
 	local EnhancedGlobalFade = ACH:Group(L["|cFF16C3F2Ehanced|r Global Fade Options"], nil, 21, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end)
 	ActionBar.args.general.args.enhancedGlobalFade = EnhancedGlobalFade
-	EnhancedGlobalFade.inline = true
+	-- EnhancedGlobalFade.inline = true
 	ActionBar.args.general.args.globalFadeAlpha = nil
 	EnhancedGlobalFade.args.globalFadeAlpha = ACH:Range(L["Global Fade Transparency"], L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."], 3, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value; AB.fadeParent:SetAlpha(1-value) end)
 	EnhancedGlobalFade.args.spacer = ACH:Spacer(97, 'full')
