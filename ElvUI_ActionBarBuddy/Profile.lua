@@ -10,6 +10,7 @@ P.actionbar.abb = {
 			inVehicle = true,
 			inCombat = true,
 			notMaxHealth = true,
+			mouseover = true,
 		}
 	}
 }

@@ -46,8 +46,78 @@ function ABB:UpdateOptions()
 	-- ABB.fadeParent:SetScript('OnEvent', ABB.FadeParent_OnEvent)
 	if db.enhancedGlobalFade.enable then
 		AB.fadeParent:SetScript('OnEvent', ABB.FadeParent_OnEvent)
+
+		for i = 1, 10 do
+			AB:Unhook(AB.handledBars['bar'..i], 'OnEnter')
+			AB:Unhook(AB.handledBars['bar'..i], 'OnLeave')
+			ABB:HookScript(AB.handledBars['bar'..i], 'OnEnter', 'Bar_OnEnter')
+			ABB:HookScript(AB.handledBars['bar'..i], 'OnLeave', 'Bar_OnLeave')
+
+			for x = 1, 12 do
+				AB:Unhook(AB.handledBars['bar'..i].buttons[x], 'OnEnter')
+				AB:Unhook(AB.handledBars['bar'..i].buttons[x], 'OnLeave')
+				ABB:HookScript(AB.handledBars['bar'..i].buttons[x], 'OnEnter', 'Button_OnEnter')
+				ABB:HookScript(AB.handledBars['bar'..i].buttons[x], 'OnLeave', 'Button_OnLeave')
+			end
+		end
 	else
 		AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
+	end
+end
+
+function ABB:Bar_OnEnter(bar, bb)
+	local db = AB.db.abb.enhancedGlobalFade
+	if bar:GetParent() == AB.fadeParent and db.displayTriggers.mouseover and not AB.fadeParent.mouseLock then
+		E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
+		AB:FadeBlings(1)
+	end
+
+	if bar.mouseover then
+		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
+		AB:FadeBarBlings(bar, bar.db.alpha)
+	end
+end
+
+function ABB:Bar_OnLeave(bar)
+	local db = AB.db.abb.enhancedGlobalFade
+	if bar:GetParent() == AB.fadeParent and db.displayTriggers.mouseover and not AB.fadeParent.mouseLock then
+		local a = 1 - AB.db.globalFadeAlpha
+		E:UIFrameFadeOut(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), a)
+		AB:FadeBlings(a)
+	end
+
+	if bar.mouseover then
+		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+		AB:FadeBarBlings(bar, 0)
+	end
+end
+
+function ABB:Button_OnEnter(button)
+	local db = AB.db.abb.enhancedGlobalFade
+	local bar = button:GetParent()
+	if bar:GetParent() == AB.fadeParent and db.displayTriggers.mouseover and not AB.fadeParent.mouseLock then
+		E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
+		AB:FadeBlings(1)
+	end
+
+	if bar.mouseover then
+		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
+		AB:FadeBarBlings(bar, bar.db.alpha)
+	end
+end
+
+function ABB:Button_OnLeave(button)
+	local db = AB.db.abb.enhancedGlobalFade
+	local bar = button:GetParent()
+	if bar:GetParent() == AB.fadeParent and db.displayTriggers.mouseover and not AB.fadeParent.mouseLock then
+		local a = 1 - AB.db.globalFadeAlpha
+		E:UIFrameFadeOut(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), a)
+		AB:FadeBlings(a)
+	end
+
+	if bar.mouseover then
+		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+		AB:FadeBarBlings(bar, 0)
 	end
 end
 

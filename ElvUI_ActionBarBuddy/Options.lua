@@ -41,6 +41,7 @@ local globalFadeOptions = {
 	inVehicle = L["In Vehicle"],
 	inCombat = L["In Combat"],
 	notMaxHealth = L["Not Max Health"],
+	mouseover= L["Mouseover"]
 }
 
 local function configTable()
