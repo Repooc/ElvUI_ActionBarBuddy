@@ -55,7 +55,7 @@ local function configTable()
 	ActionBar.args.general.args.globalFadeAlpha = nil
 	EnhancedGlobalFade.args.globalFadeAlpha = ACH:Range(L["Global Fade Transparency"], L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."], 3, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value; AB.fadeParent:SetAlpha(1-value) end)
 	EnhancedGlobalFade.args.spacer = ACH:Spacer(97, 'full')
-	EnhancedGlobalFade.args.desc = ACH:Description('The default behaviour of Inherit Global Fade would display the bars if any of the following are true.  You can remove the triggers that you want to ignore so the bars only appear when the triggers you have checked are true.', 98, 'medium')
+	EnhancedGlobalFade.args.desc = ACH:Description(L["The default behaviour of Inherit Global Fade would display the bars if any of the following are true.  You can remove the triggers that you want to ignore so the bars only appear when the triggers you have checked are true."], 98, 'medium')
 	EnhancedGlobalFade.args.displayTriggers = ACH:MultiSelect(L["Override Display Triggers"], nil, 99, globalFadeOptions, nil, nil, function(info, key) return E.db.actionbar.abb.enhancedGlobalFade[info[#info]][key] end, function(info, key, value) E.db.actionbar.abb.enhancedGlobalFade[info[#info]][key] = value ABB:FadeParent_OnEvent() end)
 
 	local Help = ACH:Group(L["Help"], nil, 99, nil, nil, nil, false)
