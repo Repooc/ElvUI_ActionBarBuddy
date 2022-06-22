@@ -49,7 +49,7 @@ local function configTable()
 
 	local ActionBar = E.Options.args.actionbar
 
-	local EnhancedGlobalFade = ACH:Group(L["|cFF16C3F2ActionBar|r |cffFFFFFFBuddy|r Global Fade"], nil, 21, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end)
+	local EnhancedGlobalFade = ACH:Group(L["|cFF16C3F2AB|r |cffFFFFFFBuddy:|r Global Fade"], nil, 21, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end)
 	ActionBar.args.general.args.enhancedGlobalFade = EnhancedGlobalFade
 	-- EnhancedGlobalFade.inline = true
 	ActionBar.args.general.args.globalFadeAlpha = nil
