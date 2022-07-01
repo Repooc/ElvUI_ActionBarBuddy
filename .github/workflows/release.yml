@@ -22,17 +22,6 @@ jobs:
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       # - name: Release Job
       #   uses: BigWigsMods/packager@master
-      # - name: Notify Discord
-      #   if: success()
-      #   uses: Netail/webhook-notifier@v1
-      #   with:
-      #     discord-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      #     color: 'info'
-      #     title: 'New ElvUI ActionBarBuddy Released'
-      #     text: 'ElvUI ActionBarBuddy version ${{ env.RELEASE_VERSION }} has been released.  You can use your wow addon client that can download from wago addons or curse to update.'
-      #     fields: '[{"name": "Repository", "value": "${{ github.event.repository.name }}"}, {"name": "Version", "value": "${{ env.RELEASE_VERSION }}"}]'
-          # footer: Addons by Repooc
-          # timestamp: true
       - name: Notify Discord
         if: success()
         uses: repooc/djs-actions@my_changes
@@ -41,6 +30,6 @@ jobs:
           token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
           title: ${{ github.event.repository.name }} Version ${{ env.RELEASE_VERSION }} Released!
           description: ${{ github.event.repository.name }} version ${{ env.RELEASE_VERSION }} has been released!  You can use your wow addon client that can download from wago addons or curse to update.
-          fields: '[{"name": "Repository", "value": "${{ github.event.repository.name }}", "inline": true}, {"name": "Version", "value": "${{ env.RELEASE_VERSION }}", "inline": true}]'
+          fields: '[{"name": "Released By:", "value": "${{ github.actor }}", "inline": true}, {"name": "Repository", "value": "[${{ github.event.repository.name }}](${{ github.event.repository.html_url }})", "inline": true}, {"name": "Version", "value": "${{ env.RELEASE_VERSION }}", "inline": true}]'
           footer: Addons by Repooc
           timestamp: true
