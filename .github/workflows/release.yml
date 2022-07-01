@@ -31,6 +31,6 @@ jobs:
           token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
           title: ${{ github.event.repository.name }} Version ${{ env.RELEASE_VERSION }} Released!
           description: ${{ github.event.repository.name }} version ${{ env.RELEASE_VERSION }} has been released!  You can use your wow addon client that can download from wago addons or curse to update.
-          fields: '[{"name": "Released By:", "value": "[${{ github.sender.login }}](${{ github.sender.html_url }})", "inline": true}, {"name": "Repository", "value": "[${{ github.event.repository.name }}](${{ github.event.repository.html_url }})", "inline": true}, {"name": "Version", "value": "${{ env.RELEASE_VERSION }}", "inline": true}, {"name": "Wago Addons", "value": "[Click Here](${{ env.WAGO_URL }})", "inline": true}]'
+          fields: '[{"name": "Released By:", "value": "[${{ github.repository.sender.login }}](${{ github.repository.sender.html_url }})", "inline": true}, {"name": "Repository", "value": "[${{ github.event.repository.name }}](${{ github.event.repository.html_url }})", "inline": true}, {"name": "Version", "value": "${{ env.RELEASE_VERSION }}", "inline": true}, {"name": "Wago Addons", "value": "[Click Here](${{ env.WAGO_URL }})", "inline": true}]'
           footer: Addons by Repooc
           timestamp: true
