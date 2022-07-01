@@ -6,12 +6,15 @@ L["Coding"] = true
 L["Curseforge Page"] = true
 L["Development Version"] = true
 L["Download"] = true
+L["Global Fade Transparency"] = true
 L["Help Testing Development Versions"] = true
 L["Help"] = true
 L["Link to the latest development version."] = true
 L["Misc Options"] = true
+L["Override Display Triggers"] = true
 L["Please press the continue button to go onto the next step."] = true
 L["The default behaviour of Inherit Global Fade would display the bars if any of the following are true.  You can remove the triggers that you want to ignore so the bars only appear when the triggers you have checked are true."] = true
+L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."] = true
 L["Wago Page"] = true
 
 --! Do not translate as they are in ElvUI Locales already
