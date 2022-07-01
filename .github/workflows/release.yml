@@ -24,11 +24,22 @@ jobs:
         uses: BigWigsMods/packager@master
       - name: Notify Discord
         if: success()
-        uses: jhogendorn/djs-actions@main
+        uses: Netail/webhook-notifier@v1
         with:
-          id: ${{ secrets.DISCORD_WEBHOOK_ID }}
-          token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          discord-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          color: 'info'
           title: New ElvUI ActionBarBuddy Released
-          description: ElvUI ActionBarBuddy version ${{ env.RELEASE_VERSION }} has been released.  You can use your wow addon client that can download from wago addons or curse to update.
-          footer: Addons by Repooc
-          timestamp: true
+          text: ElvUI ActionBarBuddy version ${{ env.RELEASE_VERSION }} has been released.  You can use your wow addon client that can download from wago addons or curse to update.
+          fields: '[{"name": "Repository", "value": "${{ github.event.repository.name }}", "inline": true}, {"name": "Version", "value": "${{ env.RELEASE_VERSION }}", "inline": true}]'
+          # footer: Addons by Repooc
+          # timestamp: true
+      # - name: Notify Discord
+      #   if: success()
+      #   uses: jhogendorn/djs-actions@main
+      #   with:
+      #     id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+      #     token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+      #     title: New ElvUI ActionBarBuddy Released
+      #     description: ElvUI ActionBarBuddy version ${{ env.RELEASE_VERSION }} has been released.  You can use your wow addon client that can download from wago addons or curse to update.
+      #     footer: Addons by Repooc
+      #     timestamp: true
