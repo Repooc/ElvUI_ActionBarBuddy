@@ -6,6 +6,9 @@ local module = E:NewModule('ABB-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v1.03 7/1/2022',
+		'• updated some locales',
+	' ',
 	'v1.02 6/22/2022',
 		'• add the ability to remove the mouseover trigger with inherit global fade',
 	' ',
