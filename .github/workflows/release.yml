@@ -28,8 +28,8 @@ jobs:
         with:
           discord-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           color: 'info'
-          title: New ElvUI ActionBarBuddy Released
-          text: ElvUI ActionBarBuddy version ${{ env.RELEASE_VERSION }} has been released.  You can use your wow addon client that can download from wago addons or curse to update.
+          title: 'New ElvUI ActionBarBuddy Released'
+          text: 'ElvUI ActionBarBuddy version ${{ env.RELEASE_VERSION }} has been released.  You can use your wow addon client that can download from wago addons or curse to update.'
           fields: '[{"name": "Repository", "value": "${{ github.event.repository.name }}"}, {"name": "Version", "value": "${{ env.RELEASE_VERSION }}"}]'
           # footer: Addons by Repooc
           # timestamp: true
