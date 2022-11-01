@@ -60,6 +60,21 @@ function ABB:UpdateOptions()
 				ABB:HookScript(AB.handledBars['bar'..i].buttons[x], 'OnLeave', 'Button_OnLeave')
 			end
 		end
+		if E.Retail then
+			for i = 13, 15 do
+				AB:Unhook(AB.handledBars['bar'..i], 'OnEnter')
+				AB:Unhook(AB.handledBars['bar'..i], 'OnLeave')
+				ABB:HookScript(AB.handledBars['bar'..i], 'OnEnter', 'Bar_OnEnter')
+				ABB:HookScript(AB.handledBars['bar'..i], 'OnLeave', 'Bar_OnLeave')
+
+				for x = 1, 12 do
+					AB:Unhook(AB.handledBars['bar'..i].buttons[x], 'OnEnter')
+					AB:Unhook(AB.handledBars['bar'..i].buttons[x], 'OnLeave')
+					ABB:HookScript(AB.handledBars['bar'..i].buttons[x], 'OnEnter', 'Button_OnEnter')
+					ABB:HookScript(AB.handledBars['bar'..i].buttons[x], 'OnLeave', 'Button_OnLeave')
+				end
+			end
+		end
 	else
 		AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
 	end
