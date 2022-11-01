@@ -6,6 +6,9 @@ local module = E:NewModule('ABB-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v1.06 11/1/2022',
+		'• updates for DF changes in ElvUI',
+	' ',
 	'v1.05 9/31/2022',
 		'• toc bump for retail 9.2.7',
 	' ',
@@ -86,7 +89,11 @@ function module:CreateChangelog()
 	frame:SetMovable(true)
 	frame:EnableMouse(true)
 	frame:SetResizable(true)
-	frame:SetMinResize(350, 100)
+	if E.Retail then
+		frame:SetResizeBounds(350, 100)
+	else
+		frame:SetMinResize(350, 100)
+	end
 	frame:SetScript('OnMouseDown', function(changelog, button)
 		if button == 'LeftButton' and not changelog.isMoving then
 			changelog:StartMoving()
