@@ -1,7 +1,7 @@
 local _, _, _, P, _ = unpack(ElvUI)
 
 P.actionbar.abb = {
-	removeDragonOverride = true,
+	removeDragonOverride = false,
 	enhancedGlobalFade = {
 		enable = true,
 		displayTriggers = {
