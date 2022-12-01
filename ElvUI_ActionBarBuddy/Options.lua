@@ -59,6 +59,11 @@ local function configTable()
 	EnhancedGlobalFade.args.desc = ACH:Description(L["The default behaviour of Inherit Global Fade would display the bars if any of the following are true.  You can remove the triggers that you want to ignore so the bars only appear when the triggers you have checked are true."], 98, 'medium')
 	EnhancedGlobalFade.args.displayTriggers = ACH:MultiSelect(L["Override Display Triggers"], nil, 99, globalFadeOptions, nil, nil, function(info, key) return E.db.actionbar.abb.enhancedGlobalFade[info[#info]][key] end, function(info, key, value) E.db.actionbar.abb.enhancedGlobalFade[info[#info]][key] = value ABB:FadeParent_OnEvent() end)
 
+	local bar = ActionBar.args.playerBars.args.bar1
+	bar.args.abbuddy = ACH:Group(L["|cFF16C3F2AB|r |cffFFFFFFBuddy|r"], nil, 3, nil, nil, nil, nil, not E.Retail)
+	bar.args.abbuddy.guiInline = true
+	bar.args.abbuddy.args.removeDragonOverride = ACH:Toggle(L["Remove Dragon Override"], nil, 1, nil, nil, nil, function(info) return E.db.actionbar.abb[info[#info]] end, function(info, value) E.db.actionbar.abb[info[#info]] = value; ABB:UpdateDragonRiding() end)
+
 	local Help = ACH:Group(L["Help"], nil, 99, nil, nil, nil, false)
 	abb.args.help = Help
 

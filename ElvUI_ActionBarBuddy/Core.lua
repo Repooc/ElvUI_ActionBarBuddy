@@ -20,8 +20,19 @@ local function GetOptions()
 	end
 end
 
+function ABB:UpdateDragonRiding()
+	local fullConditions = format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
+	if E.db.actionbar.abb.removeDragonOverride then
+		AB.barDefaults.bar1.conditions = fullConditions..format('[shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;', GetTempShapeshiftBarIndex())
+	else
+		AB.barDefaults.bar1.conditions = fullConditions..format('[bonusbar:5] 11; [shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;', GetTempShapeshiftBarIndex())
+	end
+	AB:PositionAndSizeBar('bar1')
+end
+
 function ABB:UpdateOptions()
 	local db = E.db.actionbar.abb
+
 	-- AB.fadeParent:RegisterEvent('PLAYER_REGEN_DISABLED')
 	-- AB.fadeParent:RegisterEvent('PLAYER_REGEN_ENABLED')
 	-- AB.fadeParent:RegisterEvent('PLAYER_TARGET_CHANGED')
@@ -77,6 +88,10 @@ function ABB:UpdateOptions()
 		end
 	else
 		AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
+	end
+
+	if E.Retail then
+		ABB:UpdateDragonRiding()
 	end
 end
 
