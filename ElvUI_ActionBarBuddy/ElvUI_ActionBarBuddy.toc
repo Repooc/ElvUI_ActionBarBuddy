@@ -1,7 +1,7 @@
-## Interface: 100000
+## Interface: 100002
 ## Title: |cff1784d1ElvUI|r |cFF16C3F2Actionbar|r Buddy
 ## Author: Repooc
-## Version: 1.06
+## Version: 1.07
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 ## SavedVariables: ABBDB

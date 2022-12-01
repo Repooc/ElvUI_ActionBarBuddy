@@ -6,6 +6,9 @@ local module = E:NewModule('ABB-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v1.07 11/30/2022',
+		'• add ability to make bar 1 not page to dragon riding (this will also not allow the keybinds from bar 1 to be used for the abilitie as well)',
+	' ',
 	'v1.06 11/1/2022',
 		'• updates for DF changes in ElvUI',
 	' ',
