@@ -1,3 +1,3 @@
-v1.08 11/30/2022
+v1.09 12/12/2022
 
-• disable new option added in previous version by default
+• add ability to adjust the smoothness of fade out of the bars

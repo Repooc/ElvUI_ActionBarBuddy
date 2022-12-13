@@ -6,6 +6,9 @@ local module = E:NewModule('ABB-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v1.09 12/12/2022',
+		'• add ability to adjust the smoothness of fade out of the bars',
+	' ',
 	'v1.08 11/30/2022',
 		'• disable new option added in previous version by default',
 	' ',
