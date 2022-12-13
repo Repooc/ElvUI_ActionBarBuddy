@@ -12,6 +12,7 @@ P.actionbar.abb = {
 			inCombat = true,
 			notMaxHealth = true,
 			mouseover = true,
-		}
+		},
+		smooth = 0.33
 	}
 }

@@ -161,7 +161,7 @@ function ABB:FadeParent_OnEvent()
 	else
 		AB.fadeParent.mouseLock = false
 		local a = 1 - AB.db.globalFadeAlpha
-		E:UIFrameFadeOut(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), a)
+		E:UIFrameFadeOut(AB.fadeParent, db.smooth, AB.fadeParent:GetAlpha(), a)
 		AB:FadeBlings(a)
 	end
 end
