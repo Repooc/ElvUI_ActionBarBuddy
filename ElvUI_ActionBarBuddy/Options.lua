@@ -50,11 +50,11 @@ local function configTable()
 
 	local ActionBar = E.Options.args.actionbar
 
-	local EnhancedGlobalFade = ACH:Group(L["|cFF16C3F2AB|r |cffFFFFFFBuddy:|r Global Fade"], nil, 21, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end)
+	local EnhancedGlobalFade = ACH:Group(L["|cFF16C3F2AB|r |cffFFFFFFBuddy:|r Global Fade"], nil, 21, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB:UpdateButtonSettings() end)
 	ActionBar.args.general.args.enhancedGlobalFade = EnhancedGlobalFade
 	-- EnhancedGlobalFade.inline = true
 	ActionBar.args.general.args.globalFadeAlpha = nil
-	EnhancedGlobalFade.args.globalFadeAlpha = ACH:Range(L["Global Fade Transparency"], L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."], 3, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value; AB.fadeParent:SetAlpha(1-value) end)
+	EnhancedGlobalFade.args.globalFadeAlpha = ACH:Range(L["Global Fade Transparency"], L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."], 3, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB.fadeParent:SetAlpha(1-value) end)
 	EnhancedGlobalFade.args.smooth = ACH:Range(L["Smooth"], nil, 4, { min = 0, max = 1, step = 0.01 }, nil, function(info) return E.db.actionbar.abb.enhancedGlobalFade[info[#info]] end, function(info, value) E.db.actionbar.abb.enhancedGlobalFade[info[#info]] = value ABB:FadeParent_OnEvent() end)
 	EnhancedGlobalFade.args.spacer = ACH:Spacer(97, 'full')
 	EnhancedGlobalFade.args.desc = ACH:Description(L["The default behaviour of Inherit Global Fade would display the bars if any of the following are true.  You can remove the triggers that you want to ignore so the bars only appear when the triggers you have checked are true."], 98, 'medium')
@@ -63,7 +63,7 @@ local function configTable()
 	local bar = ActionBar.args.playerBars.args.bar1
 	bar.args.abbuddy = ACH:Group(L["|cFF16C3F2AB|r |cffFFFFFFBuddy|r"], nil, 3, nil, nil, nil, nil, not E.Retail)
 	bar.args.abbuddy.guiInline = true
-	bar.args.abbuddy.args.removeDragonOverride = ACH:Toggle(L["Remove Dragon Override"], nil, 1, nil, nil, nil, function(info) return E.db.actionbar.abb[info[#info]] end, function(info, value) E.db.actionbar.abb[info[#info]] = value; ABB:UpdateDragonRiding() end)
+	bar.args.abbuddy.args.removeDragonOverride = ACH:Toggle(L["Remove Dragon Override"], nil, 1, nil, nil, nil, function(info) return E.db.actionbar.abb[info[#info]] end, function(info, value) E.db.actionbar.abb[info[#info]] = value ABB:UpdateDragonRiding() end)
 
 	local Help = ACH:Group(L["Help"], nil, 99, nil, nil, nil, false)
 	abb.args.help = Help
