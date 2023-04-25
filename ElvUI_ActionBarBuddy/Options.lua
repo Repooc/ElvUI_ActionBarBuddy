@@ -35,13 +35,14 @@ local DEVELOPER_STRING = table.concat(DEVELOPERS, '|n')
 local TESTER_STRING = table.concat(TESTERS, '|n')
 
 local globalFadeOptions = {
-	playerCasting = L["Player Casting"],
-	hasTarget = L["Has Target"],
 	hasFocus = L["Has Focus"],
-	inVehicle = L["In Vehicle"],
+	hasTarget = L["Has Target"],
 	inCombat = L["In Combat"],
+	inVehicle = L["In Vehicle"],
+	isDragonRiding = L["Is Dragonriding"],
+	mouseover= L["Mouseover"],
 	notMaxHealth = L["Not Max Health"],
-	mouseover= L["Mouseover"]
+	playerCasting = L["Player Casting"],
 }
 
 local function configTable()

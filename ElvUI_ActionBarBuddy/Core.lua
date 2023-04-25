@@ -3,6 +3,12 @@ local EP = LibStub('LibElvUIPlugin-1.0')
 local AB = E.ActionBars
 local AddOnName, Engine = ...
 
+local IsPossessBarVisible, HasOverrideActionBar = IsPossessBarVisible, HasOverrideActionBar
+local GetOverrideBarIndex, GetVehicleBarIndex, GetTempShapeshiftBarIndex = GetOverrideBarIndex, GetVehicleBarIndex, GetTempShapeshiftBarIndex
+local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo
+local UnitExists, UnitAffectingCombat = UnitExists, UnitAffectingCombat
+local UnitHealth, UnitHealthMax = UnitHealth, UnitHealthMax
+
 local ABB = E:NewModule(AddOnName, 'AceHook-3.0')
 _G[AddOnName] = Engine
 
@@ -61,28 +67,44 @@ function ABB:UpdateOptions()
 		for i = 1, 10 do
 			AB:Unhook(AB.handledBars['bar'..i], 'OnEnter')
 			AB:Unhook(AB.handledBars['bar'..i], 'OnLeave')
-			ABB:HookScript(AB.handledBars['bar'..i], 'OnEnter', 'Bar_OnEnter')
-			ABB:HookScript(AB.handledBars['bar'..i], 'OnLeave', 'Bar_OnLeave')
+			if not ABB:IsHooked(AB.handledBars['bar'..i], 'OnEnter') then
+				ABB:HookScript(AB.handledBars['bar'..i], 'OnEnter', 'Bar_OnEnter')
+			end
+			if not ABB:IsHooked(AB.handledBars['bar'..i], 'OnLeave') then
+				ABB:HookScript(AB.handledBars['bar'..i], 'OnLeave', 'Bar_OnLeave')
+			end
 
 			for x = 1, 12 do
 				AB:Unhook(AB.handledBars['bar'..i].buttons[x], 'OnEnter')
 				AB:Unhook(AB.handledBars['bar'..i].buttons[x], 'OnLeave')
-				ABB:HookScript(AB.handledBars['bar'..i].buttons[x], 'OnEnter', 'Button_OnEnter')
-				ABB:HookScript(AB.handledBars['bar'..i].buttons[x], 'OnLeave', 'Button_OnLeave')
+				if not ABB:IsHooked(AB.handledBars['bar'..i].buttons[x], 'OnEnter') then
+					ABB:HookScript(AB.handledBars['bar'..i].buttons[x], 'OnEnter', 'Button_OnEnter')
+				end
+				if not ABB:IsHooked(AB.handledBars['bar'..i].buttons[x], 'OnLeave') then
+					ABB:HookScript(AB.handledBars['bar'..i].buttons[x], 'OnLeave', 'Button_OnLeave')
+				end
 			end
 		end
 		if E.Retail then
 			for i = 13, 15 do
 				AB:Unhook(AB.handledBars['bar'..i], 'OnEnter')
 				AB:Unhook(AB.handledBars['bar'..i], 'OnLeave')
-				ABB:HookScript(AB.handledBars['bar'..i], 'OnEnter', 'Bar_OnEnter')
-				ABB:HookScript(AB.handledBars['bar'..i], 'OnLeave', 'Bar_OnLeave')
+				if not ABB:IsHooked(AB.handledBars['bar'..i], 'OnEnter') then
+					ABB:HookScript(AB.handledBars['bar'..i], 'OnEnter', 'Bar_OnEnter')
+				end
+				if not ABB:IsHooked(AB.handledBars['bar'..i], 'OnLeave') then
+					ABB:HookScript(AB.handledBars['bar'..i], 'OnLeave', 'Bar_OnLeave')
+				end
 
 				for x = 1, 12 do
 					AB:Unhook(AB.handledBars['bar'..i].buttons[x], 'OnEnter')
 					AB:Unhook(AB.handledBars['bar'..i].buttons[x], 'OnLeave')
-					ABB:HookScript(AB.handledBars['bar'..i].buttons[x], 'OnEnter', 'Button_OnEnter')
-					ABB:HookScript(AB.handledBars['bar'..i].buttons[x], 'OnLeave', 'Button_OnLeave')
+					if not ABB:IsHooked(AB.handledBars['bar'..i].buttons[x], 'OnEnter') then
+						ABB:HookScript(AB.handledBars['bar'..i].buttons[x], 'OnEnter', 'Button_OnEnter')
+					end
+					if not ABB:IsHooked(AB.handledBars['bar'..i].buttons[x], 'OnLeave') then
+						ABB:HookScript(AB.handledBars['bar'..i].buttons[x], 'OnLeave', 'Button_OnLeave')
+					end
 				end
 			end
 		end
@@ -151,10 +173,12 @@ function ABB:Button_OnLeave(button)
 	end
 end
 
-function ABB:FadeParent_OnEvent()
+function ABB:FadeParent_OnEvent(event)
 	local db = AB.db.abb.enhancedGlobalFade
-	if (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player'))) or (db.displayTriggers.hasTarget and UnitExists('target')) or (db.displayTriggers.hasFocus and UnitExists('focus')) or (db.displayTriggers.inVehicle and UnitExists('vehicle'))
-	or (db.displayTriggers.inCombat and UnitAffectingCombat('player')) or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player'))) or E.Retail and (db.displayTriggers.inVehicle and (IsPossessBarVisible() or HasOverrideActionBar())) then
+	if (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player'))) or (db.displayTriggers.hasTarget and UnitExists('target')) or (db.displayTriggers.hasFocus and UnitExists('focus'))
+	or (db.displayTriggers.inVehicle and UnitExists('vehicle')) or (db.displayTriggers.inCombat and UnitAffectingCombat('player')) or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player')))
+	or E.Retail and (db.displayTriggers.inVehicle and (IsPossessBarVisible() or HasOverrideActionBar()))
+	or (db.displayTriggers.isDragonRiding and (IsMounted() and (event == 'UPDATE_OVERRIDE_ACTIONBAR' and AB.WasDragonflying == 0 and E:IsDragonRiding() or event == 'PLAYER_MOUNT_DISPLAY_CHANGED' and AB.WasDragonflying))) then
 		AB.fadeParent.mouseLock = true
 		E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
 		AB:FadeBlings(1)

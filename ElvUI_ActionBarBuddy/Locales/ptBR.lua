@@ -9,6 +9,7 @@ L["Download"] = true
 L["Global Fade Transparency"] = true
 L["Help Testing Development Versions"] = true
 L["Help"] = true
+L["Is Dragonriding"] = true
 L["Link to the latest development version."] = true
 L["Misc Options"] = true
 L["Override Display Triggers"] = true

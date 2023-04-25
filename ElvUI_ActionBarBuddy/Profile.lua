@@ -5,13 +5,14 @@ P.actionbar.abb = {
 	enhancedGlobalFade = {
 		enable = true,
 		displayTriggers = {
-			playerCasting = true,
-			hasTarget = true,
 			hasFocus = true,
-			inVehicle = true,
+			hasTarget = true,
 			inCombat = true,
-			notMaxHealth = true,
+			inVehicle = true,
+			isDragonRiding = true,
 			mouseover = true,
+			notMaxHealth = true,
+			playerCasting = true,
 		},
 		smooth = 0.33
 	}
