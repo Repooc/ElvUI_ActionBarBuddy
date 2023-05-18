@@ -1,3 +1,4 @@
-v1.11 4/25/2023
+v1.11 5/18/2023
 
 • Update to account for dragonriding and give an option to remove the trigger
+• Prevent some errors with hooking functions
