@@ -117,7 +117,7 @@ function ABB:UpdateOptions()
 	end
 end
 
-function ABB:Bar_OnEnter(bar, bb)
+function ABB:Bar_OnEnter(bar)
 	local db = AB.db.abb.enhancedGlobalFade
 	if bar:GetParent() == AB.fadeParent and db.displayTriggers.mouseover and not AB.fadeParent.mouseLock then
 		E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
