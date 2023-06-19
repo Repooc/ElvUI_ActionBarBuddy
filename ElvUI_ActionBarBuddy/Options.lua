@@ -59,7 +59,7 @@ local function configTable()
 	EnhancedGlobalFade.args.smooth = ACH:Range(L["Smooth"], nil, 4, { min = 0, max = 1, step = 0.01 }, nil, function(info) return E.db.actionbar.abb.enhancedGlobalFade[info[#info]] end, function(info, value) E.db.actionbar.abb.enhancedGlobalFade[info[#info]] = value ABB:FadeParent_OnEvent() end)
 	EnhancedGlobalFade.args.spacer = ACH:Spacer(97, 'full')
 	EnhancedGlobalFade.args.desc = ACH:Description(L["The default behaviour of Inherit Global Fade would display the bars if any of the following are true.  You can remove the triggers that you want to ignore so the bars only appear when the triggers you have checked are true."], 98, 'medium')
-	EnhancedGlobalFade.args.displayTriggers = ACH:MultiSelect(L["Override Display Triggers"], nil, 99, globalFadeOptions, nil, nil, function(info, key) return E.db.actionbar.abb.enhancedGlobalFade[info[#info]][key] end, function(info, key, value) E.db.actionbar.abb.enhancedGlobalFade[info[#info]][key] = value ABB:FadeParent_OnEvent() end)
+	EnhancedGlobalFade.args.displayTriggers = ACH:MultiSelect(L["Override Display Triggers"], nil, 99, globalFadeOptions, nil, nil, function(info, key) return E.db.actionbar.abb.enhancedGlobalFade[info[#info]][key] end, function(info, key, value) E.db.actionbar.abb.enhancedGlobalFade[info[#info]][key] = value ABB:FadeParent_OnEvent('FAKE_EVENT') end)
 
 	local bar = ActionBar.args.playerBars.args.bar1
 	bar.args.abbuddy = ACH:Group(L["|cFF16C3F2AB|r |cffFFFFFFBuddy|r"], nil, 3, nil, nil, nil, nil, not E.Retail)

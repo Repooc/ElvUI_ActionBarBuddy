@@ -173,20 +173,60 @@ function ABB:Button_OnLeave(button)
 	end
 end
 
-function ABB:FadeParent_OnEvent(event)
-	local db = AB.db.abb.enhancedGlobalFade
-	if (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player'))) or (db.displayTriggers.hasTarget and UnitExists('target')) or (db.displayTriggers.hasFocus and UnitExists('focus'))
-	or (db.displayTriggers.inVehicle and UnitExists('vehicle')) or (db.displayTriggers.inCombat and UnitAffectingCombat('player')) or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player')))
-	or E.Retail and (db.displayTriggers.inVehicle and (IsPossessBarVisible() or HasOverrideActionBar()))
-	or (db.displayTriggers.isDragonRiding and (IsMounted() and (event == 'UPDATE_OVERRIDE_ACTIONBAR' and AB.WasDragonflying == 0 and E:IsDragonRiding() or event == 'PLAYER_MOUNT_DISPLAY_CHANGED' and AB.WasDragonflying))) then
-		AB.fadeParent.mouseLock = true
-		E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
-		AB:FadeBlings(1)
-	else
-		AB.fadeParent.mouseLock = false
-		local a = 1 - AB.db.globalFadeAlpha
-		E:UIFrameFadeOut(AB.fadeParent, db.smooth, AB.fadeParent:GetAlpha(), a)
-		AB:FadeBlings(a)
+do
+	local DragonChecks = {
+		PLAYER_MOUNT_DISPLAY_CHANGED = function() return AB.WasDragonflying end,
+		PLAYER_TARGET_CHANGED = function() return AB.WasDragonflying end,
+		FAKE_EVENT = function() return AB.WasDragonflying == 0 and E:IsDragonRiding() end --* Added to check dragonriding when option is altered in the config
+	}
+
+	local DragonIgnore = {
+		UNIT_HEALTH = true,
+		PLAYER_TARGET_CHANGED = true,
+		UPDATE_OVERRIDE_ACTIONBAR = true,
+		PLAYER_MOUNT_DISPLAY_CHANGED = true
+	}
+
+	DragonChecks.UPDATE_OVERRIDE_ACTIONBAR = function()
+		DragonChecks.UPDATE_OVERRIDE_ACTIONBAR = nil -- only need to check this once, its for the login check
+
+		return AB.WasDragonflying == 0 and E:IsDragonRiding()
+	end
+
+	function ABB:FadeParent_OnEvent(event, _, _, arg3)
+		local db = AB.db.abb.enhancedGlobalFade
+
+		if event == 'UNIT_SPELLCAST_SUCCEEDED' then
+			if not AB.WasDragonflying then -- this gets spammed on init login
+				AB.WasDragonflying = E.MountDragons[arg3] and arg3
+			end
+		else
+			local dragonCheck = E.Retail and DragonChecks[event]
+			local dragonMount = dragonCheck and IsMounted() and dragonCheck()
+
+			if (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')))
+			or (db.displayTriggers.hasTarget and UnitExists('target'))
+			or (db.displayTriggers.hasFocus and UnitExists('focus'))
+			or (db.displayTriggers.inVehicle and UnitExists('vehicle'))
+			or (db.displayTriggers.inCombat and UnitAffectingCombat('player'))
+			or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player')))
+
+			or E.Retail and (db.displayTriggers.inVehicle and (IsPossessBarVisible() or HasOverrideActionBar()))
+			or (db.displayTriggers.isDragonRiding and dragonMount) then
+				AB.fadeParent.mouseLock = true
+				E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
+				AB:FadeBlings(1)
+			else
+				AB.fadeParent.mouseLock = false
+				local a = 1 - AB.db.globalFadeAlpha
+				E:UIFrameFadeOut(AB.fadeParent, db.smooth, AB.fadeParent:GetAlpha(), a)
+				AB:FadeBlings(a)
+			end
+
+			if (AB.WasDragonflying ~= 0) and (not DragonIgnore[event] or not dragonMount) and (event ~= 'UNIT_SPELLCAST_STOP' or arg3 ~= AB.WasDragonflying) then
+				AB.WasDragonflying = nil
+			end
+		end
 	end
 end
 
