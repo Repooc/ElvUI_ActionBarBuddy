@@ -108,6 +108,12 @@ function ABB:UpdateOptions()
 				end
 			end
 		end
+
+		-- if E.Retail then
+		-- 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
+		-- 	ZoneAbilityFrame.SpellButtonContainer:UnhookScript('OnEnter', AB.ExtraButtons_OnEnter)
+		-- 	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
+		-- end
 	else
 		AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
 	end
