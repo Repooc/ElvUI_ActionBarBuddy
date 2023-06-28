@@ -209,8 +209,9 @@ do
 		else
 			local dragonCheck = E.Retail and DragonChecks[event]
 			local dragonMount = dragonCheck and IsMounted() and dragonCheck()
+			local dragonCast = E.Retail and not db.displayTriggers.isDragonRiding and E.MountDragons[arg3]
 
-			if (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')))
+			if (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')) and not dragonCast)
 			or (db.displayTriggers.hasTarget and UnitExists('target'))
 			or (db.displayTriggers.hasFocus and UnitExists('focus'))
 			or (db.displayTriggers.inVehicle and UnitExists('vehicle'))
