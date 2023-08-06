@@ -108,7 +108,7 @@ function module:CreateChangelog()
 	frame:SetMovable(true)
 	frame:EnableMouse(true)
 	frame:SetResizable(true)
-	if E.Retail then
+	if E.Retail or E.Wrath then
 		frame:SetResizeBounds(350, 100)
 	else
 		frame:SetMinResize(350, 100)
