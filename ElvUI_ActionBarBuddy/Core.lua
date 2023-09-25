@@ -8,6 +8,7 @@ local GetOverrideBarIndex, GetVehicleBarIndex, GetTempShapeshiftBarIndex = GetOv
 local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo
 local UnitExists, UnitAffectingCombat = UnitExists, UnitAffectingCombat
 local UnitHealth, UnitHealthMax = UnitHealth, UnitHealthMax
+local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
 
 local ABB = E:NewModule(AddOnName, 'AceHook-3.0')
 _G[AddOnName] = Engine
@@ -199,6 +200,13 @@ do
 		return AB.WasDragonflying == 0 and E:IsDragonRiding()
 	end
 
+	local function CanGlide()
+		if not C_PlayerInfo_GetGlidingInfo then return end
+
+		local _, canGlide = C_PlayerInfo_GetGlidingInfo()
+		return canGlide
+	end
+
 	function ABB:FadeParent_OnEvent(event, _, _, arg3)
 		local db = AB.db.abb.enhancedGlobalFade
 
@@ -217,8 +225,7 @@ do
 			or (db.displayTriggers.inVehicle and UnitExists('vehicle'))
 			or (db.displayTriggers.inCombat and UnitAffectingCombat('player'))
 			or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player')))
-			or E.Retail and (db.displayTriggers.inVehicle and (IsPossessBarVisible() or HasOverrideActionBar()))
-			or (db.displayTriggers.isDragonRiding and dragonMount) then
+			or (E.Retail and ((db.displayTriggers.isDragonRiding and CanGlide()) or (db.displayTriggers.inVehicle and (IsPossessBarVisible() or HasOverrideActionBar())))) then
 				AB.fadeParent.mouseLock = true
 				E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
 				AB:FadeBlings(1)
