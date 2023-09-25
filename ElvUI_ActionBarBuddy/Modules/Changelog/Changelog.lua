@@ -108,11 +108,7 @@ function module:CreateChangelog()
 	frame:SetMovable(true)
 	frame:EnableMouse(true)
 	frame:SetResizable(true)
-	if E.Retail or E.Wrath then
-		frame:SetResizeBounds(350, 100)
-	else
-		frame:SetMinResize(350, 100)
-	end
+	frame:SetResizeBounds(350, 100)
 	frame:SetScript('OnMouseDown', function(changelog, button)
 		if button == 'LeftButton' and not changelog.isMoving then
 			changelog:StartMoving()
@@ -205,6 +201,7 @@ function module:ToggleChangeLog()
 	fadeInfo.timeToFade = 0.5
 	fadeInfo.startAlpha = 0
 	fadeInfo.endAlpha = 1
+	ABBChangelog:Show()
 	E:UIFrameFade(ABBChangelog, fadeInfo)
 
 	module.time = 6
