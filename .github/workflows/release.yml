@@ -45,13 +45,13 @@ jobs:
           bot-token: ${{ secrets.ANNOUNCER_BOT_TOKEN }}
           channel: ${{ secrets.DISCORD_NEWS_CHANNEL_ID }}
           content: |
-            **${{ github.event.repository.name }}** version ${{ env.RELEASE_VERSION }} has been released!
+            **__${{ github.event.repository.name }}__** **v${{ env.RELEASE_VERSION }}** *has been released!
 
-            You can view the [CHANGELOG](${{ github.event.repository.html_url }}/CHANGELOG.txt) here!
+            If you would like to support me in the work I do, consider supporting me through the [Discord Shop](https://discord.com/servers/repooc-reforged-1162274244487561216)!
 
-            If you would like to support me in the work I do, consider supporting me through [Ko-Fi](https://ko-fi.com/repoocreforged), [Patreon](https://patreon.com/repoocreforged) or [Discord Shop](https://discord.com/servers/repooc-reforged-1162274244487561216)!
+            Feel freen to browse the <#1171940634672767128> for others ways to support Repooc!
 
-            Go grab the new version from [Wago AddOns](${{ env.WAGO_URL }}) or [Curse](${{ env.CF_URL }})!
+            You can get the update through Wago or Curse! Links for the addon can be found in <#1166225405439660033> channel.
 
 
       - name: Print message id
