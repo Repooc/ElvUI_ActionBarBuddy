@@ -1,7 +1,7 @@
 [![Discord](https://img.shields.io/discord/1162274244487561216?style=for-the-badge&logo=discord&label=Discord)](https://repoocreforged.dev/discord) [![GitHub Repo stars](https://img.shields.io/github/stars/repooc/ElvUI_ActionBarBuddy?style=for-the-badge&logo=github)](https://github.com/Repooc/ElvUI_ActionBarBuddy)
 
-# ActionBar Buddy (ElvUI Plugin)
-[![Version (CF)](https://img.shields.io/curseforge/v/614378?style=for-the-badge&logo=curseforge)](https://curseforge.com/wow/addons/actionbar-buddy-elvui-plugin) [![GitHub tag (with filter)](https://img.shields.io/github/v/tag/Repooc/ElvUI_ActionBarBuddy?logo=github&label=Version&style=for-the-badge)](https://github.com/Repooc/ElvUI_ActionBarBuddy/tags)
+# **ActionBar Buddy *(ElvUI Plugin)***
+[![CurseForge Game Versions](https://img.shields.io/curseforge/game-versions/614378?style=for-the-badge&logo=curseforge)](https://curseforge.com/wow/addons/actionbar-buddy-elvui-plugin) [![Version (CF)](https://img.shields.io/curseforge/v/614378?style=for-the-badge&logo=curseforge)](https://curseforge.com/wow/addons/actionbar-buddy-elvui-plugin) [![GitHub tag (with filter)](https://img.shields.io/github/v/tag/Repooc/ElvUI_ActionBarBuddy?logo=github&label=Version&style=for-the-badge)](https://github.com/Repooc/ElvUI_ActionBarBuddy/tags)
 
 
 [![Patreon](https://img.shields.io/badge/Patreon-F96854?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/repoocreforged) [![ko-fi](https://img.shields.io/badge/_-KO--FI-red?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/repoocreforged) 
