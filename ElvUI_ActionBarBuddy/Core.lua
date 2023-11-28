@@ -218,11 +218,13 @@ do
 			local dragonCheck = E.Retail and DragonChecks[event]
 			local dragonMount = dragonCheck and IsMounted() and dragonCheck()
 			local dragonCast = E.Retail and not db.displayTriggers.isDragonRiding and E.MountDragons[arg3]
+			local possessbar = SecureCmdOptionParse("[possessbar] 1; 0")
 
 			if (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')) and not dragonCast)
 			or (db.displayTriggers.hasTarget and UnitExists('target'))
 			or (db.displayTriggers.hasFocus and UnitExists('focus'))
 			or (db.displayTriggers.inVehicle and UnitExists('vehicle'))
+			or (db.displayTriggers.isPossessed and (possessbar == '1' and UnitIsPossessed('target')))
 			or (db.displayTriggers.inCombat and UnitAffectingCombat('player'))
 			or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player')))
 			or (E.Retail and ((db.displayTriggers.isDragonRiding and CanGlide()) or (db.displayTriggers.inVehicle and (IsPossessBarVisible() or HasOverrideActionBar())))) then
@@ -247,6 +249,7 @@ function ABB:Initialize()
 	EP:RegisterPlugin(AddOnName, GetOptions)
 	if not AB.Initialized then return end
 
+	AB.fadeParent:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR')
 	hooksecurefunc(E, 'UpdateDB', ABB.UpdateOptions)
 	ABB:UpdateOptions()
 

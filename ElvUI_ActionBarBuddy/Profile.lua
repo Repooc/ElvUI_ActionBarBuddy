@@ -9,6 +9,7 @@ P.actionbar.abb = {
 			hasTarget = true,
 			inCombat = true,
 			inVehicle = true,
+			isPossessed = true,
 			isDragonRiding = true,
 			mouseover = true,
 			notMaxHealth = true,
