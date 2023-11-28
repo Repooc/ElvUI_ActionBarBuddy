@@ -218,7 +218,7 @@ do
 			local dragonCheck = E.Retail and DragonChecks[event]
 			local dragonMount = dragonCheck and IsMounted() and dragonCheck()
 			local dragonCast = E.Retail and not db.displayTriggers.isDragonRiding and E.MountDragons[arg3]
-			local possessbar = SecureCmdOptionParse("[possessbar] 1; 0")
+			local possessbar = SecureCmdOptionParse('[possessbar] 1; 0')
 
 			if (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')) and not dragonCast)
 			or (db.displayTriggers.hasTarget and UnitExists('target'))
