@@ -38,6 +38,7 @@ local globalFadeOptions = {
 	hasFocus = L["Has Focus"],
 	hasTarget = L["Has Target"],
 	inCombat = L["In Combat"],
+	notInCombat = L["Not In Combat"],
 	inVehicle = L["In Vehicle"],
 	isPossessed = L["You Possess Target"],
 	isDragonRiding = L["Is Dragonriding"],

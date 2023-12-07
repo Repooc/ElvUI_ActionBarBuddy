@@ -226,6 +226,7 @@ do
 			or (db.displayTriggers.inVehicle and UnitExists('vehicle'))
 			or (db.displayTriggers.isPossessed and possessbar == '1')
 			or (db.displayTriggers.inCombat and UnitAffectingCombat('player'))
+			or (db.displayTriggers.notInCombat and not UnitAffectingCombat('player'))
 			or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player')))
 			or (E.Retail and ((db.displayTriggers.isDragonRiding and CanGlide()) or (db.displayTriggers.inVehicle and (IsPossessBarVisible() or HasOverrideActionBar())))) then
 				AB.fadeParent.mouseLock = true
