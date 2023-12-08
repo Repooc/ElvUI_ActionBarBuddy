@@ -29,7 +29,7 @@ end
 
 function ABB:UpdateDragonRiding()
 	local fullConditions = format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
-	if E.db.actionbar.abb.removeDragonOverride then
+	if E.db.abb.removeDragonOverride then
 		AB.barDefaults.bar1.conditions = fullConditions..format('[shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;', GetTempShapeshiftBarIndex())
 	else
 		AB.barDefaults.bar1.conditions = fullConditions..format('[bonusbar:5] 11; [shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;', GetTempShapeshiftBarIndex())
@@ -38,7 +38,7 @@ function ABB:UpdateDragonRiding()
 end
 
 function ABB:UpdateOptions()
-	local db = E.db.actionbar.abb
+	local db = E.db.abb
 
 	-- AB.fadeParent:RegisterEvent('PLAYER_REGEN_DISABLED')
 	-- AB.fadeParent:RegisterEvent('PLAYER_REGEN_ENABLED')
@@ -125,7 +125,7 @@ function ABB:UpdateOptions()
 end
 
 function ABB:Bar_OnEnter(bar)
-	local db = AB.db.abb.enhancedGlobalFade
+	local db = E.db.abb.enhancedGlobalFade
 	if bar:GetParent() == AB.fadeParent and db.displayTriggers.mouseover and not AB.fadeParent.mouseLock then
 		E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
 		AB:FadeBlings(1)
@@ -138,7 +138,7 @@ function ABB:Bar_OnEnter(bar)
 end
 
 function ABB:Bar_OnLeave(bar)
-	local db = AB.db.abb.enhancedGlobalFade
+	local db = E.db.abb.enhancedGlobalFade
 	if bar:GetParent() == AB.fadeParent and db.displayTriggers.mouseover and not AB.fadeParent.mouseLock then
 		local a = 1 - AB.db.globalFadeAlpha
 		E:UIFrameFadeOut(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), a)
@@ -152,7 +152,7 @@ function ABB:Bar_OnLeave(bar)
 end
 
 function ABB:Button_OnEnter(button)
-	local db = AB.db.abb.enhancedGlobalFade
+	local db = E.db.abb.enhancedGlobalFade
 	local bar = button:GetParent()
 	if bar:GetParent() == AB.fadeParent and db.displayTriggers.mouseover and not AB.fadeParent.mouseLock then
 		E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
@@ -166,7 +166,7 @@ function ABB:Button_OnEnter(button)
 end
 
 function ABB:Button_OnLeave(button)
-	local db = AB.db.abb.enhancedGlobalFade
+	local db = E.db.abb.enhancedGlobalFade
 	local bar = button:GetParent()
 	if bar:GetParent() == AB.fadeParent and db.displayTriggers.mouseover and not AB.fadeParent.mouseLock then
 		local a = 1 - AB.db.globalFadeAlpha
@@ -208,7 +208,7 @@ do
 	end
 
 	function ABB:FadeParent_OnEvent(event, _, _, arg3)
-		local db = AB.db.abb.enhancedGlobalFade
+		local db = E.db.abb.enhancedGlobalFade
 
 		if event == 'UNIT_SPELLCAST_SUCCEEDED' then
 			if not AB.WasDragonflying then -- this gets spammed on init login
@@ -225,7 +225,7 @@ do
 			or (db.displayTriggers.hasFocus and UnitExists('focus'))
 			or (db.displayTriggers.inVehicle and UnitExists('vehicle'))
 			or (db.displayTriggers.isPossessed and possessbar == '1')
-			or (db.displayTriggers.inCombat and UnitAffectingCombat('player') or db.displayTriggers.inCombat == nil and not UnitAffectingCombat('player'))
+			or (db.displayTriggers.inCombat == 2 and UnitAffectingCombat('player') or db.displayTriggers.inCombat == 1 and not UnitAffectingCombat('player'))
 			or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player')))
 			or (E.Retail and ((db.displayTriggers.isDragonRiding and CanGlide()) or (db.displayTriggers.inVehicle and (IsPossessBarVisible() or HasOverrideActionBar())))) then
 				AB.fadeParent.mouseLock = true
@@ -245,10 +245,24 @@ do
 	end
 end
 
+local function ConvertDB()
+	if E.db.actionbar.abb then
+		E.db.abb = E:CopyTable({}, E.db.actionbar.abb)
+
+		local inCombat = E.db.abb.displayTriggers.inCombat
+		if type(inCombat) == 'boolean' then
+			E.db.abb.displayTriggers.inCombat = (inCombat and 2) or 0
+		end
+
+		E.db.actionbar.abb = nil
+	end
+end
+
 function ABB:Initialize()
 	EP:RegisterPlugin(AddOnName, GetOptions)
 	if not AB.Initialized then return end
 
+	ConvertDB()
 	AB.fadeParent:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR')
 	hooksecurefunc(E, 'UpdateDB', ABB.UpdateOptions)
 	ABB:UpdateOptions()
