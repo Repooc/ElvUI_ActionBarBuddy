@@ -249,9 +249,9 @@ local function ConvertDB()
 	if E.db.actionbar.abb then
 		E.db.abb = E:CopyTable({}, E.db.actionbar.abb)
 
-		local inCombat = E.db.abb.displayTriggers.inCombat
+		local inCombat = E.db.abb.enhancedGlobalFade.displayTriggers.inCombat
 		if type(inCombat) == 'boolean' then
-			E.db.abb.displayTriggers.inCombat = (inCombat and 2) or 0
+			E.db.abb.enhancedGlobalFade.displayTriggers.inCombat = (inCombat and 2) or 0
 		end
 
 		E.db.actionbar.abb = nil
