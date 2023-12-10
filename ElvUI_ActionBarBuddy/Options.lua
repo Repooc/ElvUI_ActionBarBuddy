@@ -99,6 +99,7 @@ local function configTable()
 	local ActionBarBuddy = ACH:Group('|cff00FF98ActionBar|r |cffA330C9Buddy|r', nil, 6, 'tab', nil, nil, function() return not AB.Initialized end)
 	rrp.args.abb = ActionBarBuddy
 
+	ActionBarBuddy.args.version = ACH:Header(format('|cff99ff33%s|r', ABB.Version), 1)
 	local Help = ACH:Group(L["Help"], nil, 99, nil, nil, nil, false)
 	ActionBarBuddy.args.help = Help
 
