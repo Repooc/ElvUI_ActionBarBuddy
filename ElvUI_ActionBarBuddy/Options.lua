@@ -1,6 +1,7 @@
 local E, L = unpack(ElvUI)
 local ABB = E:GetModule('ElvUI_ActionBarBuddy')
 local ABBCL = E:GetModule('ABB-Changelog')
+local RRP = LibStub('RepoocReforged-1.0'):LoadMainCategory()
 local AB = E.ActionBars
 local ACH = E.Libs.ACH
 
@@ -68,12 +69,13 @@ local globalFadeOptions = {
 }
 
 local function configTable()
-	local abb = ACH:Group('|cFF16C3F2ActionBar|r Buddy', nil, 6, 'tab', nil, nil, function() return not AB.Initialized end)
-	E.Options.args.abb = abb
+    --* Repooc Reforged Plugin section
+    local rrp = E.Options.args.rrp
+    if not rrp then print("Error Loading Repooc Reforged Plugin Library") return end
 
+	--* Add/Update ElvUI Options
 	local ActionBar = E.Options.args.actionbar
-
-	local EnhancedGlobalFade = ACH:Group(L["|cFF16C3F2AB|r |cffFFFFFFBuddy:|r Global Fade"], nil, 21, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB:UpdateButtonSettings() end)
+	local EnhancedGlobalFade = ACH:Group(L["|cff00FF98AB|r |cffA330C9Buddy|r|cffF48CBA:|r Global Fade"], nil, 21, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB:UpdateButtonSettings() end)
 	ActionBar.args.general.args.enhancedGlobalFade = EnhancedGlobalFade
 	-- EnhancedGlobalFade.inline = true
 	ActionBar.args.general.args.globalFadeAlpha = nil
@@ -89,12 +91,16 @@ local function configTable()
 	end
 
 	local bar = ActionBar.args.playerBars.args.bar1
-	bar.args.abbuddy = ACH:Group(L["|cFF16C3F2AB|r |cffFFFFFFBuddy|r"], nil, 3, nil, nil, nil, nil, not E.Retail)
+	bar.args.abbuddy = ACH:Group(L["|cff00FF98ActionBar|r |cffA330C9Buddy|r"], nil, 3, nil, nil, nil, nil, not E.Retail)
 	bar.args.abbuddy.guiInline = true
 	bar.args.abbuddy.args.removeDragonOverride = ACH:Toggle(L["Remove Dragon Override"], nil, 1, nil, nil, nil, function(info) return E.db.abb[info[#info]] end, function(info, value) E.db.abb[info[#info]] = value ABB:UpdateDragonRiding() end)
 
+	--* Plugin Section
+	local ActionBarBuddy = ACH:Group('|cff00FF98ActionBar|r |cffA330C9Buddy|r', nil, 6, 'tab', nil, nil, function() return not AB.Initialized end)
+	rrp.args.abb = ActionBarBuddy
+
 	local Help = ACH:Group(L["Help"], nil, 99, nil, nil, nil, false)
-	abb.args.help = Help
+	ActionBarBuddy.args.help = Help
 
 	local Support = ACH:Group(L["Support"], nil, 1)
 	Help.args.support = Support
@@ -102,7 +108,7 @@ local function configTable()
 	Support.args.wago = ACH:Execute(L["Wago Page"], nil, 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://addons.wago.io/addons/elvui-actionbarmasks') end, nil, nil, 140)
 	Support.args.curse = ACH:Execute(L["Curseforge Page"], nil, 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.curseforge.com/wow/addons/actionbar-masks-elvui-plugin') end, nil, nil, 140)
 	Support.args.git = ACH:Execute(L["Ticket Tracker"], nil, 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/Repooc/ElvUI_ActionBarBuddy/issues') end, nil, nil, 140)
-	Support.args.discord = ACH:Execute(L["Discord"], nil, 3, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.gg/') end, nil, nil, 140, nil, nil, true)
+	Support.args.discord = ACH:Execute(L["Discord"], nil, 3, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://repoocreforged.dev/discord') end, nil, nil, 140)
 
 	local Download = ACH:Group(L["Download"], nil, 2)
 	Help.args.download = Download
