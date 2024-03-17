@@ -1,7 +1,7 @@
 package-as: ElvUI_ActionBarBuddy
 enable-nolib-creation: no
 externals:
-  ElvUI_HealerOnlyPower/Libs/RepoocReforged-1.0:
+  ElvUI_ActionBarBuddy/Libs/RepoocReforged-1.0:
     url: https://github.com/Repooc/RepoocReforged-1.0
 manual-changelog:
     filename: CHANGELOG.md
