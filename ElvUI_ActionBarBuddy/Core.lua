@@ -245,24 +245,10 @@ do
 	end
 end
 
-local function ConvertDB()
-	if E.db.actionbar.abb then
-		E.db.abb = E:CopyTable({}, E.db.actionbar.abb)
-
-		local inCombat = E.db.abb.enhancedGlobalFade.displayTriggers.inCombat
-		if type(inCombat) == 'boolean' then
-			E.db.abb.enhancedGlobalFade.displayTriggers.inCombat = (inCombat and 2) or 0
-		end
-
-		E.db.actionbar.abb = nil
-	end
-end
-
 function ABB:Initialize()
 	EP:RegisterPlugin(AddOnName, GetOptions)
 	if not AB.Initialized then return end
 
-	ConvertDB()
 	AB.fadeParent:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR')
 	hooksecurefunc(E, 'UpdateDB', ABB.UpdateOptions)
 	ABB:UpdateOptions()
