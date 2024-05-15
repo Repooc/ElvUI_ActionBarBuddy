@@ -9,10 +9,10 @@
 
 Do you want to be able to make your actionbars react on mouseover and combat? Do you like the concept of ElvUI's Inherit Global Fade option but would like to pick and choose which events to listen for instead of all or none?
 
-**ActionBar Buddy** is the solution! This ElvUI plugin allows you to focus on what matters by letting you adjust ElvUI's Inheirt Global Fade to react on a select few events instead of all of the ones ElvUI ships it with. Take that control of your bars now and download ActionBar Buddy!
+**ActionBar Buddy** is the solution! This ElvUI plugin allows you to focus on what matters by letting you adjust ElvUI's Inherit Global Fade to react on a select few events instead of all of the ones ElvUI ships it with. Take that control of your bars now and download ActionBar Buddy!
 
 ### Features:
-- **Simplified Options:** The main options are all located in its own sectionn under the ActionBar, General section.
+- **Simplified Options:** The main options are all located in its own section under the ActionBar, General section.
 - **Control Over All ElvUI Default Checks:** You can now have those bars show on mouseover or combat, not one or the other!
 
 ### Future Updates:
