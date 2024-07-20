@@ -1,3 +1,4 @@
-v1.20 7/4/2024
+v1.21 7/20/2024
 
-• • fix typos
+• bump classic/sod toc
+• attempt to fix issue with some options like Click Through not working after reload

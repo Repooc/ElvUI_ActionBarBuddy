@@ -85,6 +85,7 @@ function ABB:UpdateOptions()
 					ABB:HookScript(AB.handledBars['bar'..i].buttons[x], 'OnLeave', 'Button_OnLeave')
 				end
 			end
+			AB:PositionAndSizeBar('bar'..i)
 		end
 		if E.Retail then
 			for i = 13, 15 do
@@ -107,6 +108,7 @@ function ABB:UpdateOptions()
 						ABB:HookScript(AB.handledBars['bar'..i].buttons[x], 'OnLeave', 'Button_OnLeave')
 					end
 				end
+				AB:PositionAndSizeBar('bar'..i)
 			end
 		end
 
