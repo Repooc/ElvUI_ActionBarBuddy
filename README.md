@@ -25,3 +25,5 @@ Your input is crucial in shaping the journey of this addon. Thank you for being 
 Download now and get what you deserve!
 
 ![Demo Image](https://cdn-images.repoocreforged.dev/ActionBarBuddy-example.png)
+
+![Alt](https://repobeats.axiom.co/api/embed/4af3f679c1bcd3227fed14010db807a55fc72420.svg "Repobeats analytics image")
