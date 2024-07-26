@@ -1,3 +1,3 @@
-v1.22 7/25/2024
+v1.23 7/25/2024
 
-• bump toc
+• fix some errors due to elvui changes
