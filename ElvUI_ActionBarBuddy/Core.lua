@@ -182,25 +182,22 @@ function ABB:Button_OnLeave(button)
 	end
 end
 
+local function IsDragonriding()
+	return UnitPowerBarID("player") == 631
+end
+
 do
 	local DragonChecks = {
 		PLAYER_MOUNT_DISPLAY_CHANGED = function() return AB.WasDragonflying end,
 		PLAYER_TARGET_CHANGED = function() return AB.WasDragonflying end,
-		FAKE_EVENT = function() return AB.WasDragonflying == 0 and E:IsDragonRiding() end --* Added to check dragonriding when option is altered in the config
+		FAKE_EVENT = function() return AB.WasDragonflying == 0 and IsDragonRiding() end --* Added to check dragonriding when option is altered in the config
 	}
 
 	local DragonIgnore = {
 		UNIT_HEALTH = true,
 		PLAYER_TARGET_CHANGED = true,
-		UPDATE_OVERRIDE_ACTIONBAR = true,
 		PLAYER_MOUNT_DISPLAY_CHANGED = true
 	}
-
-	DragonChecks.UPDATE_OVERRIDE_ACTIONBAR = function()
-		DragonChecks.UPDATE_OVERRIDE_ACTIONBAR = nil -- only need to check this once, its for the login check
-
-		return AB.WasDragonflying == 0 and E:IsDragonRiding()
-	end
 
 	local function CanGlide()
 		if not C_PlayerInfo_GetGlidingInfo then return end
@@ -211,38 +208,25 @@ do
 
 	function ABB:FadeParent_OnEvent(event, _, _, arg3)
 		local db = E.db.abb.enhancedGlobalFade
+		local possessbar = SecureCmdOptionParse('[possessbar] 1; 0')
 
-		if event == 'UNIT_SPELLCAST_SUCCEEDED' then
-			if not AB.WasDragonflying then -- this gets spammed on init login
-				AB.WasDragonflying = E.MountDragons[arg3] and arg3
-			end
+		if (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')))
+		or (db.displayTriggers.hasTarget and UnitExists('target'))
+		or (db.displayTriggers.hasFocus and UnitExists('focus'))
+		or (db.displayTriggers.inVehicle and UnitExists('vehicle'))
+		or (db.displayTriggers.isPossessed and possessbar == '1')
+		or (db.displayTriggers.inCombat == 2 and UnitAffectingCombat('player') or db.displayTriggers.inCombat == 1 and not UnitAffectingCombat('player'))
+		or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player')))
+		or (E.Retail and ((db.displayTriggers.isDragonRiding and CanGlide()) or (db.displayTriggers.inVehicle and (IsPossessBarVisible() or HasOverrideActionBar())))) then
+			-- E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
+			AB.fadeParent.mouseLock = true
+			E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
+			AB:FadeBlings(1)
 		else
-			local dragonCheck = E.Retail and DragonChecks[event]
-			local dragonMount = dragonCheck and IsMounted() and dragonCheck()
-			local dragonCast = E.Retail and not db.displayTriggers.isDragonRiding and E.MountDragons[arg3]
-			local possessbar = SecureCmdOptionParse('[possessbar] 1; 0')
-
-			if (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')) and not dragonCast)
-			or (db.displayTriggers.hasTarget and UnitExists('target'))
-			or (db.displayTriggers.hasFocus and UnitExists('focus'))
-			or (db.displayTriggers.inVehicle and UnitExists('vehicle'))
-			or (db.displayTriggers.isPossessed and possessbar == '1')
-			or (db.displayTriggers.inCombat == 2 and UnitAffectingCombat('player') or db.displayTriggers.inCombat == 1 and not UnitAffectingCombat('player'))
-			or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player')))
-			or (E.Retail and ((db.displayTriggers.isDragonRiding and CanGlide()) or (db.displayTriggers.inVehicle and (IsPossessBarVisible() or HasOverrideActionBar())))) then
-				AB.fadeParent.mouseLock = true
-				E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
-				AB:FadeBlings(1)
-			else
-				AB.fadeParent.mouseLock = false
-				local a = 1 - AB.db.globalFadeAlpha
-				E:UIFrameFadeOut(AB.fadeParent, db.smooth, AB.fadeParent:GetAlpha(), a)
-				AB:FadeBlings(a)
-			end
-
-			if (AB.WasDragonflying ~= 0) and (not DragonIgnore[event] or not dragonMount) and (event ~= 'UNIT_SPELLCAST_STOP' or arg3 ~= AB.WasDragonflying) then
-				AB.WasDragonflying = nil
-			end
+			local a = 1 - AB.db.globalFadeAlpha
+			E:UIFrameFadeOut(AB.fadeParent, db.smooth, AB.fadeParent:GetAlpha(), a)
+			AB.fadeParent.mouseLock = false
+			AB:FadeBlings(a)
 		end
 	end
 end
