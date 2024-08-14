@@ -1,3 +1,3 @@
-v1.24 8/13/2024
+v1.25 8/13/2024
 
-• fix old api from blizzard
+• bump toc
