@@ -1,3 +1,3 @@
-v1.23 7/25/2024
+v1.24 8/13/2024
 
-• fix some errors due to elvui changes
+• fix old api from blizzard
