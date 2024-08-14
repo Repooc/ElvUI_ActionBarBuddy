@@ -13,6 +13,8 @@ local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
 local ABB = E:NewModule(AddOnName, 'AceHook-3.0')
 _G[AddOnName] = Engine
 
+local GetAddOnMetadata = C_AddOns.GetAddOnMetadata or GetAddOnMetadata
+
 ABB.Title = GetAddOnMetadata('ElvUI_ActionBarBuddy', 'Title')
 ABB.Version = GetAddOnMetadata('ElvUI_ActionBarBuddy', 'Version')
 ABB.Configs = {}
