@@ -1,3 +1,3 @@
-v1.25 8/13/2024
+v1.26 8/27/2024
 
-• bump toc
+• fine tune dynamic flight check
