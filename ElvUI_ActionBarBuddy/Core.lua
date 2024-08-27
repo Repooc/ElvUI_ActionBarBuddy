@@ -9,6 +9,7 @@ local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo
 local UnitExists, UnitAffectingCombat = UnitExists, UnitAffectingCombat
 local UnitHealth, UnitHealthMax = UnitHealth, UnitHealthMax
 local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
+local VIGOR_BAR_ID = 631 -- this is the oval & diamond variant
 
 local ABB = E:NewModule(AddOnName, 'AceHook-3.0')
 _G[AddOnName] = Engine
@@ -184,10 +185,6 @@ function ABB:Button_OnLeave(button)
 	end
 end
 
-local function IsDragonriding()
-	return UnitPowerBarID("player") == 631
-end
-
 do
 	local DragonChecks = {
 		PLAYER_MOUNT_DISPLAY_CHANGED = function() return AB.WasDragonflying end,
@@ -202,13 +199,15 @@ do
 	}
 
 	local function CanGlide()
-		if not C_PlayerInfo_GetGlidingInfo then return end
-
-		local _, canGlide = C_PlayerInfo_GetGlidingInfo()
-		return canGlide
+		return UnitPowerBarID('player') == VIGOR_BAR_ID
 	end
 
-	function ABB:FadeParent_OnEvent(event, _, _, arg3)
+	local canGlide = false
+	function ABB:FadeParent_OnEvent(event, arg1, _, arg3)
+		if event == 'PLAYER_CAN_GLIDE_CHANGED' then
+			canGlide = arg1
+		end
+
 		local db = E.db.abb.enhancedGlobalFade
 		local possessbar = SecureCmdOptionParse('[possessbar] 1; 0')
 
@@ -219,7 +218,7 @@ do
 		or (db.displayTriggers.isPossessed and possessbar == '1')
 		or (db.displayTriggers.inCombat == 2 and UnitAffectingCombat('player') or db.displayTriggers.inCombat == 1 and not UnitAffectingCombat('player'))
 		or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player')))
-		or (E.Retail and ((db.displayTriggers.isDragonRiding and CanGlide()) or (db.displayTriggers.inVehicle and (IsPossessBarVisible() or HasOverrideActionBar())))) then
+		or (E.Retail and ((db.displayTriggers.isDragonRiding and (canGlide or CanGlide())) or (db.displayTriggers.inVehicle and (IsPossessBarVisible() or HasOverrideActionBar())))) then
 			-- E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
 			AB.fadeParent.mouseLock = true
 			E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
