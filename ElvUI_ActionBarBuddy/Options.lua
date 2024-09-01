@@ -48,14 +48,20 @@ local globalFadeOptions = {
 		get = function(info) local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
 		set = function(info, value) E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] = (value and 2) or (value == nil and 1) or 0 ABB:FadeParent_OnEvent('FAKE_EVENT') end,
 	},
+	inInstance = {
+		name = L["In Instance"],
+		tristate = true,
+		get = function(info) local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
+		set = function(info, value) E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] = (value and 2) or (value == nil and 1) or 0 ABB:FadeParent_OnEvent('FAKE_EVENT') end,
+	},
 	inVehicle = {
 		name = L["In Vehicle"],
 	},
-	isPossessed = {
-		name = L["You Possess Target"],
-	},
 	isDragonRiding = {
 		name = L["Is Dragonriding"],
+	},
+	isPossessed = {
+		name = L["You Possess Target"],
 	},
 	mouseover = {
 		name = L["Mouseover"],

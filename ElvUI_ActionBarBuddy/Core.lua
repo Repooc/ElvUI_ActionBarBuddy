@@ -203,15 +203,19 @@ do
 	end
 
 	local canGlide = false
+	local inInstance = false
 	function ABB:FadeParent_OnEvent(event, arg1, _, arg3)
 		if event == 'PLAYER_CAN_GLIDE_CHANGED' then
 			canGlide = arg1
 		end
 
+		inInstance = select(2, GetInstanceInfo()) ~= 'none'
+
 		local db = E.db.abb.enhancedGlobalFade
 		local possessbar = SecureCmdOptionParse('[possessbar] 1; 0')
 
-		if (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')))
+		if (db.displayTriggers.inInstance == 2 and inInstance or db.displayTriggers.inInstance == 1 and not inInstance)
+		or (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')))
 		or (db.displayTriggers.hasTarget and UnitExists('target'))
 		or (db.displayTriggers.hasFocus and UnitExists('focus'))
 		or (db.displayTriggers.inVehicle and UnitExists('vehicle'))
@@ -237,6 +241,7 @@ function ABB:Initialize()
 	if not AB.Initialized then return end
 
 	AB.fadeParent:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR')
+	AB.fadeParent:RegisterEvent('ZONE_CHANGED_NEW_AREA')
 	hooksecurefunc(E, 'UpdateDB', ABB.UpdateOptions)
 	ABB:UpdateOptions()
 

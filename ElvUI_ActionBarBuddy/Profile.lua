@@ -14,6 +14,7 @@ P.abb = {
 			mouseover = true,
 			notMaxHealth = true,
 			playerCasting = true,
+			inInstance = 2,
 		},
 		smooth = 0.33
 	}
