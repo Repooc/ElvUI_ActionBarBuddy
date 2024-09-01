@@ -1,3 +1,3 @@
-v1.26 8/27/2024
+v1.27 8/31/2024
 
-• fine tune dynamic flight check
+• add an "In Instance" tri-state option
