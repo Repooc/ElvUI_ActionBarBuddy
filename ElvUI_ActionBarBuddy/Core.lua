@@ -199,7 +199,9 @@ do
 	}
 
 	local function CanGlide()
-		return UnitPowerBarID('player') == VIGOR_BAR_ID
+		local isGliding = C_PlayerInfo.GetGlidingInfo()
+		-- return isGliding or UnitPowerBarID('player') == VIGOR_BAR_ID
+		return isGliding
 	end
 
 	local canGlide = false
