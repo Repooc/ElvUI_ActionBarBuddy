@@ -1,3 +1,3 @@
-v1.28 8/31/2024
+v1.29 9/9/2024
 
-• updated "In Instance" tri-state option text to be a bit more useful
+• fix a bug while in druid dragonriding form

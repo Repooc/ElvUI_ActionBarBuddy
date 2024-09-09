@@ -6,6 +6,9 @@ local module = E:NewModule('ABB-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v1.29 9/8/2024',
+		'• fix a bug while in druid dragonriding form',
+	' ',
 	'v1.28 8/31/2024',
 		'• updated "In Instance" tri-state option text to be a bit more useful',
 	' ',
