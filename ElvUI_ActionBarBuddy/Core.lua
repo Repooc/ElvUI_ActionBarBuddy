@@ -205,7 +205,7 @@ do
 	local inInstance = false
 	function ABB:FadeParent_OnEvent(event, arg1, _, arg3)
 		if event == 'PLAYER_CAN_GLIDE_CHANGED' then
-			canGlide = arg1
+			canGlide = arg1 and not IsPassenger()
 		end
 
 		inInstance = select(2, GetInstanceInfo()) ~= 'none'
@@ -217,12 +217,12 @@ do
 		or (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')))
 		or (db.displayTriggers.hasTarget and UnitExists('target'))
 		or (db.displayTriggers.hasFocus and UnitExists('focus'))
-		or (db.displayTriggers.inVehicle and UnitExists('vehicle') and (not db.displayTriggers.hideAsPassenger or db.displayTriggers.hideAsPassenger and not IsPassenger()))
 		or (db.displayTriggers.isPossessed and possessbar == '1')
 		or (db.displayTriggers.inCombat == 2 and UnitAffectingCombat('player') or db.displayTriggers.inCombat == 1 and not UnitAffectingCombat('player'))
 		or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player')))
 		or (db.displayTriggers.onTaxi == 2 and UnitOnTaxi('player') or db.displayTriggers.onTaxi == 1 and not UnitOnTaxi('player'))
-		or (E.Retail and ((db.displayTriggers.isDragonRiding and (canGlide or CanGlide())) or (db.displayTriggers.inVehicle and (IsPossessBarVisible() or HasOverrideActionBar())))) then
+		or (E.Retail and ((db.displayTriggers.isDragonRiding and (canGlide or CanGlide())))
+		or (E.Retail and (db.displayTriggers.inVehicle and (IsPossessBarVisible() or HasOverrideActionBar() or UnitExists('vehicle')) and (not db.displayTriggers.hideAsPassenger or db.displayTriggers.hideAsPassenger and not IsPassenger())))) then
 			-- E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
 			AB.fadeParent.mouseLock = true
 			E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
