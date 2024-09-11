@@ -47,7 +47,8 @@ local globalFadeOptions = {
 	hideAsPassenger = {
 		name = L["Hide As Passenger"],
 		order = 99,
-		disabled = function(info) return not E.db.abb.enhancedGlobalFade.displayTriggers.inVehicle end
+		disabled = function(info) return not E.db.abb.enhancedGlobalFade.displayTriggers.inVehicle end,
+		hidden = function() return E.Classic end
 	},
 	inCombat = {
 		name = function(info) local text = L["Combat (|cff%s%s|r)"] local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return format(text, '00FF00', L["In Combat"]) elseif value == 1 then return format(text, 'FF0000', L["Not In Combat"]) else return format(text, 'FFFF00', L["Ignore Combat"]) end end,
@@ -78,6 +79,7 @@ local globalFadeOptions = {
 	isDragonRiding = {
 		name = L["Is Dragonriding"],
 		order = 1,
+		hidden = function() return not E.Retail end,
 	},
 	isPossessed = {
 		name = L["You Possess Target"],
