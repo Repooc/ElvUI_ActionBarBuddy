@@ -1,3 +1,3 @@
-v1.29 9/9/2024
+v1.30 9/11/2024
 
-• fix a bug while in druid dragonriding form
+• add ability to trigger if you are on a taxi (aka flight path)
