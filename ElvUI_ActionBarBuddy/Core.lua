@@ -186,21 +186,8 @@ function ABB:Button_OnLeave(button)
 end
 
 do
-	local DragonChecks = {
-		PLAYER_MOUNT_DISPLAY_CHANGED = function() return AB.WasDragonflying end,
-		PLAYER_TARGET_CHANGED = function() return AB.WasDragonflying end,
-		FAKE_EVENT = function() return AB.WasDragonflying == 0 and IsDragonRiding() end --* Added to check dragonriding when option is altered in the config
-	}
-
-	local DragonIgnore = {
-		UNIT_HEALTH = true,
-		PLAYER_TARGET_CHANGED = true,
-		PLAYER_MOUNT_DISPLAY_CHANGED = true
-	}
-
 	local function CanGlide()
 		local isGliding = C_PlayerInfo.GetGlidingInfo()
-		-- return isGliding or UnitPowerBarID('player') == VIGOR_BAR_ID
 		return isGliding
 	end
 
@@ -244,6 +231,7 @@ function ABB:Initialize()
 
 	AB.fadeParent:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR')
 	AB.fadeParent:RegisterEvent('ZONE_CHANGED_NEW_AREA')
+
 	hooksecurefunc(E, 'UpdateDB', ABB.UpdateOptions)
 	ABB:UpdateOptions()
 
