@@ -6,6 +6,10 @@ local module = E:NewModule('ABB-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v1.32 9/11/2024',
+		'• fix dragonriding option if mounted and reloaded while on the ground with option selected',
+		'• add Hide as Passenger option which works in conjunction with In Vehicle option',
+	' ',
 	'v1.31 9/11/2024',
 		'• fix an issue with previous release',
 	' ',
