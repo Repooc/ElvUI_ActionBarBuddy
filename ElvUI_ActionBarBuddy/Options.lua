@@ -48,6 +48,12 @@ local globalFadeOptions = {
 		get = function(info) local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
 		set = function(info, value) E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] = (value and 2) or (value == nil and 1) or 0 ABB:FadeParent_OnEvent('FAKE_EVENT') end,
 	},
+	onTaxi = {
+		name = function(info) local text = L["Taxi (|cff%s%s|r)"] local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return format(text, '00FF00', L["On Taxi"]) elseif value == 1 then return format(text, 'FF0000', L["Not On Taxi"]) else return format(text, 'FFFF00', L["Ignore Taxi"]) end end,
+		tristate = true,
+		get = function(info) local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
+		set = function(info, value) E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] = (value and 2) or (value == nil and 1) or 0 ABB:FadeParent_OnEvent('FAKE_EVENT') end,
+	},
 	inInstance = {
 		name = function(info) local text = L["Instance (|cff%s%s|r)"] local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return format(text, '00FF00', L["In Instance"]) elseif value == 1 then return format(text, 'FF0000', L["Not In Instance"]) else return format(text, 'FFFF00', L["Ignore Instance"]) end end,
 		tristate = true,
