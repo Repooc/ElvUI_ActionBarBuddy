@@ -186,6 +186,14 @@ function ABB:Button_OnLeave(button)
 end
 
 do
+	local function IsPassenger()
+		if UnitInVehicle('player') and not UnitInVehicleControlSeat('player') then
+			return true
+		else
+			return false
+		end
+	end
+
 	local function CanGlide()
 		local isGliding = C_PlayerInfo.GetGlidingInfo()
 		local bonusbar = SecureCmdOptionParse('[bonusbar:5] 1; 0')
@@ -209,7 +217,7 @@ do
 		or (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')))
 		or (db.displayTriggers.hasTarget and UnitExists('target'))
 		or (db.displayTriggers.hasFocus and UnitExists('focus'))
-		or (db.displayTriggers.inVehicle and UnitExists('vehicle'))
+		or (db.displayTriggers.inVehicle and UnitExists('vehicle') and (not db.displayTriggers.hideAsPassenger or db.displayTriggers.hideAsPassenger and not IsPassenger()))
 		or (db.displayTriggers.isPossessed and possessbar == '1')
 		or (db.displayTriggers.inCombat == 2 and UnitAffectingCombat('player') or db.displayTriggers.inCombat == 1 and not UnitAffectingCombat('player'))
 		or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player')))

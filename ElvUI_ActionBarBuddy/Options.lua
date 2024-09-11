@@ -38,45 +38,61 @@ local TESTER_STRING = table.concat(TESTERS, '|n')
 local globalFadeOptions = {
 	hasFocus = {
 		name = L["Has Focus"],
+		order = 1,
 	},
 	hasTarget = {
 		name = L["Has Target"],
+		order = 1,
+	},
+	hideAsPassenger = {
+		name = L["Hide As Passenger"],
+		order = 99,
+		disabled = function(info) return not E.db.abb.enhancedGlobalFade.displayTriggers.inVehicle end
 	},
 	inCombat = {
 		name = function(info) local text = L["Combat (|cff%s%s|r)"] local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return format(text, '00FF00', L["In Combat"]) elseif value == 1 then return format(text, 'FF0000', L["Not In Combat"]) else return format(text, 'FFFF00', L["Ignore Combat"]) end end,
-		tristate = true,
-		get = function(info) local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
-		set = function(info, value) E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] = (value and 2) or (value == nil and 1) or 0 ABB:FadeParent_OnEvent('FAKE_EVENT') end,
-	},
-	onTaxi = {
-		name = function(info) local text = L["Taxi (|cff%s%s|r)"] local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return format(text, '00FF00', L["On Taxi"]) elseif value == 1 then return format(text, 'FF0000', L["Not On Taxi"]) else return format(text, 'FFFF00', L["Ignore Taxi"]) end end,
+		order = 1,
 		tristate = true,
 		get = function(info) local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
 		set = function(info, value) E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] = (value and 2) or (value == nil and 1) or 0 ABB:FadeParent_OnEvent('FAKE_EVENT') end,
 	},
 	inInstance = {
 		name = function(info) local text = L["Instance (|cff%s%s|r)"] local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return format(text, '00FF00', L["In Instance"]) elseif value == 1 then return format(text, 'FF0000', L["Not In Instance"]) else return format(text, 'FFFF00', L["Ignore Instance"]) end end,
+		order = 1,
 		tristate = true,
 		get = function(info) local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
 		set = function(info, value) E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] = (value and 2) or (value == nil and 1) or 0 ABB:FadeParent_OnEvent('FAKE_EVENT') end,
 	},
 	inVehicle = {
 		name = L["In Vehicle"],
+		order = 98,
+	},
+	onTaxi = {
+		name = function(info) local text = L["Taxi (|cff%s%s|r)"] local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return format(text, '00FF00', L["On Taxi"]) elseif value == 1 then return format(text, 'FF0000', L["Not On Taxi"]) else return format(text, 'FFFF00', L["Ignore Taxi"]) end end,
+		order = 1,
+		tristate = true,
+		get = function(info) local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
+		set = function(info, value) E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] = (value and 2) or (value == nil and 1) or 0 ABB:FadeParent_OnEvent('FAKE_EVENT') end,
 	},
 	isDragonRiding = {
 		name = L["Is Dragonriding"],
+		order = 1,
 	},
 	isPossessed = {
 		name = L["You Possess Target"],
+		order = 1,
 	},
 	mouseover = {
 		name = L["Mouseover"],
+		order = 1,
 	},
 	notMaxHealth = {
 		name = L["Not Max Health"],
+		order = 1,
 	},
 	playerCasting = {
 		name = L["Player Casting"],
+		order = 1,
 	},
 }
 
@@ -99,7 +115,7 @@ local function configTable()
 	EnhancedGlobalFade.args.displayTriggers = ACH:Group(L["Override Display Triggers"], nil, 99, nil, function(info) return E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] end, function(info, value) E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] = value ABB:FadeParent_OnEvent() end)
 	EnhancedGlobalFade.args.displayTriggers.inline = true
 	for option, info in next, globalFadeOptions do
-		EnhancedGlobalFade.args.displayTriggers.args[option] = ACH:Toggle(info.name, nil, nil, info.tristate, nil, nil, info.get, info.set)
+		EnhancedGlobalFade.args.displayTriggers.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled)
 	end
 
 	local bar = ActionBar.args.playerBars.args.bar1

@@ -12,6 +12,7 @@ P.abb = {
 			inVehicle = true,
 			isPossessed = true,
 			isDragonRiding = true,
+			hideAsPassenger = true,
 			mouseover = true,
 			notMaxHealth = true,
 			playerCasting = true,
