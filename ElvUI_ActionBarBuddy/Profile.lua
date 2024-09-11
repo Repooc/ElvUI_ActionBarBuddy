@@ -8,6 +8,7 @@ P.abb = {
 			hasFocus = true,
 			hasTarget = true,
 			inCombat = 2,
+			onTaxi = 2,
 			inVehicle = true,
 			isPossessed = true,
 			isDragonRiding = true,
