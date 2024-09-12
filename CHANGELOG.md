@@ -1,3 +1,3 @@
-v1.33 9/11/2024
+v1.34 9/11/2024
 
-• fix more logic errors that were found
+• change the default for new option Hide as Passenger to false by default

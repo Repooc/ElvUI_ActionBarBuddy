@@ -6,6 +6,9 @@ local module = E:NewModule('ABB-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v1.34 9/11/2024',
+		'• change the default for new option Hide as Passenger to false by default',
+	' ',
 	'v1.33 9/11/2024',
 		'• fix more logic errors that were found',
 	' ',

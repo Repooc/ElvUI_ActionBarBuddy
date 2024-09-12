@@ -3,7 +3,7 @@
 ## Interface-Classic: 11503
 ## Title: |cff1784d1ElvUI|r |cff00FF98ActionBar|r |cffA330C9Buddy|r
 ## Author: Repooc
-## Version: 1.33
+## Version: 1.34
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 ## SavedVariables: ABBDB
