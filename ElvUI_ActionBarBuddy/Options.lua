@@ -111,7 +111,7 @@ local function CreateBarOptions(barNumber)
 	options.args.spacer1 = ACH:Spacer(4, 'full')
 	options.args.customTriggers = ACH:Toggle(L["Custom Triggers"], L["This will override the options found in the Global tab with the options found in the Override Display Triggers section below."], 5, nil, nil, nil, nil, nil, function(info) return E.db.abb[info[#info-1]].inheritGlobalFade and false or not E.db.abb[info[#info-1]].inheritGlobalFade end)
 	for option, info in next, globalFadeOptions do
-		options.args.displayTriggers.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled)
+		options.args.displayTriggers.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled, info.hidden)
 	end
 
 	return options
@@ -148,7 +148,7 @@ local function configTable()
 		end)
 	Global.args.displayTriggers.inline = true
 	for option, info in next, globalFadeOptions do
-		Global.args.displayTriggers.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled)
+		Global.args.displayTriggers.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled, info.hidden)
 	end
 
 	ActionBarBuddy.args.barSettings = ACH:Group(L["Bar Settings"], nil, 10, 'tree', nil, nil, nil)
