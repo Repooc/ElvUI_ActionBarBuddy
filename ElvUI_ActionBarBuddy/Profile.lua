@@ -30,7 +30,7 @@ P.abb = {
 for i = 1, 10 do
 	P.abb['bar'..i] = {
 		inheritGlobalFade = false,
-		customTriggers = true,
+		customTriggers = false,
 		displayTriggers = CopyTable(ElvUIDefaultValues),
 	}
 	-- fadeTable['bar'..i] = CreateFrame('Frame', 'ABB_ABFadeBar'..i, UIParent)
