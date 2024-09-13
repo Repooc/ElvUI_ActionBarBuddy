@@ -22,6 +22,7 @@ P.abb = {
 	removeDragonOverride = false,
 	global = {
 		displayTriggers = CopyTable(ElvUIDefaultValues),
+		globalFadeAlpha = 0.5,
 		smooth = 0.33
 	}
 }

@@ -122,18 +122,16 @@ local function configTable()
     local rrp = E.Options.args.rrp
     if not rrp then print("Error Loading Repooc Reforged Plugin Library") return end
 
-	--* Add/Update ElvUI Options
-	local ActionBar = E.Options.args.actionbar
-	local GlobalFade = ACH:Group(L["|cff00FF98AB|r |cffA330C9Buddy|r|cffF48CBA:|r Global Fade"], nil, 21, 'tab', function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB:UpdateButtonSettings() end)
-	ActionBar.args.general.args.ABBGlobalFade = GlobalFade
-
-	ActionBar.args.general.args.globalFadeAlpha = nil
+	--* Plugin Section
+	local ActionBarBuddy = ACH:Group('|cff00FF98ActionBar|r |cffA330C9Buddy|r', nil, 6, 'tab', nil, nil, function() return not AB.Initialized end)
+	rrp.args.abb = ActionBarBuddy
+	ActionBarBuddy.args.version = ACH:Header(format('|cff99ff33%s|r', ABB.Version), 1)
 
 	local Global = ACH:Group(L["Global"], nil, 1, 'tree', nil, nil)
-	GlobalFade.args.global = Global
+	ActionBarBuddy.args.global = Global
 
-	Global.args.globalFadeAlpha = ACH:Range(L["Global Fade Transparency"], L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."], 3, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB.fadeParent:SetAlpha(1-value) end)
-	Global.args.smooth = ACH:Range(L["Smooth"], nil, 4, { min = 0, max = 1, step = 0.01 }, nil, function(info) return E.db.abb.global[info[#info]] end, function(info, value) E.db.abb.global[info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', 'global') end)
+	Global.args.globalFadeAlpha = ACH:Range(L["Global Fade Transparency"], L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."], 3, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, function(info) return E.db.abb.global[info[#info]] end, function(info, value) E.db.abb.global[info[#info]] = value for barName in pairs(AB.handledBars) do ABB.fadeParentTable[barName]:SetAlpha(1-value) end end)
+	Global.args.smooth = ACH:Range(L["Smooth"], nil, 4, { min = 0, max = 1, step = 0.01 }, nil, function(info) return E.db.abb.global[info[#info]] end, function(info, value) E.db.abb.global[info[#info]] = value for barName in pairs(AB.handledBars) do ABB:FadeParent_OnEvent('UPDATING_OPTIONS', barName) end end)
 	Global.args.spacer = ACH:Spacer(97, 'full')
 	Global.args.desc = ACH:Description(L["The Display Triggers that are enabled by default are the triggers that ElvUI uses by default and should behave as you would expect the Inherit Global Fade option to work in ElvUI itself.  You can add or remove the triggers that you want to effect the bars visibility."], 98, 'medium')
 
@@ -153,28 +151,23 @@ local function configTable()
 		Global.args.displayTriggers.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled)
 	end
 
-	GlobalFade.args.barSettings = ACH:Group(L["Bar Settings"], nil, 100, 'tree', nil, nil, nil)
+	ActionBarBuddy.args.barSettings = ACH:Group(L["Bar Settings"], nil, 10, 'tree', nil, nil, nil)
 
 	for i = 1, 10 do
-		GlobalFade.args.barSettings.args['bar'..i] = CreateBarOptions(i)
+		ActionBarBuddy.args.barSettings.args['bar'..i] = CreateBarOptions(i)
 		-- E.Options.args.actionbar.args.playerBars.args['bar'..i].args.generalOptions.values['inheritGlobalFade'] = nil
 	end
 
 	for i = 13, 15 do
-		GlobalFade.args.barSettings.args['bar'..i] = CreateBarOptions(i)
+		ActionBarBuddy.args.barSettings.args['bar'..i] = CreateBarOptions(i)
 		-- E.Options.args.actionbar.args.playerBars.args['bar'..i].args.generalOptions.values['inheritGlobalFade'] = nil
 	end
 
-	local bar = ActionBar.args.playerBars.args.bar1
+	local bar = E.Options.args.actionbar.args.playerBars.args.bar1
 	bar.args.abbuddy = ACH:Group(L["|cff00FF98ActionBar|r |cffA330C9Buddy|r"], nil, 3, nil, nil, nil, nil, not E.Retail)
 	bar.args.abbuddy.guiInline = true
 	bar.args.abbuddy.args.removeDragonOverride = ACH:Toggle(L["Remove Dragon Override"], nil, 1, nil, nil, nil, function(info) return E.db.abb[info[#info]] end, function(info, value) E.db.abb[info[#info]] = value ABB:UpdateDragonRiding() end)
 
-	--* Plugin Section
-	local ActionBarBuddy = ACH:Group('|cff00FF98ActionBar|r |cffA330C9Buddy|r', nil, 6, 'tab', nil, nil, function() return not AB.Initialized end)
-	rrp.args.abb = ActionBarBuddy
-
-	ActionBarBuddy.args.version = ACH:Header(format('|cff99ff33%s|r', ABB.Version), 1)
 	local Help = ACH:Group(L["Help"], nil, 99, nil, nil, nil, false)
 	ActionBarBuddy.args.help = Help
 

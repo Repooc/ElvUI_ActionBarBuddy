@@ -108,7 +108,7 @@ function ABB:Bar_OnEnter(bar)
 		local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
 		if bar:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == 1) then
 			E:UIFrameFadeIn(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), 1)
-			-- AB:FadeBlings(1)
+			AB:FadeBlings(1)
 		end
 	end
 
@@ -117,14 +117,14 @@ function ABB:Bar_OnEnter(bar)
 			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
 			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == 1) then
 				E:UIFrameFadeIn(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), 1)
-				-- AB:FadeBlings(1)
+				AB:FadeBlings(1)
 			end
 		end
 	end
 
 	if bar.mouseover then
 		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
-		-- AB:FadeBarBlings(bar, bar.db.alpha)
+		AB:FadeBarBlings(bar, bar.db.alpha)
 	end
 end
 
@@ -132,27 +132,27 @@ function ABB:Bar_OnLeave(bar)
 	do
 		local barName = 'bar'..bar.id
 		local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
-		local a = 1 - AB.db.globalFadeAlpha
+		local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
 		if bar:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
 			E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
-			-- AB:FadeBlings(a)
+			AB:FadeBlings(a)
 		end
 	end
 
 	for barName, barToCheck in pairs(AB.handledBars) do
 		if bar ~= barToCheck then
 			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
-			local a = 1 - AB.db.globalFadeAlpha
+			local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
 			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
 				E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
-				-- AB:FadeBlings(1)
+				AB:FadeBlings(1)
 			end
 		end
 	end
 
 	if bar.mouseover then
 		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
-		-- AB:FadeBarBlings(bar, 0)
+		AB:FadeBarBlings(bar, 0)
 	end
 end
 
@@ -163,7 +163,7 @@ function ABB:Button_OnEnter(button)
 		local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
 		if bar:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == 1) then
 			E:UIFrameFadeIn(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), 1)
-			-- AB:FadeBlings(1)
+			AB:FadeBlings(1)
 		end
 	end
 
@@ -172,14 +172,14 @@ function ABB:Button_OnEnter(button)
 			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
 			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == 1) then
 				E:UIFrameFadeIn(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), 1)
-				-- AB:FadeBlings(1)
+				AB:FadeBlings(1)
 			end
 		end
 	end
 
 	if bar.mouseover then
 		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
-		-- AB:FadeBarBlings(bar, bar.db.alpha)
+		AB:FadeBarBlings(bar, bar.db.alpha)
 	end
 end
 
@@ -189,27 +189,27 @@ function ABB:Button_OnLeave(button)
 	do
 		local barName = 'bar'..bar.id
 		local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
-		local a = 1 - AB.db.globalFadeAlpha
+		local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
 		if bar:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
 			E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
-			-- AB:FadeBlings(a)
+			AB:FadeBlings(a)
 		end
 	end
 
 	for barName, barToCheck in pairs(AB.handledBars) do
 		if bar ~= barToCheck then
 			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
-			local a = 1 - AB.db.globalFadeAlpha
+			local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
 			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
 				E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
-				-- AB:FadeBlings(a)
+				AB:FadeBlings(a)
 			end
 		end
 	end
 
 	if bar.mouseover then
 		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
-		-- AB:FadeBarBlings(bar, 0)
+		AB:FadeBarBlings(bar, 0)
 	end
 end
 
@@ -258,18 +258,17 @@ do
 		or (db.displayTriggers.onTaxi == 2 and UnitOnTaxi('player') or db.displayTriggers.onTaxi == 1 and not UnitOnTaxi('player'))
 		or (E.Retail and ((db.displayTriggers.isDragonRiding and (canGlide or CanGlide())))
 		or (not E.Classic and (db.displayTriggers.inVehicle and (UnitExists('vehicle')) and (not db.displayTriggers.hideAsPassenger or db.displayTriggers.hideAsPassenger and not IsPassenger())))) then
-			-- E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
 			-- AB.fadeParent.mouseLock = true
 			ABB.fadeParentTable[barName].mouseLock = true
 			-- E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
 			E:UIFrameFadeIn(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), 1)
-			-- AB:FadeBlings(1)
+			AB:FadeBlings(1)
 		else
-			local a = 1 - AB.db.globalFadeAlpha
+			local a = 1 - (E.db.abb.global.globalFadeAlpha or 0.5)
 			-- E:UIFrameFadeOut(AB.fadeParent, db.smooth, AB.fadeParent:GetAlpha(), a)
 			E:UIFrameFadeOut(ABB.fadeParentTable[barName], E.db.abb.global.smooth or 0.33, ABB.fadeParentTable[barName]:GetAlpha(), a)
 			ABB.fadeParentTable[barName].mouseLock = false
-			-- AB:FadeBlings(a)
+			AB:FadeBlings(a)
 		end
 	end
 end
@@ -279,7 +278,7 @@ local function SetupFadeParents()
 		-- AB:CreateBar(i)
 		local frame = CreateFrame('Frame', 'ABB_ABFadeBar'..i, UIParent)
 		ABB.fadeParentTable['bar'..i] = frame
-		frame:SetAlpha(1 - (AB.db.globalFadeAlpha or 0))
+		frame:SetAlpha(1 - (E.db.abb.global.globalFadeAlpha or 0))
 		frame:RegisterEvent('PLAYER_REGEN_DISABLED')
 		frame:RegisterEvent('PLAYER_REGEN_ENABLED')
 		frame:RegisterEvent('PLAYER_TARGET_CHANGED')
@@ -321,7 +320,7 @@ local function SetupFadeParents()
 		-- AB:CreateBar(i)
 		local frame = CreateFrame('Frame', 'ABB_ABFadeBar'..i, UIParent)
 		ABB.fadeParentTable['bar'..i] = frame
-		frame:SetAlpha(1 - (AB.db.globalFadeAlpha or 0))
+		frame:SetAlpha(1 - (E.db.abb.global.globalFadeAlpha or 0))
 		frame:RegisterEvent('PLAYER_REGEN_DISABLED')
 		frame:RegisterEvent('PLAYER_REGEN_ENABLED')
 		frame:RegisterEvent('PLAYER_TARGET_CHANGED')
@@ -376,15 +375,10 @@ function ABB:Initialize()
 
 	SetupFadeParents()
 
+	ABB:UpdateOptions()
 	ABB:SecureHook(AB, 'PositionAndSizeBar', ABB.PositionAndSizeBar)
 
-	for barName in pairs(AB.handledBars) do
-		AB:PositionAndSizeBar(barName)
-	end
-
 	hooksecurefunc(E, 'UpdateDB', ABB.UpdateOptions)
-
-	ABB:UpdateOptions()
 
 	if not ABBDB then
 		_G.ABBDB = {}
