@@ -266,7 +266,7 @@ do
 		else
 			local a = 1 - (E.db.abb.global.globalFadeAlpha or 0.5)
 			-- E:UIFrameFadeOut(AB.fadeParent, db.smooth, AB.fadeParent:GetAlpha(), a)
-			E:UIFrameFadeOut(ABB.fadeParentTable[barName], E.db.abb.global.smooth or 0.33, ABB.fadeParentTable[barName]:GetAlpha(), a)
+			E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
 			ABB.fadeParentTable[barName].mouseLock = false
 			AB:FadeBlings(a)
 		end
