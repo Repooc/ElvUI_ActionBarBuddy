@@ -38,31 +38,35 @@ local TESTER_STRING = table.concat(TESTERS, '|n')
 local globalFadeOptions = {
 	hasFocus = {
 		name = L["Has Focus"],
-		order = 1,
+		order = 5,
+	},
+	hasOverridebar = {
+		name = L["Have Overridebar"],
+		order = 5,
 	},
 	hasTarget = {
 		name = L["Has Target"],
-		order = 1,
+		order = 5,
 	},
 	hideAsPassenger = {
 		name = L["Hide As Passenger"],
 		order = 99,
-		disabled = function(info) return not E.db.abb.enhancedGlobalFade.displayTriggers.inVehicle end,
+		disabled = function(info) return info[#info-2] ~= 'global' and (not E.db.abb[info[#info-2]].inheritGlobalFade or not E.db.abb[info[#info-2]].customTriggers) or not E.db.abb[info[#info-2]][info[#info-1]].inVehicle end,
 		hidden = function() return E.Classic end
 	},
 	inCombat = {
-		name = function(info) local text = L["Combat (|cff%s%s|r)"] local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return format(text, '00FF00', L["In Combat"]) elseif value == 1 then return format(text, 'FF0000', L["Not In Combat"]) else return format(text, 'FFFF00', L["Ignore Combat"]) end end,
-		order = 1,
+		name = function(info) local text = L["Combat (|cff%s%s|r)"] local value = E.db.abb[info[#info-2]][info[#info-1]][info[#info]] if value == 2 then return format(text, '00FF00', L["In Combat"]) elseif value == 1 then return format(text, 'FF0000', L["Not In Combat"]) else return format(text, 'FFFF00', L["Ignore Combat"]) end end,
+		order = 5,
 		tristate = true,
-		get = function(info) local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
-		set = function(info, value) E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] = (value and 2) or (value == nil and 1) or 0 ABB:FadeParent_OnEvent('FAKE_EVENT') end,
+		get = function(info) local value = E.db.abb[info[#info-2]][info[#info-1]][info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
+		set = function(info, value) E.db.abb[info[#info-2]][info[#info-1]][info[#info]] = (value and 2) or (value == nil and 1) or 0 ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-2]) end,
 	},
 	inInstance = {
-		name = function(info) local text = L["Instance (|cff%s%s|r)"] local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return format(text, '00FF00', L["In Instance"]) elseif value == 1 then return format(text, 'FF0000', L["Not In Instance"]) else return format(text, 'FFFF00', L["Ignore Instance"]) end end,
-		order = 1,
+		name = function(info) local text = L["Instance (|cff%s%s|r)"] local value = E.db.abb[info[#info-2]][info[#info-1]][info[#info]] if value == 2 then return format(text, '00FF00', L["In Instance"]) elseif value == 1 then return format(text, 'FF0000', L["Not In Instance"]) else return format(text, 'FFFF00', L["Ignore Instance"]) end end,
+		order = 5,
 		tristate = true,
-		get = function(info) local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
-		set = function(info, value) E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] = (value and 2) or (value == nil and 1) or 0 ABB:FadeParent_OnEvent('FAKE_EVENT') end,
+		get = function(info) local value = E.db.abb[info[#info-2]][info[#info-1]][info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
+		set = function(info, value) E.db.abb[info[#info-2]][info[#info-1]][info[#info]] = (value and 2) or (value == nil and 1) or 0 ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-2]) end,
 	},
 	inVehicle = {
 		name = L["In Vehicle"],
@@ -70,34 +74,48 @@ local globalFadeOptions = {
 		hidden = function() return E.Classic end,
 	},
 	onTaxi = {
-		name = function(info) local text = L["Taxi (|cff%s%s|r)"] local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return format(text, '00FF00', L["On Taxi"]) elseif value == 1 then return format(text, 'FF0000', L["Not On Taxi"]) else return format(text, 'FFFF00', L["Ignore Taxi"]) end end,
-		order = 1,
+		name = function(info) local text = L["Taxi (|cff%s%s|r)"] local value = E.db.abb[info[#info-2]][info[#info-1]][info[#info]] if value == 2 then return format(text, '00FF00', L["On Taxi"]) elseif value == 1 then return format(text, 'FF0000', L["Not On Taxi"]) else return format(text, 'FFFF00', L["Ignore Taxi"]) end end,
+		order = 5,
 		tristate = true,
-		get = function(info) local value = E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
-		set = function(info, value) E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] = (value and 2) or (value == nil and 1) or 0 ABB:FadeParent_OnEvent('FAKE_EVENT') end,
+		get = function(info) local value = E.db.abb[info[#info-2]][info[#info-1]][info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
+		set = function(info, value) E.db.abb[info[#info-2]][info[#info-1]][info[#info]] = (value and 2) or (value == nil and 1) or 0 ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-2]) end,
 	},
 	isDragonRiding = {
 		name = L["Is Dragonriding"],
-		order = 1,
+		order = 5,
 		hidden = function() return not E.Retail end,
 	},
 	isPossessed = {
 		name = L["You Possess Target"],
-		order = 1,
+		order = 5,
 	},
 	mouseover = {
 		name = L["Mouseover"],
-		order = 1,
+		order = 5,
 	},
 	notMaxHealth = {
 		name = L["Not Max Health"],
-		order = 1,
+		order = 5,
 	},
 	playerCasting = {
 		name = L["Player Casting"],
-		order = 1,
+		order = 5,
 	},
 }
+
+local function CreateBarOptions(barNumber)
+	local options = ACH:Group(format(L["Bar %s"], barNumber), nil, barNumber, 'tab', function(info) return E.db.abb[info[#info-1]][info[#info]] end, function(info, value) E.db.abb[info[#info-1]][info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-1]) end)
+	options.args.displayTriggers = ACH:Group(L["Override Display Triggers"], nil, 99, nil, function(info) return E.db.abb[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) E.db.abb[info[#info-2]][info[#info-1]][info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-2]) end, function(info) return not E.db.abb[info[#info-2]].inheritGlobalFade or not E.db.abb[info[#info-2]].customTriggers end)
+	options.args.displayTriggers.inline = true
+	options.args.inheritGlobalFade = ACH:Toggle(L["Inherit Global Fade"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.abb[info[#info-1]][info[#info]] = value ABB:ToggleFade(info[#info-1]) AB:PositionAndSizeBar(info[#info-1]) ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-1]) end)
+	options.args.spacer1 = ACH:Spacer(4, 'full')
+	options.args.customTriggers = ACH:Toggle(L["Custom Triggers"], L["This will override the options found in the Global tab with the options found in the Override Display Triggers section below."], 5, nil, nil, nil, nil, nil, function(info) return E.db.abb[info[#info-1]].inheritGlobalFade and false or not E.db.abb[info[#info-1]].inheritGlobalFade end)
+	for option, info in next, globalFadeOptions do
+		options.args.displayTriggers.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled)
+	end
+
+	return options
+end
 
 local function configTable()
     --* Repooc Reforged Plugin section
@@ -106,19 +124,45 @@ local function configTable()
 
 	--* Add/Update ElvUI Options
 	local ActionBar = E.Options.args.actionbar
-	local EnhancedGlobalFade = ACH:Group(L["|cff00FF98AB|r |cffA330C9Buddy|r|cffF48CBA:|r Global Fade"], nil, 21, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB:UpdateButtonSettings() end)
-	ActionBar.args.general.args.enhancedGlobalFade = EnhancedGlobalFade
-	-- EnhancedGlobalFade.inline = true
-	ActionBar.args.general.args.globalFadeAlpha = nil
-	EnhancedGlobalFade.args.globalFadeAlpha = ACH:Range(L["Global Fade Transparency"], L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."], 3, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB.fadeParent:SetAlpha(1-value) end)
-	EnhancedGlobalFade.args.smooth = ACH:Range(L["Smooth"], nil, 4, { min = 0, max = 1, step = 0.01 }, nil, function(info) return E.db.abb.enhancedGlobalFade[info[#info]] end, function(info, value) E.db.abb.enhancedGlobalFade[info[#info]] = value ABB:FadeParent_OnEvent() end)
-	EnhancedGlobalFade.args.spacer = ACH:Spacer(97, 'full')
-	EnhancedGlobalFade.args.desc = ACH:Description(L["The default behaviour of Inherit Global Fade would display the bars if any of the following are true.  You can remove the triggers that you want to ignore so the bars only appear when the triggers you have checked are true."], 98, 'medium')
+	local GlobalFade = ACH:Group(L["|cff00FF98AB|r |cffA330C9Buddy|r|cffF48CBA:|r Global Fade"], nil, 21, 'tab', function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB:UpdateButtonSettings() end)
+	ActionBar.args.general.args.ABBGlobalFade = GlobalFade
 
-	EnhancedGlobalFade.args.displayTriggers = ACH:Group(L["Override Display Triggers"], nil, 99, nil, function(info) return E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] end, function(info, value) E.db.abb.enhancedGlobalFade.displayTriggers[info[#info]] = value ABB:FadeParent_OnEvent() end)
-	EnhancedGlobalFade.args.displayTriggers.inline = true
+	ActionBar.args.general.args.globalFadeAlpha = nil
+
+	local Global = ACH:Group(L["Global"], nil, 1, 'tree', nil, nil)
+	GlobalFade.args.global = Global
+
+	Global.args.globalFadeAlpha = ACH:Range(L["Global Fade Transparency"], L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."], 3, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB.fadeParent:SetAlpha(1-value) end)
+	Global.args.smooth = ACH:Range(L["Smooth"], nil, 4, { min = 0, max = 1, step = 0.01 }, nil, function(info) return E.db.abb.global[info[#info]] end, function(info, value) E.db.abb.global[info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', 'global') end)
+	Global.args.spacer = ACH:Spacer(97, 'full')
+	Global.args.desc = ACH:Description(L["The Display Triggers that are enabled by default are the triggers that ElvUI uses by default and should behave as you would expect the Inherit Global Fade option to work in ElvUI itself.  You can add or remove the triggers that you want to effect the bars visibility."], 98, 'medium')
+
+	Global.args.displayTriggers = ACH:Group(L["Override Display Triggers"], nil, 99, nil, function(info)
+		return E.db.abb[info[#info-2]][info[#info-1]][info[#info]]
+	end,
+	function(info, value)
+		E.db.abb[info[#info-2]][info[#info-1]][info[#info]] = value
+		for barName in pairs(AB.handledBars) do
+			AB:PositionAndSizeBar(barName)
+			ABB:FadeParent_OnEvent('UPDATING_OPTIONS', barName)
+		end
+
+		end)
+	Global.args.displayTriggers.inline = true
 	for option, info in next, globalFadeOptions do
-		EnhancedGlobalFade.args.displayTriggers.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled)
+		Global.args.displayTriggers.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled)
+	end
+
+	GlobalFade.args.barSettings = ACH:Group(L["Bar Settings"], nil, 100, 'tree', nil, nil, nil)
+
+	for i = 1, 10 do
+		GlobalFade.args.barSettings.args['bar'..i] = CreateBarOptions(i)
+		-- E.Options.args.actionbar.args.playerBars.args['bar'..i].args.generalOptions.values['inheritGlobalFade'] = nil
+	end
+
+	for i = 13, 15 do
+		GlobalFade.args.barSettings.args['bar'..i] = CreateBarOptions(i)
+		-- E.Options.args.actionbar.args.playerBars.args['bar'..i].args.generalOptions.values['inheritGlobalFade'] = nil
 	end
 
 	local bar = ActionBar.args.playerBars.args.bar1

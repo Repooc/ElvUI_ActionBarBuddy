@@ -1,23 +1,45 @@
 local _, _, _, P, _ = unpack(ElvUI)
 
+local CopyTable = CopyTable
+
+local ElvUIDefaultValues = {
+	hasFocus = true,
+	hasOverridebar = true,
+	hasTarget = true,
+	hideAsPassenger = false,
+	inCombat = 2,
+	inInstance = 0,
+	inVehicle = true,
+	isDragonRiding = true,
+	isPossessed = true,
+	mouseover = true,
+	notMaxHealth = true,
+	onTaxi = 0,
+	playerCasting = true,
+}
+
 P.abb = {
 	removeDragonOverride = false,
-	enhancedGlobalFade = {
-		enable = true,
-		displayTriggers = {
-			hasFocus = true,
-			hasTarget = true,
-			inCombat = 2,
-			onTaxi = 2,
-			inVehicle = true,
-			isPossessed = true,
-			isDragonRiding = true,
-			hideAsPassenger = false,
-			mouseover = true,
-			notMaxHealth = true,
-			playerCasting = true,
-			inInstance = 2,
-		},
+	global = {
+		displayTriggers = CopyTable(ElvUIDefaultValues),
 		smooth = 0.33
 	}
 }
+
+for i = 1, 10 do
+	P.abb['bar'..i] = {
+		inheritGlobalFade = false,
+		customTriggers = true,
+		displayTriggers = CopyTable(ElvUIDefaultValues),
+	}
+	-- fadeTable['bar'..i] = CreateFrame('Frame', 'ABB_ABFadeBar'..i, UIParent)
+	-- AB:CreateBar(i)
+end
+
+for i = 13, 15 do
+	P.abb['bar'..i] = {
+		inheritGlobalFade = false,
+		customTriggers = false,
+		displayTriggers = CopyTable(ElvUIDefaultValues),
+	}
+end
