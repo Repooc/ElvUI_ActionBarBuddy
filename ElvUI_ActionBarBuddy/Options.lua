@@ -131,7 +131,6 @@ local function configTable()
 	ActionBarBuddy.args.global = Global
 
 	Global.args.globalFadeAlpha = ACH:Range(L["Global Fade Transparency"], L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."], 3, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, function(info) return E.db.abb.global[info[#info]] end, function(info, value) E.db.abb.global[info[#info]] = value for barName in pairs(AB.handledBars) do ABB.fadeParentTable[barName]:SetAlpha(1-value) end end)
-	Global.args.smooth = ACH:Range(L["Smooth"], nil, 4, { min = 0, max = 1, step = 0.01 }, nil, function(info) return E.db.abb.global[info[#info]] end, function(info, value) E.db.abb.global[info[#info]] = value for barName in pairs(AB.handledBars) do ABB:FadeParent_OnEvent('UPDATING_OPTIONS', barName) end end)
 	Global.args.spacer = ACH:Spacer(97, 'full')
 	Global.args.desc = ACH:Description(L["The Display Triggers that are enabled by default are the triggers that ElvUI uses by default and should behave as you would expect the Inherit Global Fade option to work in ElvUI itself.  You can add or remove the triggers that you want to effect the bars visibility."], 98, 'medium')
 
