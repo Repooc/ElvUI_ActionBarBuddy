@@ -223,10 +223,8 @@ do
 	end
 
 	local function CanGlide()
-		local isGliding = C_PlayerInfo.GetGlidingInfo()
-		local bonusbar = SecureCmdOptionParse('[bonusbar:5] 1; 0')
-
-		return isGliding or bonusbar == '1'
+		local isGliding, canGlide = C_PlayerInfo.GetGlidingInfo()
+		return isGliding or canGlide
 	end
 
 	local canGlide = false
