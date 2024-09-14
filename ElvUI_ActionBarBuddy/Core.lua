@@ -375,10 +375,14 @@ function ABB:Initialize()
 
 	SetupFadeParents()
 
-	ABB:UpdateOptions()
 	ABB:SecureHook(AB, 'PositionAndSizeBar', ABB.PositionAndSizeBar)
 
+	for barName in pairs(AB.handledBars) do
+		AB:PositionAndSizeBar(barName)
+	end
+
 	hooksecurefunc(E, 'UpdateDB', ABB.UpdateOptions)
+	ABB:UpdateOptions()
 
 	if not ABBDB then
 		_G.ABBDB = {}
