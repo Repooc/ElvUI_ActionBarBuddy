@@ -264,14 +264,11 @@ do
 		or (db.displayTriggers.onTaxi == 2 and UnitOnTaxi('player') or db.displayTriggers.onTaxi == 1 and not UnitOnTaxi('player'))
 		or (E.Retail and ((db.displayTriggers.isDragonRiding and (canGlide or CanGlide())))
 		or (not E.Classic and (db.displayTriggers.inVehicle and (UnitExists('vehicle')) and (not db.displayTriggers.hideAsPassenger or db.displayTriggers.hideAsPassenger and not IsPassenger())))) then
-			-- AB.fadeParent.mouseLock = true
 			ABB.fadeParentTable[barName].mouseLock = true
-			-- E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
 			E:UIFrameFadeIn(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), 1)
 			AB:FadeBlings(1)
 		else
 			local a = 1 - (E.db.abb.global.globalFadeAlpha or 0.5)
-			-- E:UIFrameFadeOut(AB.fadeParent, db.smooth, AB.fadeParent:GetAlpha(), a)
 			E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
 			ABB.fadeParentTable[barName].mouseLock = false
 			AB:FadeBlings(a)
