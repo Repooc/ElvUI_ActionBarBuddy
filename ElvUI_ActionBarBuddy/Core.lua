@@ -45,6 +45,8 @@ function ABB:ToggleFade(barName)
 	if barName and AB.handledBars[barName] then
 		local db = E.db.abb[barName]
 		if db.inheritGlobalFade then
+			AB:Unhook(AB.handledBars[barName], 'OnEnter')
+			AB:Unhook(AB.handledBars[barName], 'OnLeave')
 			if not ABB:IsHooked(AB.handledBars[barName], 'OnEnter') then
 				ABB:HookScript(AB.handledBars[barName], 'OnEnter', 'Bar_OnEnter')
 			end
@@ -52,6 +54,8 @@ function ABB:ToggleFade(barName)
 				ABB:HookScript(AB.handledBars[barName], 'OnLeave', 'Bar_OnLeave')
 			end
 			for x = 1, 12 do
+				AB:Unhook(AB.handledBars[barName].buttons[x], 'OnEnter')
+				AB:Unhook(AB.handledBars[barName].buttons[x], 'OnLeave')
 				if not ABB:IsHooked(AB.handledBars[barName].buttons[x], 'OnEnter') then
 					ABB:HookScript(AB.handledBars[barName].buttons[x], 'OnEnter', 'Button_OnEnter')
 				end
@@ -61,6 +65,8 @@ function ABB:ToggleFade(barName)
 			end
 			AB:PositionAndSizeBar(barName)
 		elseif not db.inheritGlobalFade then
+			AB.handledBars[barName]:SetScript('OnEnter', AB.Bar_OnEnter)
+			AB.handledBars[barName]:SetScript('OnLeave', AB.Bar_OnLeave)
 			if ABB:IsHooked(AB.handledBars[barName], 'OnEnter') then
 				ABB:Unhook(AB.handledBars[barName], 'OnEnter')
 			end
@@ -68,6 +74,8 @@ function ABB:ToggleFade(barName)
 				ABB:Unhook(AB.handledBars[barName], 'OnLeave')
 			end
 			for x = 1, 12 do
+				AB.handledBars[barName].buttons[x]:SetScript('OnEnter', AB.Button_OnEnter)
+				AB.handledBars[barName].buttons[x]:SetScript('OnLeave', AB.Button_OnLeave)
 				if ABB:IsHooked(AB.handledBars[barName].buttons[x], 'OnEnter') then
 					ABB:Unhook(AB.handledBars[barName].buttons[x], 'OnEnter')
 				end
