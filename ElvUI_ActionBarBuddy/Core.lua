@@ -119,11 +119,11 @@ function ABB:UpdateOptions()
 end
 
 function ABB:Bar_OnEnter(bar)
+	local currentBarName = bar:GetParent().bar
+	local currentBarDB = E.db.abb[currentBarName].customTriggers and E.db.abb[currentBarName] or E.db.abb.global
 	do
-		local barName = 'bar'..bar.id
-		local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
-		if bar:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == 1) then
-			E:UIFrameFadeIn(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), 1)
+		if bar:GetParent() == ABB.fadeParentTable[currentBarName] and currentBarDB.displayTriggers.mouseover and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[currentBarName]:GetAlpha() == 1) then
+			E:UIFrameFadeIn(ABB.fadeParentTable[currentBarName], 0.2, ABB.fadeParentTable[currentBarName]:GetAlpha(), 1)
 			AB:FadeBlings(1)
 		end
 	end
@@ -131,7 +131,7 @@ function ABB:Bar_OnEnter(bar)
 	for barName, barToCheck in pairs(AB.handledBars) do
 		if bar ~= barToCheck then
 			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
-			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == 1) then
+			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == 1) then
 				E:UIFrameFadeIn(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), 1)
 				AB:FadeBlings(1)
 			end
@@ -145,12 +145,12 @@ function ABB:Bar_OnEnter(bar)
 end
 
 function ABB:Bar_OnLeave(bar)
+	local currentBarName = bar:GetParent().bar
+	local currentBarDB = E.db.abb[currentBarName].customTriggers and E.db.abb[currentBarName] or E.db.abb.global
 	do
-		local barName = 'bar'..bar.id
-		local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
 		local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
-		if bar:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
-			E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
+		if bar:GetParent() == ABB.fadeParentTable[currentBarName] and currentBarDB.displayTriggers.mouseover and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[currentBarName]:GetAlpha() == a) then
+			E:UIFrameFadeOut(ABB.fadeParentTable[currentBarName], 0.2, ABB.fadeParentTable[currentBarName]:GetAlpha(), a)
 			AB:FadeBlings(a)
 		end
 	end
@@ -159,7 +159,7 @@ function ABB:Bar_OnLeave(bar)
 		if bar ~= barToCheck then
 			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
 			local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
-			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
+			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
 				E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
 				AB:FadeBlings(1)
 			end
@@ -174,11 +174,11 @@ end
 
 function ABB:Button_OnEnter(button)
 	local bar = button:GetParent()
+	local currentBarName = bar:GetParent().bar
+	local currentBarDB = E.db.abb[currentBarName].customTriggers and E.db.abb[currentBarName] or E.db.abb.global
 	do
-		local barName = 'bar'..bar.id
-		local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
-		if bar:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == 1) then
-			E:UIFrameFadeIn(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), 1)
+		if bar:GetParent() == ABB.fadeParentTable[currentBarName] and currentBarDB.displayTriggers.mouseover and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[currentBarName]:GetAlpha() == 1) then
+			E:UIFrameFadeIn(ABB.fadeParentTable[currentBarName], 0.2, ABB.fadeParentTable[currentBarName]:GetAlpha(), 1)
 			AB:FadeBlings(1)
 		end
 	end
@@ -186,7 +186,7 @@ function ABB:Button_OnEnter(button)
 	for barName, barToCheck in pairs(AB.handledBars) do
 		if bar ~= barToCheck then
 			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
-			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == 1) then
+			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == 1) then
 				E:UIFrameFadeIn(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), 1)
 				AB:FadeBlings(1)
 			end
@@ -201,13 +201,13 @@ end
 
 function ABB:Button_OnLeave(button)
 	local bar = button:GetParent()
+	local currentBarName = bar:GetParent().bar
+	local currentBarDB = E.db.abb[currentBarName].customTriggers and E.db.abb[currentBarName] or E.db.abb.global
 
 	do
-		local barName = 'bar'..bar.id
-		local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
 		local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
-		if bar:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
-			E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
+		if bar:GetParent() == ABB.fadeParentTable[currentBarName] and currentBarDB.displayTriggers.mouseover and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[currentBarName]:GetAlpha() == a) then
+			E:UIFrameFadeOut(ABB.fadeParentTable[currentBarName], 0.2, ABB.fadeParentTable[currentBarName]:GetAlpha(), a)
 			AB:FadeBlings(a)
 		end
 	end
@@ -216,7 +216,7 @@ function ABB:Button_OnLeave(button)
 		if bar ~= barToCheck then
 			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
 			local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
-			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
+			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
 				E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
 				AB:FadeBlings(a)
 			end
