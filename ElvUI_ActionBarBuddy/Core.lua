@@ -137,11 +137,6 @@ function ABB:Bar_OnEnter(bar)
 			end
 		end
 	end
-
-	if bar.mouseover then
-		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
-		AB:FadeBarBlings(bar, bar.db.alpha)
-	end
 end
 
 function ABB:Bar_OnLeave(bar)
@@ -165,11 +160,6 @@ function ABB:Bar_OnLeave(bar)
 			end
 		end
 	end
-
-	if bar.mouseover then
-		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
-		AB:FadeBarBlings(bar, 0)
-	end
 end
 
 function ABB:Button_OnEnter(button)
@@ -191,11 +181,6 @@ function ABB:Button_OnEnter(button)
 				AB:FadeBlings(1)
 			end
 		end
-	end
-
-	if bar.mouseover then
-		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
-		AB:FadeBarBlings(bar, bar.db.alpha)
 	end
 end
 
@@ -221,11 +206,6 @@ function ABB:Button_OnLeave(button)
 				AB:FadeBlings(a)
 			end
 		end
-	end
-
-	if bar.mouseover then
-		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
-		AB:FadeBarBlings(bar, 0)
 	end
 end
 
@@ -372,12 +352,13 @@ end
 
 function ABB:PositionAndSizeBar(barNum)
 	if not barNum then return end
+	local db = E.db.abb[barNum]
+	if not db or not db.inheritGlobalFade then return end
 
 	local bar = AB.handledBars[barNum]
-	local db = E.db.abb[barNum]
 	if not bar or not db then return end
-	local elvDB = E.db.actionbar[barNum]
-	bar:SetParent((db.inheritGlobalFade and ABB.fadeParentTable[barNum]) or (elvDB.inheritGlobalFade and AB.fadeParent) or E.UIParent)
+	bar:SetParent((db.inheritGlobalFade and ABB.fadeParentTable[barNum]) or E.UIParent)
+	bar:SetAlpha(1)
 end
 
 function ABB:Initialize()
