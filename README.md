@@ -7,13 +7,21 @@
 [![Patreon](https://img.shields.io/badge/Patreon-F96854?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/repoocreforged) [![ko-fi](https://img.shields.io/badge/_-KO--FI-red?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/repoocreforged) 
 
 
-Do you want to be able to make your actionbars react on mouseover and combat? Do you like the concept of ElvUI's Inherit Global Fade option but would like to pick and choose which events to listen for instead of all or none?
+# Version 2.0 Rewrite Released
 
-**ActionBar Buddy** is the solution! This ElvUI plugin allows you to focus on what matters by letting you adjust ElvUI's Inherit Global Fade to react on a select few events instead of all of the ones ElvUI ships it with. Take that control of your bars now and download ActionBar Buddy!
+With the new 2.0 version, settings will be reset as the addon has a bit more to it now and doesn't work exactly like it did before. Hopefully this general break down can get you started! 
+
+**Notable Changes:**
+* ***ActionBar Buddy*** no longers uses ElvUI's Inherit Global Fade option in the bar's section in the main ElvUI's settings. It now has it's own option in the Bar Settings section in ActionBar Buddy's settings.
+* ***ActionBar Buddy*** no longers uses ElvUI's Global Fade Transparency slider option in the General section ElvUI's ActionBars section to determine the value. It can be found in the Global section in ActionBar Buddy's settings.
+
+Did you ever use ElvUI's Inherit Global Fade option and wish that it would not trigger and show all the bars when you were Dragon Riding (aka Dynamic Flight) but instead, have only bar 1 to become fully visible when you get on the Dragon Riding mount? You can do that! With ***ActionBar Buddy's*** Inherit Global Fade option (not ElvUI's built in one), you can pick and choose if the bars share the same triggers, or some have custom triggers set, while the others share the global setting!
+
+***ActionBar Buddy*** is the solution! This ElvUI plugin allows you to focus on what matters by letting you take more control over what ElvUI's Inherit Global Fade gave you so you can set bars to react on a select few events instead of all of the ones ElvUI does. Take that control of your bars now and download ***ActionBar Buddy***!
 
 ### Features:
-- **Simplified Options:** The main options are all located in its own section under the ActionBar, General section.
-- **Control Over All ElvUI Default Checks:** You can now have those bars show on mouseover or combat, not one or the other!
+- **Highly Customizable (If Needed):** The main options are all located in ActionBar Buddy's section once you navigate to the Repooc Reforged Plugins section at the bottom of the navigation bar in ElvUI's configuration window.
+- **Control Over The Triggers:** You can now have those bars show on mouseover or combat, not one or the other! You have a bit more freedom to do what you like with your bars without cluttering your screen and show when you really need them to.
 
 ### Future Updates:
 I strive to keep ActionBar Buddy up to everyone's needs. While I welcome and value your feedback, please understand that not all suggestions may be implemented. I'll carefully consider each idea for additional customization options and features, ensuring that any future updates align with the essence of this plugin which is aimed at making the current triggers that ElvUI sets, to be optional.
