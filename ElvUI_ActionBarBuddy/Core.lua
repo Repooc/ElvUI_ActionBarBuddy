@@ -264,89 +264,53 @@ do
 	end
 end
 
+local function CreateFadeParents(barNum)
+	local frame = CreateFrame('Frame', 'ABB_ABFadeBar'..barNum, UIParent)
+	ABB.fadeParentTable['bar'..barNum] = frame
+	frame:SetAlpha(1 - (E.db.abb.global.globalFadeAlpha or 0))
+	frame:RegisterEvent('PLAYER_REGEN_DISABLED')
+	frame:RegisterEvent('PLAYER_REGEN_ENABLED')
+	frame:RegisterEvent('PLAYER_TARGET_CHANGED')
+	frame:RegisterUnitEvent('UNIT_SPELLCAST_START', 'player')
+	frame:RegisterUnitEvent('UNIT_SPELLCAST_STOP', 'player')
+	frame:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_START', 'player')
+	frame:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_STOP', 'player')
+	frame:RegisterUnitEvent('UNIT_HEALTH', 'player')
+
+	if not E.Classic then
+		frame:RegisterEvent('PLAYER_FOCUS_CHANGED')
+	end
+
+	if E.Retail then
+		frame:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_START', 'player')
+		frame:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_STOP', 'player')
+		frame:RegisterUnitEvent('UNIT_SPELLCAST_SUCCEEDED', 'player')
+		frame:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
+		frame:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
+		frame:RegisterEvent('UPDATE_POSSESS_BAR')
+		frame:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED')
+	end
+
+	if E.Retail or E.Cata then
+		frame:RegisterEvent('VEHICLE_UPDATE')
+		frame:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
+		frame:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
+	end
+
+	frame:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR')
+	frame:RegisterEvent('ZONE_CHANGED_NEW_AREA')
+
+	frame.bar = 'bar'..barNum
+
+	frame:SetScript('OnEvent', ABB.FadeParent_OnEvent)
+end
 local function SetupFadeParents()
 	for i = 1, 10 do
-		-- AB:CreateBar(i)
-		local frame = CreateFrame('Frame', 'ABB_ABFadeBar'..i, UIParent)
-		ABB.fadeParentTable['bar'..i] = frame
-		frame:SetAlpha(1 - (E.db.abb.global.globalFadeAlpha or 0))
-		frame:RegisterEvent('PLAYER_REGEN_DISABLED')
-		frame:RegisterEvent('PLAYER_REGEN_ENABLED')
-		frame:RegisterEvent('PLAYER_TARGET_CHANGED')
-		frame:RegisterUnitEvent('UNIT_SPELLCAST_START', 'player')
-		frame:RegisterUnitEvent('UNIT_SPELLCAST_STOP', 'player')
-		frame:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_START', 'player')
-		frame:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_STOP', 'player')
-		frame:RegisterUnitEvent('UNIT_HEALTH', 'player')
-
-		if not E.Classic then
-			frame:RegisterEvent('PLAYER_FOCUS_CHANGED')
-		end
-
-		if E.Retail then
-			frame:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_START', 'player')
-			frame:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_STOP', 'player')
-			frame:RegisterUnitEvent('UNIT_SPELLCAST_SUCCEEDED', 'player')
-			frame:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
-			frame:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
-			frame:RegisterEvent('UPDATE_POSSESS_BAR')
-			frame:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED')
-		end
-
-		if E.Retail or E.Cata then
-			frame:RegisterEvent('VEHICLE_UPDATE')
-			frame:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
-			frame:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
-		end
-
-		frame:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR')
-		frame:RegisterEvent('ZONE_CHANGED_NEW_AREA')
-
-		frame.bar = 'bar'..i
-
-		frame:SetScript('OnEvent', ABB.FadeParent_OnEvent)
+		CreateFadeParents(i)
 	end
 
 	for i = 13, 15 do
-		-- AB:CreateBar(i)
-		local frame = CreateFrame('Frame', 'ABB_ABFadeBar'..i, UIParent)
-		ABB.fadeParentTable['bar'..i] = frame
-		frame:SetAlpha(1 - (E.db.abb.global.globalFadeAlpha or 0))
-		frame:RegisterEvent('PLAYER_REGEN_DISABLED')
-		frame:RegisterEvent('PLAYER_REGEN_ENABLED')
-		frame:RegisterEvent('PLAYER_TARGET_CHANGED')
-		frame:RegisterUnitEvent('UNIT_SPELLCAST_START', 'player')
-		frame:RegisterUnitEvent('UNIT_SPELLCAST_STOP', 'player')
-		frame:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_START', 'player')
-		frame:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_STOP', 'player')
-		frame:RegisterUnitEvent('UNIT_HEALTH', 'player')
-
-		if not E.Classic then
-			frame:RegisterEvent('PLAYER_FOCUS_CHANGED')
-		end
-
-		if E.Retail then
-			frame:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_START', 'player')
-			frame:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_STOP', 'player')
-			frame:RegisterUnitEvent('UNIT_SPELLCAST_SUCCEEDED', 'player')
-			frame:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
-			frame:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
-			frame:RegisterEvent('UPDATE_POSSESS_BAR')
-			frame:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED')
-		end
-
-		if E.Retail or E.Cata then
-			frame:RegisterEvent('VEHICLE_UPDATE')
-			frame:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
-			frame:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
-		end
-
-		frame:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR')
-		frame:RegisterEvent('ZONE_CHANGED_NEW_AREA')
-
-		frame.bar = 'bar'..i
-
-		frame:SetScript('OnEvent', ABB.FadeParent_OnEvent)
+		CreateFadeParents(i)
 	end
 end
 
