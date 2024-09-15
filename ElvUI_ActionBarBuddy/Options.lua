@@ -20,6 +20,9 @@ local DEVELOPERS = {
 }
 
 local TESTERS = {
+	':) vint',						-- Discord User
+	'Niix',							-- Discord User
+	'Trenchy',
 	'|cffeb9f24Tukui Community|r',
 }
 
