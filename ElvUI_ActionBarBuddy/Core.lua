@@ -218,8 +218,14 @@ do
 		end
 	end
 
-	local function CanGlide()
+	local function CanGlide(event)
 		local isGliding, canGlide = C_PlayerInfo.GetGlidingInfo()
+		local dragonbar = SecureCmdOptionParse('[bonusbar:5] 1; 0')
+
+		if event == 'UPDATE_OVERRIDE_ACTIONBAR' then
+			if canGlide and (dragonbar == '0') then canGlide = false end
+		end
+
 		return isGliding or canGlide
 	end
 
@@ -250,15 +256,15 @@ do
 		or (db.displayTriggers.inCombat == 2 and UnitAffectingCombat('player') or db.displayTriggers.inCombat == 1 and not UnitAffectingCombat('player'))
 		or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player')))
 		or (db.displayTriggers.onTaxi == 2 and UnitOnTaxi('player') or db.displayTriggers.onTaxi == 1 and not UnitOnTaxi('player'))
-		or (E.Retail and ((db.displayTriggers.isDragonRiding and (canGlide or CanGlide())))
+		or (E.Retail and ((db.displayTriggers.isDragonRiding and (canGlide or CanGlide(event))))
 		or (not E.Classic and (db.displayTriggers.inVehicle and (UnitExists('vehicle')) and (not db.displayTriggers.hideAsPassenger or db.displayTriggers.hideAsPassenger and not IsPassenger())))) then
 			ABB.fadeParentTable[barName].mouseLock = true
 			E:UIFrameFadeIn(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), 1)
 			AB:FadeBlings(1)
 		else
+			ABB.fadeParentTable[barName].mouseLock = false
 			local a = 1 - (E.db.abb.global.globalFadeAlpha or 0.5)
 			E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
-			ABB.fadeParentTable[barName].mouseLock = false
 			AB:FadeBlings(a)
 		end
 	end
