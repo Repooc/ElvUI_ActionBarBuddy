@@ -32,8 +32,6 @@ for i = 1, 10 do
 		customTriggers = false,
 		displayTriggers = CopyTable(ElvUIDefaultValues),
 	}
-	-- fadeTable['bar'..i] = CreateFrame('Frame', 'ABB_ABFadeBar'..i, UIParent)
-	-- AB:CreateBar(i)
 end
 
 for i = 13, 15 do
