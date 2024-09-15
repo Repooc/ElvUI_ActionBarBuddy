@@ -6,9 +6,6 @@ local module = E:NewModule('ABB-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
-	-- 'v1.34 9/11/2024',
-	-- 	'• change the default for new option Hide as Passenger to false by default',
-	-- ' ',
 	'v|cff00fc002.0|r 9/15/2024',
 		' ',
 		'|cffFF3300WARNING:|r The addon has been overhauled. The settings were reset due to all the changes that have been done',
@@ -27,6 +24,7 @@ local ChangelogTBL = {
 		'• Congratulation\'s, you now reproduced the same effects as before the rewrite! You should take some time with the Custom Triggers on some bars as it can yield some nice and clean looking UI!',
 	' ',
 	' ',
+	' ',
 	'v|cff00fc001.30|r - v|cff00fc001.34|r 9/11/2024',
 		'• change the default for new option Hide as Passenger to false by default',
 		'• fix more logic errors that were found',
@@ -34,10 +32,6 @@ local ChangelogTBL = {
 		'• add Hide as Passenger option which works in conjunction with In Vehicle option',
 		'• fix an issue with previous release',
 		'• add ability to trigger if you are on a taxi (aka flight path)',
-	' ',
-	' .',
-	' .',
-	' .',
 	' ',
 	'v|cff00fc001.00|r 4/16/2022',
 		'• Initial Release',
