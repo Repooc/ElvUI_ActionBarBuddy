@@ -35,9 +35,9 @@ local function CreateBar(barNum)
 end
 
 for i = 1, 10 do
-	AB:CreateBar(i)
+	CreateBar(i)
 end
 
 for i = 13, 15 do
-	AB:CreateBar(i)
+	CreateBar(i)
 end
