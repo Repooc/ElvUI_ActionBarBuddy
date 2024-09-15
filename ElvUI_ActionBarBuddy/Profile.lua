@@ -26,18 +26,18 @@ P.abb = {
 	}
 }
 
-for i = 1, 10 do
-	P.abb['bar'..i] = {
+local function CreateBar(barNum)
+	P.abb['bar'..barNum] = {
 		inheritGlobalFade = false,
 		customTriggers = false,
 		displayTriggers = CopyTable(ElvUIDefaultValues),
 	}
 end
 
+for i = 1, 10 do
+	AB:CreateBar(i)
+end
+
 for i = 13, 15 do
-	P.abb['bar'..i] = {
-		inheritGlobalFade = false,
-		customTriggers = false,
-		displayTriggers = CopyTable(ElvUIDefaultValues),
-	}
+	AB:CreateBar(i)
 end
