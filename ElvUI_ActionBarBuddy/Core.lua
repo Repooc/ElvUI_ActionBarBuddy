@@ -256,8 +256,8 @@ do
 		or (db.displayTriggers.inCombat == 2 and UnitAffectingCombat('player') or db.displayTriggers.inCombat == 1 and not UnitAffectingCombat('player'))
 		or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player')))
 		or (db.displayTriggers.onTaxi == 2 and UnitOnTaxi('player') or db.displayTriggers.onTaxi == 1 and not UnitOnTaxi('player'))
-		or (E.Retail and ((db.displayTriggers.isDragonRiding and (canGlide or CanGlide(event))))
-		or (not E.Classic and (db.displayTriggers.inVehicle and (UnitExists('vehicle')) and (not db.displayTriggers.hideAsPassenger or db.displayTriggers.hideAsPassenger and not IsPassenger())))) then
+		or (E.Retail and ((db.displayTriggers.isDragonRiding and (canGlide or CanGlide(event)))))
+		or (not E.Classic and (db.displayTriggers.inVehicle and (UnitExists('vehicle')) and (not db.displayTriggers.hideAsPassenger or db.displayTriggers.hideAsPassenger and not IsPassenger()))) then
 			ABB.fadeParentTable[barName].mouseLock = true
 			E:UIFrameFadeIn(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), 1)
 			AB:FadeBlings(1)
