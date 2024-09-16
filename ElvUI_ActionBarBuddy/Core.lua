@@ -232,10 +232,14 @@ do
 	end
 
 	local function CanGlide(event)
-		local isGliding = C_PlayerInfo.GetGlidingInfo()
+		local isGliding, canGlide = C_PlayerInfo.GetGlidingInfo()
 		local dragonbar = SecureCmdOptionParse('[bonusbar:5] 1; 0')
 
-		return isGliding or (dragonbar == '1')
+		if event == 'UPDATE_OVERRIDE_ACTIONBAR' then
+			if (canGlide and (dragonbar == '0')) or (not canGlide and (dragonbar == '1')) then canGlide = false end
+		end
+
+		return isGliding or canGlide
 	end
 
 	local canGlide = false
