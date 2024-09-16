@@ -135,7 +135,7 @@ function module:CreateChangelog()
 	header.text = header:CreateFontString(nil, 'OVERLAY')
 	header.text:FontTemplate(nil, 15, 'OUTLINE')
 	header.text:SetHeight(header.text:GetStringHeight()+30)
-	header.text:SetText(format('%s - Changelog |cff00c0fa%s|r', ABB.Title, ABB.Version))
+	header.text:SetText(format('%s - Changelog |cff00c0fa%s|r', ABB.Title, ABB.versionString))
 	header.text:SetTextColor(1, 0.8, 0)
 	header.text:Point('CENTER', header, 0, -1)
 
@@ -151,7 +151,7 @@ function module:CreateChangelog()
 	close:SetText(CLOSE)
 	close:Size(80, 20)
 	close:SetScript('OnClick', function()
-		_G.ABBDB['Version'] = ABB.Version
+		_G.ABBDB['Version'] = ABB.versionString
 		frame:Hide()
 	end)
 	S:HandleButton(close)
@@ -206,7 +206,7 @@ end
 
 function module:CheckVersion()
 	if not InCombatLockdown() then
-		if not ABBDB['Version'] or (ABBDB['Version'] and ABBDB['Version'] ~= ABB.Version) then
+		if not ABBDB['Version'] or (ABBDB['Version'] and ABBDB['Version'] ~= ABB.versionString) then
 			module:ToggleChangeLog()
 		end
 	else

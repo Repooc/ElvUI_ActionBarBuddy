@@ -16,12 +16,25 @@ _G[AddOnName] = Engine
 local GetAddOnMetadata = C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 
 ABB.Title = GetAddOnMetadata('ElvUI_ActionBarBuddy', 'Title')
-ABB.Version = GetAddOnMetadata('ElvUI_ActionBarBuddy', 'Version')
+
 ABB.Configs = {}
 
 function ABB:Print(...)
 	(E.db and _G[E.db.general.messageRedirect] or _G.DEFAULT_CHAT_FRAME):AddMessage(strjoin('', E.media.hexvaluecolor or '|cff00b3ff', 'ActionBar Buddy:|r ', ...)) -- I put DEFAULT_CHAT_FRAME as a fail safe.
 end
+
+function ABB:ParseVersionString()
+	local version = GetAddOnMetadata(AddOnName, 'Version')
+	local prevVersion = GetAddOnMetadata(AddOnName, 'X-PreviousVersion')
+	if strfind(version, 'project%-version') then
+		return prevVersion, prevVersion..'-git', nil, true
+	else
+		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
+		return tonumber(release), release..extra, extra ~= ''
+	end
+end
+
+ABB.version, ABB.versionString, ABB.versionDev, ABB.versionGit = ABB:ParseVersionString()
 
 local function GetOptions()
 	for _, func in pairs(ABB.Configs) do

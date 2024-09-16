@@ -153,7 +153,7 @@ local function configTable()
 	--* Plugin Section
 	local ActionBarBuddy = ACH:Group('|cff00FF98ActionBar|r |cffA330C9Buddy|r', nil, 6, 'tab', nil, nil, function() return not AB.Initialized end)
 	rrp.args.abb = ActionBarBuddy
-	ActionBarBuddy.args.version = ACH:Header(format('|cff99ff33%s|r', ABB.Version), 1)
+	ActionBarBuddy.args.version = ACH:Header(format('|cff99ff33%s|r', ABB.versionString), 1)
 
 	local Global = ACH:Group(L["Global"], nil, 1, 'tree', nil, nil)
 	ActionBarBuddy.args.global = Global
