@@ -255,7 +255,7 @@ do
 			canGlide = arg1 and not IsPassenger()
 		end
 
-		if event == 'LOADING_SCREEN_DISABLED' then
+		if event == 'LOADING_SCREEN_DISABLED' or event == 'TAXIMAP_OPENED' or event == 'TAXIMAP_CLOSED' then
 			canGlide = false
 		end
 
@@ -295,6 +295,8 @@ local function CreateFadeParents(barNum)
 	frame:RegisterEvent('PLAYER_REGEN_ENABLED')
 	frame:RegisterEvent('PLAYER_TARGET_CHANGED')
 	frame:RegisterEvent('LOADING_SCREEN_DISABLED')
+	frame:RegisterEvent('TAXIMAP_OPENED')
+	frame:RegisterEvent('TAXIMAP_CLOSED')
 	frame:RegisterUnitEvent('UNIT_SPELLCAST_START', 'player')
 	frame:RegisterUnitEvent('UNIT_SPELLCAST_STOP', 'player')
 	frame:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_START', 'player')
