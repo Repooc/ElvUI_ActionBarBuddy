@@ -255,6 +255,10 @@ do
 			canGlide = arg1 and not IsPassenger()
 		end
 
+		if event == 'LOADING_SCREEN_DISABLED' then
+			canGlide = false
+		end
+
 		inInstance = select(2, GetInstanceInfo()) ~= 'none'
 
 		local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
