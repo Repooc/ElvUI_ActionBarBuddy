@@ -235,8 +235,10 @@ do
 		local isGliding, canGlide = C_PlayerInfo.GetGlidingInfo()
 		local dragonbar = SecureCmdOptionParse('[bonusbar:5] 1; 0')
 
-		if event == 'UPDATE_OVERRIDE_ACTIONBAR' then
-			if (canGlide and (dragonbar == '0')) or (not canGlide and (dragonbar == '1')) then canGlide = false end
+		if event == 'UPDATE_OVERRIDE_ACTIONBAR' or event == 'UNIT_EXITED_VEHICLE' or event == 'UNIT_ENTERED_VEHICLE' then
+			if (canGlide and (dragonbar == '0')) or (not canGlide and (dragonbar == '1')) then
+				canGlide = false
+			end
 		end
 
 		return isGliding or canGlide
@@ -252,6 +254,11 @@ do
 		end
 
 		if event == 'PLAYER_CAN_GLIDE_CHANGED' then
+			local dragonbar = SecureCmdOptionParse('[bonusbar:5] 1; 0')
+			if (arg1 and (dragonbar == '0')) or (not arg1 and (dragonbar == '1')) then
+				arg1 = false
+			end
+
 			canGlide = arg1 and not IsPassenger()
 		end
 
