@@ -53,9 +53,10 @@ local globalFadeOptions = {
 	},
 	hideAsPassenger = {
 		name = L["Hide As Passenger"],
-		order = 99,
-		disabled = function(info) return info[#info-2] ~= 'global' and (not E.db.abb[info[#info-2]].inheritGlobalFade or not E.db.abb[info[#info-2]].customTriggers) or not E.db.abb[info[#info-2]][info[#info-1]].inVehicle end,
-		hidden = function() return E.Classic end
+		order = 70,
+		disabled = function(info) return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or not E.db.abb[info[#info-3]][info[#info-2]].inVehicle end,
+		hidden = function() return E.Classic end,
+		modifier = true,
 	},
 	inCombat = {
 		name = function(info) local text = L["Combat (|cff%s%s|r)"] local value = E.db.abb[info[#info-2]][info[#info-1]][info[#info]] if value == 2 then return format(text, '00FF00', L["In Combat"]) elseif value == 1 then return format(text, 'FF0000', L["Not In Combat"]) else return format(text, 'FFFF00', L["Ignore Combat"]) end end,
@@ -73,7 +74,7 @@ local globalFadeOptions = {
 	},
 	inVehicle = {
 		name = L["In Vehicle"],
-		order = 98,
+		order = 50,
 		hidden = function() return E.Classic end,
 	},
 	onTaxi = {
@@ -131,13 +132,27 @@ local function CreateBarOptions(barNumber)
 	local options = ACH:Group(format(L["Bar %s"], barNumber), nil, barNumber, 'tab', function(info) return E.db.abb[info[#info-1]][info[#info]] end, function(info, value) E.db.abb[info[#info-1]][info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-1]) end)
 	options.args.displayTriggers = ACH:Group(L["Override Display Triggers"], nil, 99, nil, function(info) return E.db.abb[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) E.db.abb[info[#info-2]][info[#info-1]][info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-2]) end, function(info) return not E.db.abb[info[#info-2]].inheritGlobalFade or not E.db.abb[info[#info-2]].customTriggers end)
 	options.args.displayTriggers.inline = true
+
 	options.args.inheritGlobalFade = ACH:Toggle(L["Inherit Global Fade"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.abb[info[#info-1]][info[#info]] = value ABB:ToggleFade(info[#info-1]) AB:PositionAndSizeBar(info[#info-1]) ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-1]) end)
 	options.args.spacer1 = ACH:Spacer(4, 'full')
+
+	--* Custom Triggers
 	options.args.customTriggers = ACH:Toggle(L["Custom Triggers"], L["This will override the options found in the Global tab with the options found in the Override Display Triggers section below."], 5, nil, nil, nil, nil, nil, function(info) return E.db.abb[info[#info-1]].inheritGlobalFade and false or not E.db.abb[info[#info-1]].inheritGlobalFade end)
+
+	--* Modifiers
+	options.args.displayTriggers.args['modifier'] = ACH:Group(L["Modifiers"], nil, 90, nil, function(info) return E.db.abb[info[#info-3]][info[#info-2]][info[#info]] end, function(info, value) E.db.abb[info[#info-3]][info[#info-2]][info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-3]) end)
+	options.args.displayTriggers.args['modifier'].inline = true
+
+	--* This populates the Custom Triggers and their Modifiers
 	for option, info in next, globalFadeOptions do
-		options.args.displayTriggers.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled, info.hidden)
+		if not info.modifier then
+			options.args.displayTriggers.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled, info.hidden)
+		else
+			options.args.displayTriggers.args.modifier.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled, info.hidden)
+		end
 	end
-	options.args.displayTriggers.args.spacer2 = ACH:Spacer(101, 'full')
+
+	options.args.displayTriggers.args.spacer1 = ACH:Spacer(101, 'full')
 	options.args.displayTriggers.args.selectDefaults = ACH:Execute(L["Select Defaults"], nil, 102, function(info) ToggleTriggers(info[#info-2], 'default') end)
 	options.args.displayTriggers.args.selectAll = ACH:Execute(L["Select All"], nil, 103, function(info) ToggleTriggers(info[#info-2], true) end)
 	options.args.displayTriggers.args.selectNone = ACH:Execute(L["Select None"], nil, 104, function(info) ToggleTriggers(info[#info-2], false) end)
@@ -155,6 +170,7 @@ local function configTable()
 	rrp.args.abb = ActionBarBuddy
 	ActionBarBuddy.args.version = ACH:Header(format('|cff99ff33%s|r', ABB.versionString), 1)
 
+	--! Global Tab
 	local Global = ACH:Group(L["Global"], nil, 1, 'tree', nil, nil)
 	ActionBarBuddy.args.global = Global
 
@@ -165,8 +181,15 @@ local function configTable()
 	Global.args.displayTriggers = ACH:Group(L["Override Display Triggers"], nil, 20, nil, function(info) return E.db.abb[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) E.db.abb[info[#info-2]][info[#info-1]][info[#info]] = value for barName in pairs(AB.handledBars) do AB:PositionAndSizeBar(barName) ABB:FadeParent_OnEvent('UPDATING_OPTIONS', barName) end end)
 	Global.args.displayTriggers.inline = true
 
+	Global.args.displayTriggers.args['modifier'] = ACH:Group(L["Modifiers"], nil, 90, nil, function(info) return E.db.abb[info[#info-3]][info[#info-2]][info[#info]] end, function(info, value) E.db.abb[info[#info-3]][info[#info-2]][info[#info]] = value for barName in pairs(AB.handledBars) do ABB:FadeParent_OnEvent('UPDATING_OPTIONS', barName) end end)
+	Global.args.displayTriggers.args['modifier'].inline = true
+
 	for option, info in next, globalFadeOptions do
-		Global.args.displayTriggers.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled, info.hidden)
+		if not info.modifier then
+			Global.args.displayTriggers.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled, info.hidden)
+		else
+			Global.args.displayTriggers.args.modifier.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled, info.hidden)
+		end
 	end
 
 	Global.args.displayTriggers.args.spacer1 = ACH:Spacer(101, 'full')
@@ -174,21 +197,12 @@ local function configTable()
 	Global.args.displayTriggers.args.selectAll = ACH:Execute(L["Select All"], nil, 103, function() ToggleTriggers('global', true) end)
 	Global.args.displayTriggers.args.selectNone = ACH:Execute(L["Select None"], nil, 104, function() ToggleTriggers('global', false) end)
 
+	--! Bar Settings Tab
 	ActionBarBuddy.args.barSettings = ACH:Group(L["Bar Settings"], nil, 10, 'tree', nil, nil, nil)
+	for i = 1, 10 do ActionBarBuddy.args.barSettings.args['bar'..i] = CreateBarOptions(i) end
+	for i = 13, 15 do ActionBarBuddy.args.barSettings.args['bar'..i] = CreateBarOptions(i) end
 
-	for i = 1, 10 do
-		ActionBarBuddy.args.barSettings.args['bar'..i] = CreateBarOptions(i)
-	end
-
-	for i = 13, 15 do
-		ActionBarBuddy.args.barSettings.args['bar'..i] = CreateBarOptions(i)
-	end
-
-	local bar = E.Options.args.actionbar.args.playerBars.args.bar1
-	bar.args.abbuddy = ACH:Group(L["|cff00FF98ActionBar|r |cffA330C9Buddy|r"], nil, 3, nil, nil, nil, nil, not E.Retail)
-	bar.args.abbuddy.guiInline = true
-	bar.args.abbuddy.args.removeDragonOverride = ACH:Toggle(L["Remove Dragon Override"], nil, 1, nil, nil, nil, function(info) return E.db.abb[info[#info]] end, function(info, value) E.db.abb[info[#info]] = value ABB:UpdateDragonRiding() end)
-
+	--! Help Tab
 	local Help = ACH:Group(L["Help"], nil, 99, nil, nil, nil, false)
 	ActionBarBuddy.args.help = Help
 
@@ -225,6 +239,12 @@ local function configTable()
 	Help.args.donators = Donators
 	Donators.inline = true
 	Donators.args.string = ACH:Description(DONATOR_STRING, 1, 'medium')
+
+	--! ElvUI Bar 1 Modification
+	local bar = E.Options.args.actionbar.args.playerBars.args.bar1
+	bar.args.abbuddy = ACH:Group(L["|cff00FF98ActionBar|r |cffA330C9Buddy|r"], nil, 3, nil, nil, nil, nil, not E.Retail)
+	bar.args.abbuddy.guiInline = true
+	bar.args.abbuddy.args.removeDragonOverride = ACH:Toggle(L["Remove Dragon Override"], nil, 1, nil, nil, nil, function(info) return E.db.abb[info[#info]] end, function(info, value) E.db.abb[info[#info]] = value ABB:UpdateDragonRiding() end)
 end
 
 tinsert(ABB.Configs, configTable)
