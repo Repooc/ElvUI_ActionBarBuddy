@@ -6,6 +6,9 @@ local module = E:NewModule('ABB-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v|cff00fc002.1|r 9/16/2024',
+		'• Fix more bugs that were found',
+	' ',
 	'v|cff00fc002.0|r 9/15/2024',
 		' ',
 		'|cffFF3300WARNING:|r The addon has been overhauled. The settings were reset due to all the changes that have been done',
