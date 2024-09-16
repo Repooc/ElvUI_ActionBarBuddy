@@ -325,13 +325,8 @@ local function CreateFadeParents(barNum)
 	frame:SetScript('OnEvent', ABB.FadeParent_OnEvent)
 end
 local function SetupFadeParents()
-	for i = 1, 10 do
-		CreateFadeParents(i)
-	end
-
-	for i = 13, 15 do
-		CreateFadeParents(i)
-	end
+	for i = 1, 10 do CreateFadeParents(i) end
+	for i = 13, 15 do CreateFadeParents(i) end
 end
 
 function ABB:PositionAndSizeBar(barNum)
