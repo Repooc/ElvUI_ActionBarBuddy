@@ -9,6 +9,8 @@ local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo
 local UnitExists, UnitAffectingCombat = UnitExists, UnitAffectingCombat
 local UnitHealth, UnitHealthMax = UnitHealth, UnitHealthMax
 local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
+local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS or 10
+local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS or 10
 
 local ABB = E:NewModule(AddOnName, 'AceHook-3.0')
 _G[AddOnName] = Engine
@@ -43,8 +45,10 @@ local function GetOptions()
 end
 
 ABB.fadeParentTable = {}
-local bars = { 'barPet' }
-
+local bars = {
+	barPet = _G.ElvUI_BarPet,
+	stanceBar = _G.ElvUI_StanceBar,
+}
 function ABB:UpdateDragonRiding()
 	local fullConditions = format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
 	if E.db.abb.removeDragonOverride then
@@ -58,7 +62,11 @@ end
 function ABB:ToggleFade(barName)
 	if not barName then return end
 	local isPet = barName == 'barPet'
-	local bar = isPet and _G.ElvUI_BarPet or AB.handledBars[barName]
+	local isStance = barName == 'stanceBar'
+
+	local bar = (isPet and _G.ElvUI_BarPet) or (isStance and _G.ElvUI_StanceBar) or AB.handledBars[barName]
+	local numButtons = (isPet and NUM_PET_ACTION_SLOTS) or (isStance and NUM_STANCE_SLOTS) or 12
+
 	if bar then
 		local db = E.db.abb[barName]
 		if db.inheritGlobalFade then
@@ -70,7 +78,7 @@ function ABB:ToggleFade(barName)
 			if not isPet and not ABB:IsHooked(bar, 'OnLeave') then
 				ABB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 			end
-			for x = 1, isPet and 10 or 12 do
+			for x = 1, numButtons do
 				AB:Unhook(bar.buttons[x], 'OnEnter')
 				AB:Unhook(bar.buttons[x], 'OnLeave')
 				if not ABB:IsHooked(bar.buttons[x], 'OnEnter') then
@@ -82,6 +90,8 @@ function ABB:ToggleFade(barName)
 			end
 			if isPet then
 				AB:PositionAndSizeBarPet()
+			elseif isStance then
+				AB:PositionAndSizeBarShapeShift()
 			else
 				AB:PositionAndSizeBar(barName)
 			end
@@ -98,7 +108,7 @@ function ABB:ToggleFade(barName)
 			if ABB:IsHooked(bar, 'OnLeave') then
 				ABB:Unhook(bar, 'OnLeave')
 			end
-			for x = 1, isPet and 10 or 12 do
+			for x = 1, numButtons do
 				if not AB:IsHooked(bar.buttons[x], 'OnEnter') then
 					AB:HookScript(bar.buttons[x], 'OnEnter', 'Button_OnEnter')
 				end
@@ -114,6 +124,8 @@ function ABB:ToggleFade(barName)
 			end
 			if isPet then
 				AB:PositionAndSizeBarPet()
+			elseif isStance then
+				AB:PositionAndSizeBarShapeShift()
 			else
 				AB:PositionAndSizeBar(barName)
 			end
@@ -132,15 +144,9 @@ function ABB:UpdateOptions()
 		ABB:ToggleFade(barName)
 	end
 
-	for _, bar in pairs(bars) do
-		ABB:ToggleFade(bar)
+	for barName in pairs(bars) do
+		ABB:ToggleFade(barName)
 	end
-
-	-- if E.Retail then
-	-- 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
-	-- 	ZoneAbilityFrame.SpellButtonContainer:UnhookScript('OnEnter', AB.ExtraButtons_OnEnter)
-	-- 	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
-	-- end
 
 	if E.Retail then
 		ABB:UpdateDragonRiding()
@@ -167,11 +173,13 @@ function ABB:Bar_OnEnter(bar)
 		end
 	end
 
-	if bar ~= _G.ElvUI_BarPet then
-		local db = E.db.abb.barPet.customTriggers and E.db.abb.barPet or E.db.abb.global
-		if _G.ElvUI_BarPet:GetParent() == ABB.fadeParentTable.barPet and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable.barPet.mouseLock or ABB.fadeParentTable.barPet:GetAlpha() == 1) then
-			E:UIFrameFadeIn(ABB.fadeParentTable.barPet, 0.2, ABB.fadeParentTable.barPet:GetAlpha(), 1)
-			AB:FadeBlings(1)
+	for barName, barToCheck in pairs(bars) do
+		if bar ~= barToCheck then
+			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
+			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == 1) then
+				E:UIFrameFadeIn(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), 1)
+				AB:FadeBlings(1)
+			end
 		end
 	end
 end
@@ -198,12 +206,14 @@ function ABB:Bar_OnLeave(bar)
 		end
 	end
 
-	if bar ~= _G.ElvUI_BarPet then
-		local db = E.db.abb.barPet.customTriggers and E.db.abb.barPet or E.db.abb.global
-		local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
-		if _G.ElvUI_BarPet:GetParent() == ABB.fadeParentTable.barPet and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable.barPet.mouseLock or ABB.fadeParentTable.barPet:GetAlpha() == a) then
-			E:UIFrameFadeOut(ABB.fadeParentTable.barPet, 0.2, ABB.fadeParentTable.barPet:GetAlpha(), a)
-			AB:FadeBlings(1)
+	for barName, barToCheck in pairs(bars) do
+		if bar ~= barToCheck then
+			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
+			local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
+			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
+				E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
+				AB:FadeBlings(1)
+			end
 		end
 	end
 end
@@ -229,11 +239,13 @@ function ABB:Button_OnEnter(button)
 		end
 	end
 
-	if bar ~= _G.ElvUI_BarPet then
-		local db = E.db.abb.barPet.customTriggers and E.db.abb.barPet or E.db.abb.global
-		if _G.ElvUI_BarPet:GetParent() == ABB.fadeParentTable.barPet and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable.barPet.mouseLock or ABB.fadeParentTable.barPet:GetAlpha() == 1) then
-			E:UIFrameFadeIn(ABB.fadeParentTable.barPet, 0.2, ABB.fadeParentTable.barPet:GetAlpha(), 1)
-			AB:FadeBlings(1)
+	for barName, barToCheck in pairs(bars) do
+			if bar ~= barToCheck then
+			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
+			if _G.ElvUI_BarPet:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == 1) then
+				E:UIFrameFadeIn(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), 1)
+				AB:FadeBlings(1)
+			end
 		end
 	end
 end
@@ -262,12 +274,14 @@ function ABB:Button_OnLeave(button)
 		end
 	end
 
-	if bar ~= _G.ElvUI_BarPet then
-		local db = E.db.abb.barPet.customTriggers and E.db.abb.barPet or E.db.abb.global
-		local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
-		if _G.ElvUI_BarPet:GetParent() == ABB.fadeParentTable.barPet and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable.barPet.mouseLock or ABB.fadeParentTable.barPet:GetAlpha() == a) then
-			E:UIFrameFadeOut(ABB.fadeParentTable.barPet, 0.2, ABB.fadeParentTable.barPet:GetAlpha(), a)
-			AB:FadeBlings(a)
+	for barName, barToCheck in pairs(bars) do
+		if bar ~= barToCheck then
+			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
+			local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
+			if _G.ElvUI_BarPet:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
+				E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
+				AB:FadeBlings(a)
+			end
 		end
 	end
 end
@@ -299,6 +313,7 @@ do
 	function ABB:FadeParent_OnEvent(event, arg1)
 		if not E.db.abb then return end
 		local barName = self.bar
+
 		if event == 'UPDATING_OPTIONS' then
 			barName = arg1
 		end
@@ -346,7 +361,7 @@ end
 
 local function CreateFadeParents(barNum)
 	if not barNum then return end
-	local barName = barNum == 'barPet' and barNum or 'bar'..barNum
+	local barName = bars[barNum] and barNum or 'bar'..barNum
 
 	local frame = CreateFrame('Frame', 'ABB_FadeParent_'..barName, UIParent)
 	ABB.fadeParentTable[barName] = frame
@@ -393,7 +408,7 @@ end
 local function SetupFadeParents()
 	for i = 1, 10 do CreateFadeParents(i) end
 	for i = 13, 15 do CreateFadeParents(i) end
-	for _, bar in pairs(bars) do CreateFadeParents(bar) end
+	for barName in pairs(bars) do CreateFadeParents(barName) end
 end
 
 function ABB:PositionAndSizeBar(barNum)
@@ -414,7 +429,18 @@ function ABB:PositionAndSizeBarPet()
 
 	local bar = _G.ElvUI_BarPet
 	if not bar then return end
-	bar:SetParent((db.inheritGlobalFade and ABB.fadeParentTable['barPet']) or E.UIParent)
+	bar:SetParent((db.inheritGlobalFade and ABB.fadeParentTable.barPet) or E.UIParent)
+	bar:SetAlpha(1)
+end
+
+function ABB:PositionAndSizeBarShapeShift()
+	local db = E.db.abb.stanceBar
+	local barDB = AB.db.stanceBar
+	if not db or not barDB or not db.inheritGlobalFade then return end
+
+	local bar = _G.ElvUI_StanceBar
+	if not bar then return end
+	bar:SetParent((db.inheritGlobalFade and ABB.fadeParentTable.stanceBar) or E.UIParent)
 	bar:SetAlpha(1)
 end
 
@@ -426,11 +452,14 @@ function ABB:Initialize()
 
 	ABB:SecureHook(AB, 'PositionAndSizeBar', ABB.PositionAndSizeBar)
 	ABB:SecureHook(AB, 'PositionAndSizeBarPet', ABB.PositionAndSizeBarPet)
+	ABB:SecureHook(AB, 'PositionAndSizeBarShapeShift', ABB.PositionAndSizeBarShapeShift)
 
 	for barName in pairs(AB.handledBars) do
 		AB:PositionAndSizeBar(barName)
 	end
 	AB:PositionAndSizeBarPet()
+	AB:PositionAndSizeBarShapeShift()
+
 	hooksecurefunc(E, 'UpdateDB', ABB.UpdateOptions)
 	ABB:UpdateOptions()
 

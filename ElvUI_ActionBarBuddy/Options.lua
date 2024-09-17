@@ -107,6 +107,7 @@ local globalFadeOptions = {
 	},
 }
 
+local bars = { 'barPet', 'stanceBar' }
 local ToggleTriggers = function(bar, overRide)
 	if not bar then return end
 	local db = E.db.abb[bar]
@@ -126,22 +127,24 @@ local ToggleTriggers = function(bar, overRide)
 		db[triggerKey] = value
 	end
 	for barName in pairs(AB.handledBars) do ABB:FadeParent_OnEvent('UPDATING_OPTIONS', barName) end
+	for _, barName in pairs(bars) do ABB:FadeParent_OnEvent('UPDATING_OPTIONS', barName) end
 end
 
 local function CreateBarOptions(barKey)
 	if not barKey then return end
 	local isPet = barKey == 'barPet'
-	local bar = isPet and barKey or 'bar'..barKey
+	local isStance = barKey == 'stanceBar'
+	local bar = (isPet or isStance) and barKey or 'bar'..barKey
 	if not E.db.abb[bar] then return end
 
-	local barName = isPet and L["Pet"] or format(L["Bar %s"], barKey)
-	local barIndex = isPet and 20 or barKey
+	local barName = isPet and L["Pet Bar"] or isStance and L["Stance Bar"] or format(L["Bar %s"], barKey)
+	local barIndex = (isPet or isStance) and 20 or barKey
 
 	local options = ACH:Group(barName, nil, barIndex, 'tab', function(info) return E.db.abb[info[#info-1]][info[#info]] end, function(info, value) E.db.abb[info[#info-1]][info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-1]) end)
 	options.args.displayTriggers = ACH:Group(L["Override Display Triggers"], nil, 99, nil, function(info) return E.db.abb[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) E.db.abb[info[#info-2]][info[#info-1]][info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-2]) end, function(info) return not E.db.abb[info[#info-2]].inheritGlobalFade or not E.db.abb[info[#info-2]].customTriggers end)
 	options.args.displayTriggers.inline = true
 
-	options.args.inheritGlobalFade = ACH:Toggle(L["Inherit Global Fade"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.abb[info[#info-1]][info[#info]] = value ABB:ToggleFade(info[#info-1]) if isPet then AB:PositionAndSizeBarPet() else AB:PositionAndSizeBar(info[#info-1]) end ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-1]) end)
+	options.args.inheritGlobalFade = ACH:Toggle(L["Inherit Global Fade"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.abb[info[#info-1]][info[#info]] = value ABB:ToggleFade(info[#info-1]) if isPet then AB:PositionAndSizeBarPet() elseif isStance then AB:PositionAndSizeBarShapeShift() else AB:PositionAndSizeBar(info[#info-1]) end ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-1]) end)
 	options.args.spacer1 = ACH:Spacer(4, 'full')
 
 	--* Custom Triggers
@@ -168,7 +171,6 @@ local function CreateBarOptions(barKey)
 	return options
 end
 
-local bars = { 'barPet' }
 local function configTable()
     --* Repooc Reforged Plugin section
     local rrp = E.Options.args.rrp

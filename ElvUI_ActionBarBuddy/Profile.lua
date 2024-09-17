@@ -27,7 +27,7 @@ P.abb = {
 }
 
 local function CreateBar(barNum)
-	local barName = barNum == 'barPet' and barNum or 'bar'..barNum
+	local barName = (barNum == 'barPet' or barNum == 'stanceBar') and barNum or 'bar'..barNum
 	P.abb[barName] = {
 		inheritGlobalFade = false,
 		customTriggers = false,
@@ -43,4 +43,5 @@ for i = 13, 15 do
 	CreateBar(i)
 end
 
-CreateBar('barPet')
+local bars = { 'barPet', 'stanceBar' }
+for _, barName in pairs(bars) do CreateBar(barName) end
