@@ -128,12 +128,20 @@ local ToggleTriggers = function(bar, overRide)
 	for barName in pairs(AB.handledBars) do ABB:FadeParent_OnEvent('UPDATING_OPTIONS', barName) end
 end
 
-local function CreateBarOptions(barNumber)
-	local options = ACH:Group(format(L["Bar %s"], barNumber), nil, barNumber, 'tab', function(info) return E.db.abb[info[#info-1]][info[#info]] end, function(info, value) E.db.abb[info[#info-1]][info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-1]) end)
+local function CreateBarOptions(barKey)
+	if not barKey then return end
+	local isPet = barKey == 'barPet'
+	local bar = isPet and barKey or 'bar'..barKey
+	if not E.db.abb[bar] then return end
+
+	local barName = isPet and L["Pet"] or format(L["Bar %s"], barKey)
+	local barIndex = isPet and 20 or barKey
+
+	local options = ACH:Group(barName, nil, barIndex, 'tab', function(info) return E.db.abb[info[#info-1]][info[#info]] end, function(info, value) E.db.abb[info[#info-1]][info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-1]) end)
 	options.args.displayTriggers = ACH:Group(L["Override Display Triggers"], nil, 99, nil, function(info) return E.db.abb[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) E.db.abb[info[#info-2]][info[#info-1]][info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-2]) end, function(info) return not E.db.abb[info[#info-2]].inheritGlobalFade or not E.db.abb[info[#info-2]].customTriggers end)
 	options.args.displayTriggers.inline = true
 
-	options.args.inheritGlobalFade = ACH:Toggle(L["Inherit Global Fade"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.abb[info[#info-1]][info[#info]] = value ABB:ToggleFade(info[#info-1]) AB:PositionAndSizeBar(info[#info-1]) ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-1]) end)
+	options.args.inheritGlobalFade = ACH:Toggle(L["Inherit Global Fade"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.abb[info[#info-1]][info[#info]] = value ABB:ToggleFade(info[#info-1]) if isPet then AB:PositionAndSizeBarPet() else AB:PositionAndSizeBar(info[#info-1]) end ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-1]) end)
 	options.args.spacer1 = ACH:Spacer(4, 'full')
 
 	--* Custom Triggers
@@ -160,6 +168,7 @@ local function CreateBarOptions(barNumber)
 	return options
 end
 
+local bars = { 'barPet' }
 local function configTable()
     --* Repooc Reforged Plugin section
     local rrp = E.Options.args.rrp
@@ -174,7 +183,7 @@ local function configTable()
 	local Global = ACH:Group(L["Global"], nil, 1, 'tree', nil, nil)
 	ActionBarBuddy.args.global = Global
 
-	Global.args.globalFadeAlpha = ACH:Range(L["Global Fade Transparency"], L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."], 3, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, function(info) return E.db.abb.global[info[#info]] end, function(info, value) E.db.abb.global[info[#info]] = value for barName in pairs(AB.handledBars) do ABB.fadeParentTable[barName]:SetAlpha(1-value) end end)
+	Global.args.globalFadeAlpha = ACH:Range(L["Global Fade Transparency"], L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."], 3, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, function(info) return E.db.abb.global[info[#info]] end, function(info, value) E.db.abb.global[info[#info]] = value for barName in pairs(AB.handledBars) do ABB.fadeParentTable[barName]:SetAlpha(1-value) end ABB.fadeParentTable.barPet:SetAlpha(1-value) end)
 	Global.args.spacer1 = ACH:Spacer(10, 'full')
 	Global.args.desc = ACH:Description(L["The options that are enabled by default, that can be found in the |cffFFD100Override Display Triggers|r section, are the triggers that ElvUI uses by default. As long as you enable |cffFFD100Inherit Global Fade|r for each bar in the |cffFFD100Bar Settings|r section, the bars should behave as they do with ElvUI's |cffFFD100Inherit Global Fade|r option."], 11, 'medium')
 
@@ -201,6 +210,7 @@ local function configTable()
 	ActionBarBuddy.args.barSettings = ACH:Group(L["Bar Settings"], nil, 10, 'tree', nil, nil, nil)
 	for i = 1, 10 do ActionBarBuddy.args.barSettings.args['bar'..i] = CreateBarOptions(i) end
 	for i = 13, 15 do ActionBarBuddy.args.barSettings.args['bar'..i] = CreateBarOptions(i) end
+	for _, bar in pairs(bars) do ActionBarBuddy.args.barSettings.args[bar] = CreateBarOptions(bar) end
 
 	--! Help Tab
 	local Help = ACH:Group(L["Help"], nil, 99, nil, nil, nil, false)

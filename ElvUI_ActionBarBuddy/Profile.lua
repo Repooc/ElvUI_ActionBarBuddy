@@ -27,7 +27,8 @@ P.abb = {
 }
 
 local function CreateBar(barNum)
-	P.abb['bar'..barNum] = {
+	local barName = barNum == 'barPet' and barNum or 'bar'..barNum
+	P.abb[barName] = {
 		inheritGlobalFade = false,
 		customTriggers = false,
 		displayTriggers = CopyTable(ElvUIDefaultValues),
@@ -41,3 +42,5 @@ end
 for i = 13, 15 do
 	CreateBar(i)
 end
+
+CreateBar('barPet')
