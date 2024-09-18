@@ -287,6 +287,17 @@ function ABB:Button_OnLeave(button)
 end
 
 do
+	local function IsSpellBookOpen()
+		if _G.PlayerSpellsFrame then
+			return _G.PlayerSpellsFrame:IsShown()
+		end
+		if _G.SpellBookFrame then
+			return _G.SpellBookFrame:IsShown()
+		end
+
+		return false
+	end
+
 	local function IsPassenger()
 		if UnitInVehicle('player') and not UnitInVehicleControlSeat('player') then
 			return true
@@ -337,7 +348,7 @@ do
 		local possessbar = SecureCmdOptionParse('[possessbar] 1; 0')
 
 		if (db.displayTriggers.inInstance == 2 and inInstance or db.displayTriggers.inInstance == 1 and not inInstance)
-		or (db.displayTriggers.isSpellsFrameOpen and _G.PlayerSpellsFrame and _G.PlayerSpellsFrame:IsShown())
+		or (db.displayTriggers.isSpellsFrameOpen and IsSpellBookOpen())
 		or (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')))
 		or (db.displayTriggers.hasTarget and UnitExists('target'))
 		or (db.displayTriggers.hasFocus and UnitExists('focus'))
@@ -465,14 +476,18 @@ function ABB:Initialize()
 	ABB:SecureHook(AB, 'PositionAndSizeBarPet', ABB.PositionAndSizeBarPet)
 	ABB:SecureHook(AB, 'PositionAndSizeBarShapeShift', ABB.PositionAndSizeBarShapeShift)
 
-	ABB:RegisterEvent('ADDON_LOADED', function(event, addon)
-		if addon == 'Blizzard_PlayerSpells' then
-			ABB:SecureHookScript(PlayerSpellsFrame, 'OnShow', SetupUpSpellsBookEventHandler)
-			ABB:SecureHookScript(PlayerSpellsFrame, 'OnHide', SetupUpSpellsBookEventHandler)
-
-			ABB:UnregisterEvent(event)
-		end
-	end)
+	if E.Retail then
+		ABB:RegisterEvent('ADDON_LOADED', function(event, addon)
+			if addon == 'Blizzard_PlayerSpells' then
+				ABB:SecureHookScript(_G.PlayerSpellsFrame, 'OnShow', SetupUpSpellsBookEventHandler)
+				ABB:SecureHookScript(_G.PlayerSpellsFrame, 'OnHide', SetupUpSpellsBookEventHandler)
+				ABB:UnregisterEvent(event)
+			end
+		end)
+	else
+		ABB:SecureHookScript(_G.SpellBookFrame, 'OnShow', SetupUpSpellsBookEventHandler)
+		ABB:SecureHookScript(_G.SpellBookFrame, 'OnHide', SetupUpSpellsBookEventHandler)
+	end
 
 	for barName in pairs(AB.handledBars) do
 		AB:PositionAndSizeBar(barName)
