@@ -445,7 +445,7 @@ function ABB:PositionAndSizeBarShapeShift()
 end
 
 function ABB:Initialize()
-	EP:RegisterPlugin(AddOnName, GetOptions)
+	EP:RegisterPlugin(AddOnName, GetOptions, nil, ABB.versionString)
 	if not AB.Initialized then return end
 
 	SetupFadeParents()
