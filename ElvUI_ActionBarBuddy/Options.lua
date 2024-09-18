@@ -77,8 +77,8 @@ local globalFadeOptions = {
 		order = 50,
 		hidden = function() return E.Classic end,
 	},
-	isSpellsFrameOpen = {
-		name = L["Spellbook/Talent Open"],
+	isSpellsBookOpen = {
+		name = L["Spellbook Open"],
 		order = 50,
 	},
 	onTaxi = {

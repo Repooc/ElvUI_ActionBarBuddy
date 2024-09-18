@@ -289,7 +289,9 @@ end
 do
 	local function IsSpellBookOpen()
 		if _G.PlayerSpellsFrame then
-			return _G.PlayerSpellsFrame:IsShown()
+			if PlayerSpellsFrame.SpellBookFrame then
+				return PlayerSpellsFrame.SpellBookFrame:IsVisible()
+			end
 		end
 		if _G.SpellBookFrame then
 			return _G.SpellBookFrame:IsShown()
@@ -348,7 +350,7 @@ do
 		local possessbar = SecureCmdOptionParse('[possessbar] 1; 0')
 
 		if (db.displayTriggers.inInstance == 2 and inInstance or db.displayTriggers.inInstance == 1 and not inInstance)
-		or (db.displayTriggers.isSpellsFrameOpen and IsSpellBookOpen())
+		or (db.displayTriggers.isSpellsBookOpen and IsSpellBookOpen())
 		or (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')))
 		or (db.displayTriggers.hasTarget and UnitExists('target'))
 		or (db.displayTriggers.hasFocus and UnitExists('focus'))
