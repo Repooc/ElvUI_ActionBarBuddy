@@ -16,7 +16,11 @@ local ElvUIDefaultValues = {
 	notMaxHealth = true,
 	onTaxi = 0,
 	playerCasting = true,
-	isSpellsBookOpen = false,
+	isProfessionBookOpen = false,
+	isPlayerSpellsFrameOpen = false,	--* Modifier Parent
+	isSpellsBookOpen = false,			--* Modifier
+	isSpecTabOpen = false,				--* Modifier
+	isTalentTabOpen = false,			--* Modifier
 }
 
 P.abb = {

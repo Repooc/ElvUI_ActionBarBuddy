@@ -287,6 +287,22 @@ function ABB:Button_OnLeave(button)
 end
 
 do
+	local function IsTalentTabOpen()
+		if _G.PlayerSpellsFrame and _G.PlayerSpellsFrame.TalentsFrame then
+			return _G.PlayerSpellsFrame.TalentsFrame:IsVisible()
+		end
+
+		return false
+	end
+
+	local function IsSpecTabOpen()
+		if _G.PlayerSpellsFrame and _G.PlayerSpellsFrame.TalentsFrame then
+			return _G.PlayerSpellsFrame.TalentsFrame:IsVisible()
+		end
+
+		return false
+	end
+
 	local function IsSpellBookOpen()
 		if _G.PlayerSpellsFrame then
 			if PlayerSpellsFrame.SpellBookFrame then
@@ -348,9 +364,17 @@ do
 
 		local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
 		local possessbar = SecureCmdOptionParse('[possessbar] 1; 0')
+		local spellBookMods = (db.displayTriggers.isSpellsBookOpen and db.displayTriggers.isSpecTabOpen and db.displayTriggers.isTalentTabOpen) or (not db.displayTriggers.isSpellsBookOpen and not db.displayTriggers.isSpecTabOpen and not db.displayTriggers.isTalentTabOpen) and (IsSpellBookOpen() or IsSpecTabOpen() or IsTalentTabOpen())
 
 		if (db.displayTriggers.inInstance == 2 and inInstance or db.displayTriggers.inInstance == 1 and not inInstance)
-		or (db.displayTriggers.isSpellsBookOpen and IsSpellBookOpen())
+
+		or (E.Retail and (db.displayTriggers.isPlayerSpellsFrameOpen and (db.displayTriggers.isSpellsBookOpen or spellBookMods) and IsSpellBookOpen()))
+		or (E.Retail and (db.displayTriggers.isPlayerSpellsFrameOpen and (db.displayTriggers.isSpecTabOpen or spellBookMods) and IsSpecTabOpen()))
+		or (E.Retail and (db.displayTriggers.isPlayerSpellsFrameOpen and (db.displayTriggers.isTalentTabOpen or spellBookMods) and IsTalentTabOpen()))
+
+		or (not E.Retail and (db.displayTriggers.isSpellsBookOpen and IsSpellBookOpen()))
+
+		or (db.displayTriggers.isProfessionBookOpen and ProfessionsBookFrame and ProfessionsBookFrame:IsShown())
 		or (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')))
 		or (db.displayTriggers.hasTarget and UnitExists('target'))
 		or (db.displayTriggers.hasFocus and UnitExists('focus'))
@@ -483,6 +507,15 @@ function ABB:Initialize()
 			if addon == 'Blizzard_PlayerSpells' then
 				ABB:SecureHookScript(_G.PlayerSpellsFrame, 'OnShow', SetupUpSpellsBookEventHandler)
 				ABB:SecureHookScript(_G.PlayerSpellsFrame, 'OnHide', SetupUpSpellsBookEventHandler)
+				ABB:SecureHook(_G.PlayerSpellsFrame, 'GetTab', SetupUpSpellsBookEventHandler)
+			end
+
+			if addon == 'Blizzard_ProfessionsBook' then
+				ABB:SecureHook(_G.ProfessionsBookFrame, 'Show', SetupUpSpellsBookEventHandler)
+				ABB:SecureHook(_G.ProfessionsBookFrame, 'Hide', SetupUpSpellsBookEventHandler)
+			end
+
+			if ABB:IsHooked(_G.PlayerSpellsFrame, 'OnShow') and ABB:IsHooked(_G.ProfessionsBookFrame, 'Show') then
 				ABB:UnregisterEvent(event)
 			end
 		end)

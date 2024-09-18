@@ -53,7 +53,7 @@ local globalFadeOptions = {
 	},
 	hideAsPassenger = {
 		name = L["Hide As Passenger"],
-		order = 70,
+		order = 20,
 		disabled = function(info) return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or not E.db.abb[info[#info-3]][info[#info-2]].inVehicle end,
 		hidden = function() return E.Classic end,
 		modifier = true,
@@ -77,9 +77,29 @@ local globalFadeOptions = {
 		order = 50,
 		hidden = function() return E.Classic end,
 	},
+	isPlayerSpellsFrameOpen = {
+		name = L["Player Spells Opened"],
+		order = 50,
+		hidden = function() return not E.Retail end,
+	},
+	--! Modifiers for 'isPlayerSpellsFrameOpen'
 	isSpellsBookOpen = {
 		name = L["Spellbook Open"],
-		order = 50,
+		order = 30,
+		modifier = E.Retail,
+		disabled = function(info) return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or E.Retail and not E.db.abb[info[#info-3]][info[#info-2]].isPlayerSpellsFrameOpen end,
+	},
+	isSpecTabOpen = {
+		name = L["Spec Tab/Frame Open"],
+		order = 30,
+		modifier = E.Retail,
+		disabled = function(info) return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or not E.db.abb[info[#info-3]][info[#info-2]].isPlayerSpellsFrameOpen end,
+	},
+	isTalentTabOpen = {
+		name = L["Talent Tab/Frame Open"],
+		order = 30,
+		modifier = E.Retail,
+		disabled = function(info) return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or E.Retail and not E.db.abb[info[#info-3]][info[#info-2]].isPlayerSpellsFrameOpen end,
 	},
 	onTaxi = {
 		name = function(info) local text = L["Taxi (|cff%s%s|r)"] local value = E.db.abb[info[#info-2]][info[#info-1]][info[#info]] if value == 2 then return format(text, '00FF00', L["On Taxi"]) elseif value == 1 then return format(text, 'FF0000', L["Not On Taxi"]) else return format(text, 'FFFF00', L["Ignore Taxi"]) end end,
@@ -95,6 +115,10 @@ local globalFadeOptions = {
 	},
 	isPossessed = {
 		name = L["You Possess Target"],
+		order = 50,
+	},
+	isProfessionBookOpen = {
+		name = L["Profession Book Open"],
 		order = 50,
 	},
 	mouseover = {
@@ -166,6 +190,7 @@ local function CreateBarOptions(barKey)
 			options.args.displayTriggers.args.modifier.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled, info.hidden)
 		end
 	end
+	options.args.displayTriggers.args.modifier.args.spacer1 = ACH:Spacer(25, 'full') --* Spacer between Hide As Passenger and Spell Book/Talent/Spect tabs (this is prob needed for retail only wip)
 
 	options.args.displayTriggers.args.spacer1 = ACH:Spacer(101, 'full')
 	options.args.displayTriggers.args.selectDefaults = ACH:Execute(L["Select Defaults"], nil, 102, function(info) ToggleTriggers(info[#info-2], 'default') end)
@@ -206,6 +231,7 @@ local function configTable()
 			Global.args.displayTriggers.args.modifier.args[option] = ACH:Toggle(info.name, nil, info.order, info.tristate, nil, nil, info.get, info.set, info.disabled, info.hidden)
 		end
 	end
+	Global.args.displayTriggers.args.modifier.args.spacer1 = ACH:Spacer(25, 'full') --* Spacer between Hide As Passenger and Spell Book/Talent/Spect tabs (this is prob needed for retail only wip)
 
 	Global.args.displayTriggers.args.spacer1 = ACH:Spacer(101, 'full')
 	Global.args.displayTriggers.args.selectDefaults = ACH:Execute(L["Select Defaults"], nil, 102, function() ToggleTriggers('global', 'default') end)
