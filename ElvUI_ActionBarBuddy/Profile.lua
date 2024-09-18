@@ -16,6 +16,7 @@ local ElvUIDefaultValues = {
 	notMaxHealth = true,
 	onTaxi = 0,
 	playerCasting = true,
+	isSpellsFrameOpen = false,
 }
 
 P.abb = {

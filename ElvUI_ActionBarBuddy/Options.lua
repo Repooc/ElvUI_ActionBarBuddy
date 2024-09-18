@@ -77,6 +77,10 @@ local globalFadeOptions = {
 		order = 50,
 		hidden = function() return E.Classic end,
 	},
+	isSpellsFrameOpen = {
+		name = L["Spellbook/Talent Open"],
+		order = 50,
+	},
 	onTaxi = {
 		name = function(info) local text = L["Taxi (|cff%s%s|r)"] local value = E.db.abb[info[#info-2]][info[#info-1]][info[#info]] if value == 2 then return format(text, '00FF00', L["On Taxi"]) elseif value == 1 then return format(text, 'FF0000', L["Not On Taxi"]) else return format(text, 'FFFF00', L["Ignore Taxi"]) end end,
 		order = 50,

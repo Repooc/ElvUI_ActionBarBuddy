@@ -12,7 +12,7 @@ local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
 local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS or 10
 local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS or 10
 
-local ABB = E:NewModule(AddOnName, 'AceHook-3.0')
+local ABB = E:NewModule(AddOnName, 'AceHook-3.0', 'AceEvent-3.0')
 _G[AddOnName] = Engine
 
 local GetAddOnMetadata = C_AddOns.GetAddOnMetadata or GetAddOnMetadata
@@ -337,6 +337,7 @@ do
 		local possessbar = SecureCmdOptionParse('[possessbar] 1; 0')
 
 		if (db.displayTriggers.inInstance == 2 and inInstance or db.displayTriggers.inInstance == 1 and not inInstance)
+		or (db.displayTriggers.isSpellsFrameOpen and _G.PlayerSpellsFrame and _G.PlayerSpellsFrame:IsShown())
 		or (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')))
 		or (db.displayTriggers.hasTarget and UnitExists('target'))
 		or (db.displayTriggers.hasFocus and UnitExists('focus'))
@@ -444,6 +445,16 @@ function ABB:PositionAndSizeBarShapeShift()
 	bar:SetAlpha(1)
 end
 
+local function SetupUpSpellsBookEventHandler()
+	for barName in pairs(AB.handledBars) do
+		ABB:FadeParent_OnEvent('UPDATING_OPTIONS', barName)
+	end
+
+	for barName in pairs(bars) do
+		ABB:FadeParent_OnEvent('UPDATING_OPTIONS', barName)
+	end
+end
+
 function ABB:Initialize()
 	EP:RegisterPlugin(AddOnName, GetOptions, nil, ABB.versionString)
 	if not AB.Initialized then return end
@@ -453,6 +464,15 @@ function ABB:Initialize()
 	ABB:SecureHook(AB, 'PositionAndSizeBar', ABB.PositionAndSizeBar)
 	ABB:SecureHook(AB, 'PositionAndSizeBarPet', ABB.PositionAndSizeBarPet)
 	ABB:SecureHook(AB, 'PositionAndSizeBarShapeShift', ABB.PositionAndSizeBarShapeShift)
+
+	ABB:RegisterEvent('ADDON_LOADED', function(event, addon)
+		if addon == 'Blizzard_PlayerSpells' then
+			ABB:SecureHookScript(PlayerSpellsFrame, 'OnShow', SetupUpSpellsBookEventHandler)
+			ABB:SecureHookScript(PlayerSpellsFrame, 'OnHide', SetupUpSpellsBookEventHandler)
+
+			ABB:UnregisterEvent(event)
+		end
+	end)
 
 	for barName in pairs(AB.handledBars) do
 		AB:PositionAndSizeBar(barName)
