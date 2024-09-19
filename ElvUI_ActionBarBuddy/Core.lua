@@ -309,8 +309,15 @@ do
 				return PlayerSpellsFrame.SpellBookFrame:IsVisible()
 			end
 		end
+
 		if _G.SpellBookFrame then
-			return _G.SpellBookFrame:IsShown()
+			local shouldShow
+			if _G.SpellBookProfessionFrame:IsShown() then
+				shouldShow = false
+			elseif not _G.SpellBookProfessionFrame:IsShown() and _G.SpellBookFrame:IsShown() then
+				shouldShow = true
+			end
+			return shouldShow
 		end
 
 		return false
@@ -370,8 +377,11 @@ do
 		or (E.Retail and (db.displayTriggers.isPlayerSpellsFrameOpen and (spellBookMods or db.displayTriggers.isSpellsBookOpen) and IsSpellBookOpen()))
 		or (E.Retail and (db.displayTriggers.isPlayerSpellsFrameOpen and (spellBookMods or db.displayTriggers.isSpecTabOpen) and IsSpecTabOpen()))
 		or (E.Retail and (db.displayTriggers.isPlayerSpellsFrameOpen and (spellBookMods or db.displayTriggers.isTalentTabOpen) and IsTalentTabOpen()))
+		or (E.Retail and (db.displayTriggers.isProfessionBookOpen and ProfessionsBookFrame and ProfessionsBookFrame:IsShown()))
+
 		or (not E.Retail and (db.displayTriggers.isSpellsBookOpen and IsSpellBookOpen()))
-		or (db.displayTriggers.isProfessionBookOpen and ProfessionsBookFrame and ProfessionsBookFrame:IsShown())
+		or (not E.Retail and (db.displayTriggers.isProfessionBookOpen and _G.SpellBookProfessionFrame:IsVisible()))
+
 		or (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')))
 		or (db.displayTriggers.hasTarget and UnitExists('target'))
 		or (db.displayTriggers.hasFocus and UnitExists('focus'))
@@ -519,6 +529,7 @@ function ABB:Initialize()
 	else
 		ABB:SecureHookScript(_G.SpellBookFrame, 'OnShow', SetupUpSpellsBookEventHandler)
 		ABB:SecureHookScript(_G.SpellBookFrame, 'OnHide', SetupUpSpellsBookEventHandler)
+		ABB:SecureHook('ToggleSpellBook', SetupUpSpellsBookEventHandler)
 	end
 
 	for barName in pairs(AB.handledBars) do

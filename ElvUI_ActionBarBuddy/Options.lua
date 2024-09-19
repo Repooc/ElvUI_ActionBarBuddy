@@ -87,19 +87,37 @@ local globalFadeOptions = {
 		name = L["Spellbook Open"],
 		order = 30,
 		modifier = E.Retail,
-		disabled = function(info) return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or E.Retail and not E.db.abb[info[#info-3]][info[#info-2]].isPlayerSpellsFrameOpen end,
+		disabled = function(info)
+			if E.Retail then
+				return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or E.Retail and not E.db.abb[info[#info-3]][info[#info-2]].isPlayerSpellsFrameOpen
+			else
+				return info[#info-2] ~= 'global' and (not E.db.abb[info[#info-2]].inheritGlobalFade or not E.db.abb[info[#info-2]].customTriggers)
+			end
+		end,
 	},
 	isSpecTabOpen = {
 		name = L["Spec Tab/Frame Open"],
 		order = 30,
 		modifier = E.Retail,
-		disabled = function(info) return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or not E.db.abb[info[#info-3]][info[#info-2]].isPlayerSpellsFrameOpen end,
+		disabled = function(info)
+			if E.Retail then
+				return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or E.Retail and not E.db.abb[info[#info-3]][info[#info-2]].isPlayerSpellsFrameOpen
+			else
+				return info[#info-2] ~= 'global' and (not E.db.abb[info[#info-2]].inheritGlobalFade or not E.db.abb[info[#info-2]].customTriggers)
+			end
+		end,
 	},
 	isTalentTabOpen = {
 		name = L["Talent Tab/Frame Open"],
 		order = 30,
 		modifier = E.Retail,
-		disabled = function(info) return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or E.Retail and not E.db.abb[info[#info-3]][info[#info-2]].isPlayerSpellsFrameOpen end,
+		disabled = function(info)
+			if E.Retail then
+				return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or E.Retail and not E.db.abb[info[#info-3]][info[#info-2]].isPlayerSpellsFrameOpen
+			else
+				return info[#info-2] ~= 'global' and (not E.db.abb[info[#info-2]].inheritGlobalFade or not E.db.abb[info[#info-2]].customTriggers)
+			end
+		end,
 	},
 	onTaxi = {
 		name = function(info) local text = L["Taxi (|cff%s%s|r)"] local value = E.db.abb[info[#info-2]][info[#info-1]][info[#info]] if value == 2 then return format(text, '00FF00', L["On Taxi"]) elseif value == 1 then return format(text, 'FF0000', L["Not On Taxi"]) else return format(text, 'FFFF00', L["Ignore Taxi"]) end end,
