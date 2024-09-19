@@ -367,13 +367,10 @@ do
 		local spellBookMods = (db.displayTriggers.isSpellsBookOpen and db.displayTriggers.isSpecTabOpen and db.displayTriggers.isTalentTabOpen) or (not db.displayTriggers.isSpellsBookOpen and not db.displayTriggers.isSpecTabOpen and not db.displayTriggers.isTalentTabOpen) and (IsSpellBookOpen() or IsSpecTabOpen() or IsTalentTabOpen())
 
 		if (db.displayTriggers.inInstance == 2 and inInstance or db.displayTriggers.inInstance == 1 and not inInstance)
-
-		or (E.Retail and (db.displayTriggers.isPlayerSpellsFrameOpen and (db.displayTriggers.isSpellsBookOpen or spellBookMods) and IsSpellBookOpen()))
-		or (E.Retail and (db.displayTriggers.isPlayerSpellsFrameOpen and (db.displayTriggers.isSpecTabOpen or spellBookMods) and IsSpecTabOpen()))
-		or (E.Retail and (db.displayTriggers.isPlayerSpellsFrameOpen and (db.displayTriggers.isTalentTabOpen or spellBookMods) and IsTalentTabOpen()))
-
+		or (E.Retail and (db.displayTriggers.isPlayerSpellsFrameOpen and (spellBookMods or db.displayTriggers.isSpellsBookOpen) and IsSpellBookOpen()))
+		or (E.Retail and (db.displayTriggers.isPlayerSpellsFrameOpen and (spellBookMods or db.displayTriggers.isSpecTabOpen) and IsSpecTabOpen()))
+		or (E.Retail and (db.displayTriggers.isPlayerSpellsFrameOpen and (spellBookMods or db.displayTriggers.isTalentTabOpen) and IsTalentTabOpen()))
 		or (not E.Retail and (db.displayTriggers.isSpellsBookOpen and IsSpellBookOpen()))
-
 		or (db.displayTriggers.isProfessionBookOpen and ProfessionsBookFrame and ProfessionsBookFrame:IsShown())
 		or (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')))
 		or (db.displayTriggers.hasTarget and UnitExists('target'))
