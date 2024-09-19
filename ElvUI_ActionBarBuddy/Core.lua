@@ -297,7 +297,7 @@ do
 
 	local function IsSpecTabOpen()
 		if _G.PlayerSpellsFrame and _G.PlayerSpellsFrame.TalentsFrame then
-			return _G.PlayerSpellsFrame.TalentsFrame:IsVisible()
+			return _G.PlayerSpellsFrame.SpecFrame:IsVisible()
 		end
 
 		return false
