@@ -95,17 +95,18 @@ local globalFadeOptions = {
 			end
 		end,
 	},
-	isSpecTabOpen = {
+	isSpecTabOpen = { --* Used in Retail so far
 		name = L["Spec Tab/Frame Open"],
 		order = 30,
 		modifier = E.Retail,
-		disabled = function(info)
+		disabled = function(info) --* Come back to this after cata/classic compatibility
 			if E.Retail then
 				return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or E.Retail and not E.db.abb[info[#info-3]][info[#info-2]].isPlayerSpellsFrameOpen
 			else
 				return info[#info-2] ~= 'global' and (not E.db.abb[info[#info-2]].inheritGlobalFade or not E.db.abb[info[#info-2]].customTriggers)
 			end
 		end,
+		hidden = function() return not E.Retail end,
 	},
 	isTalentTabOpen = {
 		name = L["Talent Tab/Frame Open"],
@@ -138,6 +139,7 @@ local globalFadeOptions = {
 	isProfessionBookOpen = {
 		name = L["Profession Book Open"],
 		order = 50,
+		hidden = function() return E.Classic end,
 	},
 	mouseover = {
 		name = L["Mouseover"],
@@ -197,7 +199,7 @@ local function CreateBarOptions(barKey)
 	options.args.customTriggers = ACH:Toggle(L["Custom Triggers"], L["This will override the options found in the Global tab with the options found in the Override Display Triggers section below."], 5, nil, nil, nil, nil, nil, function(info) return E.db.abb[info[#info-1]].inheritGlobalFade and false or not E.db.abb[info[#info-1]].inheritGlobalFade end)
 
 	--* Modifiers
-	options.args.displayTriggers.args['modifier'] = ACH:Group(L["Modifiers"], nil, 90, nil, function(info) return E.db.abb[info[#info-3]][info[#info-2]][info[#info]] end, function(info, value) E.db.abb[info[#info-3]][info[#info-2]][info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-3]) end)
+	options.args.displayTriggers.args['modifier'] = ACH:Group(L["Modifiers"], nil, 90, nil, function(info) return E.db.abb[info[#info-3]][info[#info-2]][info[#info]] end, function(info, value) E.db.abb[info[#info-3]][info[#info-2]][info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-3]) end, nil, function() return E.Classic end)
 	options.args.displayTriggers.args['modifier'].inline = true
 
 	--* This populates the Custom Triggers and their Modifiers
@@ -239,7 +241,7 @@ local function configTable()
 	Global.args.displayTriggers = ACH:Group(L["Override Display Triggers"], nil, 20, nil, function(info) return E.db.abb[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) E.db.abb[info[#info-2]][info[#info-1]][info[#info]] = value for barName in pairs(AB.handledBars) do AB:PositionAndSizeBar(barName) ABB:FadeParent_OnEvent('UPDATING_OPTIONS', barName) end end)
 	Global.args.displayTriggers.inline = true
 
-	Global.args.displayTriggers.args['modifier'] = ACH:Group(L["Modifiers"], nil, 90, nil, function(info) return E.db.abb[info[#info-3]][info[#info-2]][info[#info]] end, function(info, value) E.db.abb[info[#info-3]][info[#info-2]][info[#info]] = value for barName in pairs(AB.handledBars) do ABB:FadeParent_OnEvent('UPDATING_OPTIONS', barName) end end)
+	Global.args.displayTriggers.args['modifier'] = ACH:Group(L["Modifiers"], nil, 90, nil, function(info) return E.db.abb[info[#info-3]][info[#info-2]][info[#info]] end, function(info, value) E.db.abb[info[#info-3]][info[#info-2]][info[#info]] = value for barName in pairs(AB.handledBars) do ABB:FadeParent_OnEvent('UPDATING_OPTIONS', barName) end end, nil, function() return E.Classic end)
 	Global.args.displayTriggers.args['modifier'].inline = true
 
 	for option, info in next, globalFadeOptions do

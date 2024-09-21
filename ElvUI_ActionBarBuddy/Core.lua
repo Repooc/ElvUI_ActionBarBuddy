@@ -292,6 +292,10 @@ do
 			return _G.PlayerSpellsFrame.TalentsFrame:IsVisible()
 		end
 
+		if _G.PlayerTalentFrame then
+			return _G.PlayerTalentFrame:IsVisible()
+		end
+
 		return false
 	end
 
@@ -299,7 +303,6 @@ do
 		if _G.PlayerSpellsFrame and _G.PlayerSpellsFrame.TalentsFrame then
 			return _G.PlayerSpellsFrame.SpecFrame:IsVisible()
 		end
-
 		return false
 	end
 
@@ -311,15 +314,12 @@ do
 		end
 
 		if _G.SpellBookFrame then
-			local shouldShow
-			if _G.SpellBookProfessionFrame:IsShown() then
-				shouldShow = false
-			elseif not _G.SpellBookProfessionFrame:IsShown() and _G.SpellBookFrame:IsShown() then
-				shouldShow = true
+			if _G.SpellBookProfessionFrame and _G.SpellBookProfessionFrame:IsShown() then
+				return false
+			elseif _G.SpellBookFrame:IsShown() then
+				return true
 			end
-			return shouldShow
 		end
-
 		return false
 	end
 
@@ -380,6 +380,7 @@ do
 		or (E.Retail and (db.displayTriggers.isProfessionBookOpen and ProfessionsBookFrame and ProfessionsBookFrame:IsShown()))
 
 		or (not E.Retail and (db.displayTriggers.isSpellsBookOpen and IsSpellBookOpen()))
+		or (not E.Retail and (db.displayTriggers.isTalentTabOpen and IsTalentTabOpen()))
 		or (not E.Retail and (db.displayTriggers.isProfessionBookOpen and _G.SpellBookProfessionFrame:IsVisible()))
 
 		or (db.displayTriggers.playerCasting and (UnitCastingInfo('player') or UnitChannelInfo('player')))
@@ -509,8 +510,8 @@ function ABB:Initialize()
 	ABB:SecureHook(AB, 'PositionAndSizeBarPet', ABB.PositionAndSizeBarPet)
 	ABB:SecureHook(AB, 'PositionAndSizeBarShapeShift', ABB.PositionAndSizeBarShapeShift)
 
-	if E.Retail then
-		ABB:RegisterEvent('ADDON_LOADED', function(event, addon)
+	ABB:RegisterEvent('ADDON_LOADED', function(event, addon)
+		if E.Retail then
 			if addon == 'Blizzard_PlayerSpells' then
 				ABB:SecureHookScript(_G.PlayerSpellsFrame, 'OnShow', SetupUpSpellsBookEventHandler)
 				ABB:SecureHookScript(_G.PlayerSpellsFrame, 'OnHide', SetupUpSpellsBookEventHandler)
@@ -525,8 +526,15 @@ function ABB:Initialize()
 			if ABB:IsHooked(_G.PlayerSpellsFrame, 'OnShow') and ABB:IsHooked(_G.ProfessionsBookFrame, 'Show') then
 				ABB:UnregisterEvent(event)
 			end
-		end)
-	else
+		elseif E.Cata then
+			if addon == 'Blizzard_TalentUI' then
+				ABB:SecureHookScript(_G.PlayerTalentFrame, 'OnShow', SetupUpSpellsBookEventHandler)
+				ABB:SecureHookScript(_G.PlayerTalentFrame, 'OnHide', SetupUpSpellsBookEventHandler)
+			end
+		end
+	end)
+
+	if not E.Retail then
 		ABB:SecureHookScript(_G.SpellBookFrame, 'OnShow', SetupUpSpellsBookEventHandler)
 		ABB:SecureHookScript(_G.SpellBookFrame, 'OnHide', SetupUpSpellsBookEventHandler)
 		ABB:SecureHook('ToggleSpellBook', SetupUpSpellsBookEventHandler)
