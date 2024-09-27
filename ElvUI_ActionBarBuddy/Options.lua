@@ -193,7 +193,17 @@ local function CreateBarOptions(barKey)
 	options.args.displayTriggers.inline = true
 
 	options.args.inheritGlobalFade = ACH:Toggle(L["Inherit Global Fade"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.abb[info[#info-1]][info[#info]] = value ABB:ToggleFade(info[#info-1]) if isPet then AB:PositionAndSizeBarPet() elseif isStance then AB:PositionAndSizeBarShapeShift() else AB:PositionAndSizeBar(info[#info-1]) end ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-1]) end)
-	options.args.spacer1 = ACH:Spacer(4, 'full')
+	options.args.spacer1 = ACH:Spacer(2, 'full')
+
+	--* Bar Alpha Section
+	local BarAlpha = ACH:Group(L["Bar Alpha"], nil, 3, nil, function(info) return E.db.abb[info[#info-2]][info[#info]] end, function(info, value) E.db.abb[info[#info-2]][info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-2]) end)
+	options.args.barAlpha = BarAlpha
+	BarAlpha.inline = true
+	BarAlpha.args.followBarAlpha = ACH:Toggle(L["Use Bar Alpha"], L["When a trigger would normally show the bar fully, this option will instead use the alpha setting that is configured in ElvUI for that bar."], 1)
+	BarAlpha.args.spacer1 = ACH:Spacer(2, 'full')
+	BarAlpha.args.goToBar = ACH:Execute(format(L["%sElvUI|r %s Settings"], E.media.hexvaluecolor, barName), nil, 99, function() local playerBar = (not isPet and not isStance) if playerBar then E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'actionbar', 'playerBars', bar, 'barGroup') else E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'actionbar', bar, 'barGroup') end end)
+
+	options.args.spacer2 = ACH:Spacer(4, 'full')
 
 	--* Custom Triggers
 	options.args.customTriggers = ACH:Toggle(L["Custom Triggers"], L["This will override the options found in the Global tab with the options found in the Override Display Triggers section below."], 5, nil, nil, nil, nil, nil, function(info) return E.db.abb[info[#info-1]].inheritGlobalFade and false or not E.db.abb[info[#info-1]].inheritGlobalFade end)

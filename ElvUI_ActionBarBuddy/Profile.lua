@@ -37,6 +37,7 @@ local function CreateBar(barNum)
 		inheritGlobalFade = false,
 		customTriggers = false,
 		displayTriggers = CopyTable(ElvUIDefaultValues),
+		followBarAlpha = false,
 	}
 end
 
