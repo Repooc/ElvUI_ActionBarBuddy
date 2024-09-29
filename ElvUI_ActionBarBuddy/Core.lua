@@ -1,4 +1,4 @@
-local E = unpack(ElvUI)
+local E, _, _, P = unpack(ElvUI)
 local EP = LibStub('LibElvUIPlugin-1.0')
 local AB = E.ActionBars
 local AddOnName, Engine = ...
