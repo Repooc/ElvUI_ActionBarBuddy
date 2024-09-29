@@ -6,6 +6,15 @@ local module = E:NewModule('ABB-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v|cff00fc002.2|r 9/24/2024',
+		'• Added Pet Bar support',
+		'• Added Stance Bar support',
+		'• Added Spell Book frame trigger',
+		'• Added Talent frame trigger',
+		'• Added Spec frame trigger',
+		'• Added Ability to follow ElvUI alpha setting for their respective bar',
+		'• Reworked In Instance to no longer be a tristate button and now has multiple modifiers that are tied to it',
+	' ',
 	'v|cff00fc002.1|r 9/16/2024',
 		'• Fix more bugs that were found',
 	' ',
