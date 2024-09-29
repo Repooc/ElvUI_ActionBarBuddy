@@ -4,7 +4,7 @@
 [![CurseForge Game Versions](https://img.shields.io/curseforge/game-versions/614378?style=for-the-badge&logo=curseforge)](https://curseforge.com/wow/addons/actionbar-buddy-elvui-plugin) [![Version (CF)](https://img.shields.io/curseforge/v/614378?style=for-the-badge&logo=curseforge)](https://curseforge.com/wow/addons/actionbar-buddy-elvui-plugin) [![GitHub tag (with filter)](https://img.shields.io/github/v/tag/Repooc/ElvUI_ActionBarBuddy?logo=github&label=Version&style=for-the-badge)](https://github.com/Repooc/ElvUI_ActionBarBuddy/tags)
 
 <!-- [![Patreon](https://img.shields.io/badge/Patreon-F96854?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/repoocreforged) [![ko-fi](https://img.shields.io/badge/_-KO--FI-red?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/repoocreforged)  -->
-[![Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Drepoocreforged%26type%3Dpatrons&style=for-the-badge)](https://patreon.com/repoocreforged) [![ko-fi](https://img.shields.io/badge/_-KO--FI-red?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/repoocreforged) 
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/Repooc?style=for-the-badge&logo=github)](https://github.com/sponsors/Repooc) [![Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Drepoocreforged%26type%3Dpatrons&style=for-the-badge)](https://patreon.com/repoocreforged) [![ko-fi](https://img.shields.io/badge/_-KO--FI-red?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/repoocreforged) 
 
 
 # **Version 2.0 Rewrite Released**
