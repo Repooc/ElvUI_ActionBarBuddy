@@ -351,7 +351,6 @@ do
 	end
 
 	local canGlide = false
-	local inInstance = false
 	function ABB:FadeParent_OnEvent(event, arg1)
 		if not E.db.abb then return end
 		local barName = self.bar
@@ -373,14 +372,25 @@ do
 			canGlide = false
 		end
 
-		inInstance = select(2, GetInstanceInfo()) ~= 'none'
-
 		local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
+		local bar = AB.handledBars[barName]
 		local possessbar = SecureCmdOptionParse('[possessbar] 1; 0')
+		local _, instanceType = GetInstanceInfo()
+		local inInstance = instanceType ~= 'none'
+		local inNone = instanceType == 'none'
+		local inDungeon = instanceType == 'party'
+		local inRaid = instanceType == 'raid'
+		local inPvP = (instanceType == 'pvp' or instanceType == 'arena')
+		local inScenario = instanceType == 'scenario'
+		local inInstanceMods = (db.displayTriggers.inDungeon and db.displayTriggers.inPvP and db.displayTriggers.inRaid and db.displayTriggers.inScenario and db.displayTriggers.inNone) or (not db.displayTriggers.inDungeon and not db.displayTriggers.inPvP and not db.displayTriggers.inRaid and not db.displayTriggers.inScenario and not db.displayTriggers.inNone) and inInstance
 		local spellBookMods = (db.displayTriggers.isSpellsBookOpen and db.displayTriggers.isSpecTabOpen and db.displayTriggers.isTalentTabOpen) or (not db.displayTriggers.isSpellsBookOpen and not db.displayTriggers.isSpecTabOpen and not db.displayTriggers.isTalentTabOpen) and (IsSpellBookOpen() or IsSpecTabOpen() or IsTalentTabOpen())
 
-		local bar = AB.handledBars[barName]
-		if (db.displayTriggers.inInstance == 2 and inInstance or db.displayTriggers.inInstance == 1 and not inInstance)
+		if (((db.displayTriggers.inInstance and (inInstanceMods or db.displayTriggers.inDungeon))) and inDungeon)
+		or (((db.displayTriggers.inInstance and (inInstanceMods or db.displayTriggers.inNone))) and inNone)
+		or (((db.displayTriggers.inInstance and (inInstanceMods or db.displayTriggers.inPvP))) and inPvP)
+		or (((db.displayTriggers.inInstance and (inInstanceMods or db.displayTriggers.inRaid))) and inRaid)
+		or (((db.displayTriggers.inInstance and (inInstanceMods or db.displayTriggers.inScenario))) and inScenario)
+
 		or (E.Retail and (db.displayTriggers.isPlayerSpellsFrameOpen and (spellBookMods or db.displayTriggers.isSpellsBookOpen) and IsSpellBookOpen()))
 		or (E.Retail and (db.displayTriggers.isPlayerSpellsFrameOpen and (spellBookMods or db.displayTriggers.isSpecTabOpen) and IsSpecTabOpen()))
 		or (E.Retail and (db.displayTriggers.isPlayerSpellsFrameOpen and (spellBookMods or db.displayTriggers.isTalentTabOpen) and IsTalentTabOpen()))
@@ -508,9 +518,17 @@ local function SetupUpSpellsBookEventHandler()
 	end
 end
 
+local function CheckDB()
+	for i = 1, 10 do if type(E.db.abb['bar'..i].displayTriggers.inInstance) ~= 'boolean' then E.db.abb['bar'..i].displayTriggers.inInstance = P.abb['bar'..i].displayTriggers.inInstance end end
+	for i = 13, 15 do if type(E.db.abb['bar'..i].displayTriggers.inInstance) ~= 'boolean' then E.db.abb['bar'..i].displayTriggers.inInstance = P.abb['bar'..i].displayTriggers.inInstance end end
+	for barName in pairs(bars) do if type(E.db.abb[barName].displayTriggers.inInstance) ~= 'boolean' then E.db.abb[barName].displayTriggers.inInstance = P.abb[barName].displayTriggers.inInstance end end
+end
+
 function ABB:Initialize()
 	EP:RegisterPlugin(AddOnName, GetOptions, nil, ABB.versionString)
 	if not AB.Initialized then return end
+
+	CheckDB()
 
 	SetupFadeParents()
 

@@ -65,25 +65,51 @@ local globalFadeOptions = {
 		get = function(info) local value = E.db.abb[info[#info-2]][info[#info-1]][info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
 		set = function(info, value) E.db.abb[info[#info-2]][info[#info-1]][info[#info]] = (value and 2) or (value == nil and 1) or 0 if info[#info-2] == 'global' then for barName in pairs(AB.handledBars) do ABB:FadeParent_OnEvent('UPDATING_OPTIONS', barName) end else ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-2]) end end,
 	},
-	inInstance = {
-		name = function(info) local text = L["Instance (|cff%s%s|r)"] local value = E.db.abb[info[#info-2]][info[#info-1]][info[#info]] if value == 2 then return format(text, '00FF00', L["In Instance"]) elseif value == 1 then return format(text, 'FF0000', L["Not In Instance"]) else return format(text, 'FFFF00', L["Ignore Instance"]) end end,
-		order = 50,
-		tristate = true,
-		get = function(info) local value = E.db.abb[info[#info-2]][info[#info-1]][info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end,
-		set = function(info, value) E.db.abb[info[#info-2]][info[#info-1]][info[#info]] = (value and 2) or (value == nil and 1) or 0 if info[#info-2] == 'global' then for barName in pairs(AB.handledBars) do ABB:FadeParent_OnEvent('UPDATING_OPTIONS', barName) end else ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-2]) end end,
-	},
 	inVehicle = {
 		name = L["In Vehicle"],
 		order = 50,
 		hidden = function() return E.Classic end,
 	},
-	isPlayerSpellsFrameOpen = {
+	inInstance = {						--* Modifier Parent
+		name = L["Instance"],
+		order = 50,
+	},
+	inDungeon = {						--* Modifier
+		name = L["In Dungeon"],
+		order = 40,
+		modifier = true,
+		disabled = function(info) return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or not E.db.abb[info[#info-3]][info[#info-2]].inInstance end,
+	},
+	inNone = {							--* Modifier
+		name = L["None"],
+		order = 40,
+		modifier = true,
+		disabled = function(info) return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or not E.db.abb[info[#info-3]][info[#info-2]].inInstance end,
+	},
+	inPvP = {							--* Modifier
+		name = L["In PvP"],
+		order = 40,
+		modifier = true,
+		disabled = function(info) return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or not E.db.abb[info[#info-3]][info[#info-2]].inInstance end,
+	},
+	inRaid = {							--* Modifier
+		name = L["In Raid"],
+		order = 40,
+		modifier = true,
+		disabled = function(info) return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or not E.db.abb[info[#info-3]][info[#info-2]].inInstance end,
+	},
+	inScenario = {						--* Modifier
+		name = L["In Scenario"],
+		order = 40,
+		modifier = true,
+		disabled = function(info) return info[#info-3] ~= 'global' and (not E.db.abb[info[#info-3]].inheritGlobalFade or not E.db.abb[info[#info-3]].customTriggers) or not E.db.abb[info[#info-3]][info[#info-2]].inInstance end,
+	},
+	isPlayerSpellsFrameOpen = {							--* Modifier Parent
 		name = L["Player Spells Opened"],
 		order = 50,
 		hidden = function() return not E.Retail end,
 	},
-	--! Modifiers for 'isPlayerSpellsFrameOpen'
-	isSpellsBookOpen = {
+	isSpellsBookOpen = {								--* Modifier
 		name = L["Spellbook Open"],
 		order = 30,
 		modifier = E.Retail,
@@ -95,7 +121,7 @@ local globalFadeOptions = {
 			end
 		end,
 	},
-	isSpecTabOpen = { --* Used in Retail so far
+	isSpecTabOpen = { --* Used in Retail so far			--* Modifier
 		name = L["Spec Tab/Frame Open"],
 		order = 30,
 		modifier = E.Retail,
@@ -108,7 +134,7 @@ local globalFadeOptions = {
 		end,
 		hidden = function() return not E.Retail end,
 	},
-	isTalentTabOpen = {
+	isTalentTabOpen = {									--* Modifier
 		name = L["Talent Tab/Frame Open"],
 		order = 30,
 		modifier = E.Retail,
@@ -221,6 +247,7 @@ local function CreateBarOptions(barKey)
 		end
 	end
 	options.args.displayTriggers.args.modifier.args.spacer1 = ACH:Spacer(25, 'full') --* Spacer between Hide As Passenger and Spell Book/Talent/Spect tabs (this is prob needed for retail only wip)
+	options.args.displayTriggers.args.modifier.args.spacer2 = ACH:Spacer(35, 'full') --* Spacer between Spell Book/Talent/Spect tabs (this is prob needed for retail only wip) and In Dungeon/PvP/Raid/Scenario
 
 	options.args.displayTriggers.args.spacer1 = ACH:Spacer(101, 'full')
 	options.args.displayTriggers.args.selectDefaults = ACH:Execute(L["Select Defaults"], nil, 102, function(info) ToggleTriggers(info[#info-2], 'default') end)
@@ -262,6 +289,7 @@ local function configTable()
 		end
 	end
 	Global.args.displayTriggers.args.modifier.args.spacer1 = ACH:Spacer(25, 'full') --* Spacer between Hide As Passenger and Spell Book/Talent/Spect tabs (this is prob needed for retail only wip)
+	Global.args.displayTriggers.args.modifier.args.spacer2 = ACH:Spacer(35, 'full') --* Spacer between Spell Book/Talent/Spect tabs (this is prob needed for retail only wip) and In Dungeon/PvP/Raid/Scenario
 
 	Global.args.displayTriggers.args.spacer1 = ACH:Spacer(101, 'full')
 	Global.args.displayTriggers.args.selectDefaults = ACH:Execute(L["Select Defaults"], nil, 102, function() ToggleTriggers('global', 'default') end)
