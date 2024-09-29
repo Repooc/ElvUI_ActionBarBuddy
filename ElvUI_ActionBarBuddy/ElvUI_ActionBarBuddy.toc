@@ -2,7 +2,7 @@
 ## Title: |cff1784d1ElvUI|r |cff00FF98ActionBar|r |cffA330C9Buddy|r
 ## Author: Repooc
 ## Version: @project-version@
-## X-PreviousVersion: 2.2
+## X-PreviousVersion: 2.3
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 ## SavedVariables: ABBDB
