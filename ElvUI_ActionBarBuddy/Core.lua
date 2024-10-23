@@ -385,7 +385,8 @@ do
 		local inInstanceMods = (db.displayTriggers.inDungeon and db.displayTriggers.inPvP and db.displayTriggers.inRaid and db.displayTriggers.inScenario and db.displayTriggers.inNone) or (not db.displayTriggers.inDungeon and not db.displayTriggers.inPvP and not db.displayTriggers.inRaid and not db.displayTriggers.inScenario and not db.displayTriggers.inNone) and inInstance
 		local spellBookMods = (db.displayTriggers.isSpellsBookOpen and db.displayTriggers.isSpecTabOpen and db.displayTriggers.isTalentTabOpen) or (not db.displayTriggers.isSpellsBookOpen and not db.displayTriggers.isSpecTabOpen and not db.displayTriggers.isTalentTabOpen) and (IsSpellBookOpen() or IsSpecTabOpen() or IsTalentTabOpen())
 
-		if (((db.displayTriggers.inInstance and (inInstanceMods or db.displayTriggers.inDungeon))) and inDungeon)
+		if ElvUI_KeyBinder and ElvUI_KeyBinder.active
+		or (((db.displayTriggers.inInstance and (inInstanceMods or db.displayTriggers.inDungeon))) and inDungeon)
 		or (((db.displayTriggers.inInstance and (inInstanceMods or db.displayTriggers.inNone))) and inNone)
 		or (((db.displayTriggers.inInstance and (inInstanceMods or db.displayTriggers.inPvP))) and inPvP)
 		or (((db.displayTriggers.inInstance and (inInstanceMods or db.displayTriggers.inRaid))) and inRaid)
@@ -574,6 +575,10 @@ function ABB:Initialize()
 
 	hooksecurefunc(E, 'UpdateDB', ABB.UpdateOptions)
 	ABB:UpdateOptions()
+
+	ABB:SecureHookScript(_G.ElvUIBindPopupWindow, 'OnShow', SetupUpSpellsBookEventHandler)
+	ABB:SecureHook(AB, 'ActivateBindMode', SetupUpSpellsBookEventHandler)
+	ABB:SecureHook(AB, 'DeactivateBindMode', SetupUpSpellsBookEventHandler)
 
 	if not ABBDB then
 		_G.ABBDB = {}
