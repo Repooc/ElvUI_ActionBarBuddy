@@ -485,6 +485,11 @@ function ABB:PositionAndSizeBar(barNum)
 	if not bar or not db then return end
 	bar:SetParent((db.inheritGlobalFade and ABB.fadeParentTable[barNum]) or E.UIParent)
 	bar:SetAlpha(1)
+
+	bar:SetFrameStrata(AB.db[barNum].frameStrata or 'LOW')
+	bar:SetFrameLevel(AB.db[barNum].frameLevel)
+	bar.backdrop:SetFrameStrata(AB.db[barNum].frameStrata or 'LOW')
+	bar.backdrop:SetFrameLevel(AB.db[barNum].frameLevel - 1)
 end
 
 function ABB:PositionAndSizeBarPet()
