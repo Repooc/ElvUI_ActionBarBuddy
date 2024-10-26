@@ -37,4 +37,4 @@ jobs:
     - name: Package and release
       uses: BigWigsMods/packager@master
       with:
-        args: -n "{package-name}-$GITHUB_REF_NAME-{project-version}"
+        args: -n "{package-name}-{project-version}"
