@@ -1,8 +1,8 @@
-## Interface: 110002, 40400, 11504
+## Interface: 110004, 40401, 11505
 ## Title: |cff1784d1ElvUI|r |cff00FF98ActionBar|r |cffA330C9Buddy|r
 ## Author: Repooc
 ## Version: @project-version@
-## X-PreviousVersion: 2.3
+## X-PreviousVersion: 2.4
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 ## SavedVariables: ABBDB

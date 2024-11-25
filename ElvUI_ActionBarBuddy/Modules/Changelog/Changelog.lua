@@ -6,6 +6,11 @@ local module = E:NewModule('ABB-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v|cff00fc002.4|r 11/24/2024',
+		'• fix typo where stancebar was not acting correctly',
+		'• Experimental: Entering Keybind mode should force show bars that are hidden in order to keybind the buttons (If not stable, may be removed)',
+		'• bump toc',
+	' ',
 	'v|cff00fc002.3|r 9/29/2024',
 		'• fix a nil error',
 	' ',
