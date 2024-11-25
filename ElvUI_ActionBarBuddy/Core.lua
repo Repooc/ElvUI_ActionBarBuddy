@@ -245,7 +245,7 @@ function ABB:Button_OnEnter(button)
 	end
 
 	for barName, barToCheck in pairs(bars) do
-			if bar ~= barToCheck then
+		if bar ~= barToCheck then
 			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
 			local alpha = (E.db.abb[barName].followBarAlpha and barToCheck.db.alpha) or 1
 			if _G.ElvUI_BarPet:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == 1) then
