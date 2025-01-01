@@ -153,6 +153,20 @@ function ABB:UpdateOptions()
 	end
 end
 
+local function flyoutButtonAnchor(frame)
+	local parent = frame:GetParent()
+	local _, parentAnchorButton = parent:GetPoint()
+
+	if not AB.handledbuttons[parentAnchorButton] then return end
+
+	return parentAnchorButton:GetParent()
+end
+
+function ABB:FlyoutButton_OnEnter(a, b)
+	local anchor = flyoutButtonAnchor(self)
+	if anchor then ABB:Bar_OnEnter(anchor) end
+end
+
 function ABB:Bar_OnEnter(bar)
 	local currentBarName = bar:GetParent().bar
 	local currentBarDB = E.db.abb[currentBarName].customTriggers and E.db.abb[currentBarName] or E.db.abb.global
@@ -589,5 +603,7 @@ function ABB:Initialize()
 		_G.ABBDB = {}
 	end
 end
+
+ABB:SecureHook(AB, 'FlyoutButton_OnEnter', ABB.FlyoutButton_OnEnter)
 
 E.Libs.EP:HookInitialize(ABB, ABB.Initialize)
