@@ -162,7 +162,7 @@ local function flyoutButtonAnchor(frame)
 	return parentAnchorButton:GetParent()
 end
 
-function ABB:FlyoutButton_OnEnter(a, b)
+function ABB:FlyoutButton_OnEnter()
 	local anchor = flyoutButtonAnchor(self)
 	if anchor then ABB:Bar_OnEnter(anchor) end
 end
