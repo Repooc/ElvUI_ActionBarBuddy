@@ -609,5 +609,6 @@ function ABB:Initialize()
 end
 
 ABB:SecureHook(AB, 'FlyoutButton_OnEnter', ABB.FlyoutButton_OnEnter)
+ABB:SecureHook(AB, 'FlyoutButton_OnLeave', ABB.FlyoutButton_OnLeave)
 
 E.Libs.EP:HookInitialize(ABB, ABB.Initialize)
