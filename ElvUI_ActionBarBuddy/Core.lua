@@ -167,6 +167,10 @@ function ABB:FlyoutButton_OnEnter()
 	if anchor then ABB:Bar_OnEnter(anchor) end
 end
 
+function ABB:FlyoutButton_OnLeave()
+	local anchor = flyoutButtonAnchor(self)
+	if anchor then ABB:Bar_OnLeave(anchor) end
+end
 function ABB:Bar_OnEnter(bar)
 	local currentBarName = bar:GetParent().bar
 	local currentBarDB = E.db.abb[currentBarName].customTriggers and E.db.abb[currentBarName] or E.db.abb.global
