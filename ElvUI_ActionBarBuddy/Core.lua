@@ -164,18 +164,19 @@ end
 
 function ABB:FlyoutButton_OnEnter()
 	local anchor = flyoutButtonAnchor(self)
-	if anchor then ABB:Bar_OnEnter(anchor) end
+	if anchor then ABB:Bar_OnEnter(anchor, true) end
 end
 
 function ABB:FlyoutButton_OnLeave()
 	local anchor = flyoutButtonAnchor(self)
-	if anchor then ABB:Bar_OnLeave(anchor) end
+	if anchor then ABB:Bar_OnLeave(anchor, true) end
 end
-function ABB:Bar_OnEnter(bar)
+
+function ABB:Bar_OnEnter(bar, isFlyout)
 	local currentBarName = bar:GetParent().bar
 	local currentBarDB = E.db.abb[currentBarName].customTriggers and E.db.abb[currentBarName] or E.db.abb.global
 	do
-		if bar:GetParent() == ABB.fadeParentTable[currentBarName] and currentBarDB.displayTriggers.mouseover and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[currentBarName]:GetAlpha() == 1) then
+		if bar:GetParent() == ABB.fadeParentTable[currentBarName] and ((currentBarDB.displayTriggers.mouseover or isFlyout) and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[currentBarName]:GetAlpha() == 1)) then
 			local alpha = (E.db.abb[currentBarName].followBarAlpha and bar and bar.db.alpha) or 1
 			E:UIFrameFadeIn(ABB.fadeParentTable[currentBarName], 0.2, ABB.fadeParentTable[currentBarName]:GetAlpha(), alpha)
 			AB:FadeBlings(1)
@@ -205,12 +206,12 @@ function ABB:Bar_OnEnter(bar)
 	end
 end
 
-function ABB:Bar_OnLeave(bar)
+function ABB:Bar_OnLeave(bar, isFlyout)
 	local currentBarName = bar:GetParent().bar
 	local currentBarDB = E.db.abb[currentBarName].customTriggers and E.db.abb[currentBarName] or E.db.abb.global
 	do
 		local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
-		if bar:GetParent() == ABB.fadeParentTable[currentBarName] and currentBarDB.displayTriggers.mouseover and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[currentBarName]:GetAlpha() == a) then
+		if bar:GetParent() == ABB.fadeParentTable[currentBarName] and ((currentBarDB.displayTriggers.mouseover or isFlyout) and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[currentBarName]:GetAlpha() == a)) then
 			E:UIFrameFadeOut(ABB.fadeParentTable[currentBarName], 0.2, ABB.fadeParentTable[currentBarName]:GetAlpha(), a)
 			AB:FadeBlings(a)
 		end
