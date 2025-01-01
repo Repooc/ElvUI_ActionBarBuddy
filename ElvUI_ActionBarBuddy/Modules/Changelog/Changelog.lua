@@ -6,6 +6,10 @@ local module = E:NewModule('ABB-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v|cff00fc002.6|r ??/??/2025',
+		'• bump toc',
+		'• flyouts are now supported if you use the mouseover option in ActionBar Buddy in the global or per bar in the Custom Triggers section which is dependent on your setup',
+	' ',
 	'v|cff00fc002.5|r 11/24/2024',
 		'• bump toc (oops, typo)',
 	' ',
