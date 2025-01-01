@@ -378,6 +378,8 @@ do
 			barName = arg1
 		end
 
+		if not E.db.abb[barName].inheritGlobalFade then return end
+
 		if event == 'PLAYER_CAN_GLIDE_CHANGED' then
 			local dragonbar = SecureCmdOptionParse('[bonusbar:5] 1; 0')
 			if (arg1 and (dragonbar == '0')) or (not arg1 and (dragonbar == '1')) then
