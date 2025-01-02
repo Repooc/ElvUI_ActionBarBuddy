@@ -225,7 +225,7 @@ local function CreateBarOptions(barKey)
 	local BarAlpha = ACH:Group(L["Bar Alpha"], nil, 3, nil, function(info) return E.db.abb[info[#info-2]][info[#info]] end, function(info, value) E.db.abb[info[#info-2]][info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-2]) end)
 	options.args.barAlpha = BarAlpha
 	BarAlpha.inline = true
-	BarAlpha.args.followBarAlpha = ACH:Toggle(L["Use Bar Alpha"], L["When a trigger would normally show the bar fully, this option will instead use the alpha setting that is configured in ElvUI for that bar."], 1)
+	BarAlpha.args.followBarAlpha = ACH:Toggle(L["Use Bar Alpha"], L["When a trigger would normally show the bar fully, this option will instead use the alpha setting that is configured in ElvUI for that bar."], 1, nil, nil, nil, nil, nil, function(info) return not E.db.abb[info[#info-2]].inheritGlobalFade end)
 	BarAlpha.args.spacer1 = ACH:Spacer(2, 'full')
 	BarAlpha.args.goToBar = ACH:Execute(format(L["%sElvUI|r %s Settings"], E.media.hexvaluecolor, barName), nil, 99, function() local playerBar = (not isPet and not isStance) if playerBar then E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'actionbar', 'playerBars', bar, 'barGroup') else E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'actionbar', bar, 'barGroup') end end)
 
