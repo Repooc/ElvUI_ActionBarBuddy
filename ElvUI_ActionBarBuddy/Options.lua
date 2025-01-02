@@ -232,7 +232,7 @@ local function CreateBarOptions(barKey)
 	options.args.spacer2 = ACH:Spacer(4, 'full')
 
 	--* Custom Triggers
-	options.args.customTriggers = ACH:Toggle(L["Custom Triggers"], L["This will override the options found in the Global tab with the options found in the Override Display Triggers section below."], 5, nil, nil, nil, nil, nil, function(info) return E.db.abb[info[#info-1]].inheritGlobalFade and false or not E.db.abb[info[#info-1]].inheritGlobalFade end)
+	options.args.customTriggers = ACH:Toggle(L["Custom Triggers"], L["This will override the options found in the Global tab with the options found in the Override Display Triggers section below."], 5, nil, nil, nil, nil, nil, function(info) return not E.db.abb[info[#info-1]].inheritGlobalFade end)
 
 	--* Modifiers
 	options.args.displayTriggers.args['modifier'] = ACH:Group(L["Modifiers"], nil, 90, nil, function(info) return E.db.abb[info[#info-3]][info[#info-2]][info[#info]] end, function(info, value) E.db.abb[info[#info-3]][info[#info-2]][info[#info]] = value ABB:FadeParent_OnEvent('UPDATING_OPTIONS', info[#info-3]) end, nil, function() return E.Classic end)
