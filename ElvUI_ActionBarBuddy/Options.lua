@@ -263,7 +263,7 @@ local function configTable()
     if not rrp then print("Error Loading Repooc Reforged Plugin Library") return end
 
 	--* Plugin Section
-	local ActionBarBuddy = ACH:Group('|cff00FF98ActionBar|r |cffA330C9Buddy|r', nil, 6, 'tab', nil, nil, function() return not AB.Initialized end)
+	local ActionBarBuddy = ACH:Group(gsub(ABB.Title, "^.-|r%s", ""), nil, 6, 'tab', nil, nil, function() return not AB.Initialized end)
 	rrp.args.abb = ActionBarBuddy
 	ActionBarBuddy.args.version = ACH:Header(format('|cff99ff33%s|r', ABB.versionString), 1)
 

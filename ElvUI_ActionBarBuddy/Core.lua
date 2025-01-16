@@ -17,7 +17,7 @@ _G[AddOnName] = Engine
 
 local GetAddOnMetadata = C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 
-ABB.Title = GetAddOnMetadata('ElvUI_ActionBarBuddy', 'Title')
+ABB.Title = GetAddOnMetadata(AddOnName, 'Title')
 
 ABB.Configs = {}
 
