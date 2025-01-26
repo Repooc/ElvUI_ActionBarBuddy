@@ -180,9 +180,14 @@ function ABB:FlyoutButton_OnLeave()
 	end
 end
 
+local tempMouseLock = false
 function ABB:Bar_OnEnter(bar, isFlyout)
 	local currentBarName = bar:GetParent().bar
 	local currentBarDB = E.db.abb[currentBarName].customTriggers and E.db.abb[currentBarName] or E.db.abb.global
+
+	if currentBarDB.displayTriggers.mouseover then
+		tempMouseLock = true
+	end
 
 	do
 		if bar:GetParent() == ABB.fadeParentTable[currentBarName] and ((currentBarDB.displayTriggers.mouseover or isFlyout) and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[currentBarName]:GetAlpha() == 1)) then
@@ -219,6 +224,11 @@ function ABB:Bar_OnLeave(bar, isFlyout)
 	local currentBarName = bar:GetParent().bar
 	local currentBarDB = E.db.abb[currentBarName].customTriggers and E.db.abb[currentBarName] or E.db.abb.global
 
+	tempMouseLock = false
+	if ABB.fadeParentTable[currentBarName] and ABB.fadeParentTable[currentBarName].mouseLock then
+		ABB:FadeParent_OnEvent('UPDATING_OPTIONS', currentBarName)
+	end
+
 	do
 		local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
 		if bar:GetParent() == ABB.fadeParentTable[currentBarName] and ((currentBarDB.displayTriggers.mouseover or isFlyout) and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[currentBarName]:GetAlpha() == a)) then
@@ -231,7 +241,7 @@ function ABB:Bar_OnLeave(bar, isFlyout)
 		if bar ~= barToCheck then
 			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
 			local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
-			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
+			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
 				E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
 				AB:FadeBlings(1)
 			end
@@ -242,7 +252,7 @@ function ABB:Bar_OnLeave(bar, isFlyout)
 		if bar ~= barToCheck then
 			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
 			local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
-			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
+			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
 				E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
 				AB:FadeBlings(1)
 			end
@@ -254,6 +264,11 @@ function ABB:Button_OnEnter(button)
 	local bar = button:GetParent()
 	local currentBarName = bar:GetParent().bar
 	local currentBarDB = E.db.abb[currentBarName].customTriggers and E.db.abb[currentBarName] or E.db.abb.global
+
+	if currentBarDB.displayTriggers.mouseover then
+		tempMouseLock = true
+	end
+
 	do
 		if bar:GetParent() == ABB.fadeParentTable[currentBarName] and currentBarDB.displayTriggers.mouseover and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[currentBarName]:GetAlpha() == 1) then
 			local alpha = (E.db.abb[currentBarName].followBarAlpha and bar.db.alpha) or 1
@@ -290,6 +305,11 @@ function ABB:Button_OnLeave(button)
 	local currentBarName = bar:GetParent().bar
 	local currentBarDB = E.db.abb[currentBarName].customTriggers and E.db.abb[currentBarName] or E.db.abb.global
 
+	tempMouseLock = false
+	if ABB.fadeParentTable[currentBarName] and ABB.fadeParentTable[currentBarName].mouseLock then
+		ABB:FadeParent_OnEvent('UPDATING_OPTIONS', currentBarName)
+	end
+
 	do
 		local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
 		if bar:GetParent() == ABB.fadeParentTable[currentBarName] and currentBarDB.displayTriggers.mouseover and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[currentBarName]:GetAlpha() == a) then
@@ -302,7 +322,7 @@ function ABB:Button_OnLeave(button)
 		if bar ~= barToCheck then
 			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
 			local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
-			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
+			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
 				E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
 				AB:FadeBlings(a)
 			end
@@ -313,7 +333,7 @@ function ABB:Button_OnLeave(button)
 		if bar ~= barToCheck then
 			local db = E.db.abb[barName].customTriggers and E.db.abb[barName] or E.db.abb.global
 			local a = 1 - (E.db.abb.global.globalFadeAlpha or 0)
-			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[barName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
+			if barToCheck:GetParent() == ABB.fadeParentTable[barName] and currentBarDB.displayTriggers.mouseover and db.displayTriggers.mouseover and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[barName]:GetAlpha() == a) then
 				E:UIFrameFadeOut(ABB.fadeParentTable[barName], 0.2, ABB.fadeParentTable[barName]:GetAlpha(), a)
 				AB:FadeBlings(a)
 			end
@@ -416,7 +436,7 @@ do
 		local inInstanceMods = (db.displayTriggers.inDungeon and db.displayTriggers.inPvP and db.displayTriggers.inRaid and db.displayTriggers.inScenario and db.displayTriggers.inNone) or (not db.displayTriggers.inDungeon and not db.displayTriggers.inPvP and not db.displayTriggers.inRaid and not db.displayTriggers.inScenario and not db.displayTriggers.inNone) and inInstance
 		local spellBookMods = (db.displayTriggers.isSpellsBookOpen and db.displayTriggers.isSpecTabOpen and db.displayTriggers.isTalentTabOpen) or (not db.displayTriggers.isSpellsBookOpen and not db.displayTriggers.isSpecTabOpen and not db.displayTriggers.isTalentTabOpen) and (IsSpellBookOpen() or IsSpecTabOpen() or IsTalentTabOpen())
 
-		if ElvUI_KeyBinder and ElvUI_KeyBinder.active
+		if tempMouseLock or ElvUI_KeyBinder and ElvUI_KeyBinder.active
 		or (((db.displayTriggers.inInstance and (inInstanceMods or db.displayTriggers.inDungeon))) and inDungeon)
 		or (((db.displayTriggers.inInstance and (inInstanceMods or db.displayTriggers.inNone))) and inNone)
 		or (((db.displayTriggers.inInstance and (inInstanceMods or db.displayTriggers.inPvP))) and inPvP)
