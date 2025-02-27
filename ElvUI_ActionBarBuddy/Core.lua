@@ -183,6 +183,7 @@ end
 local tempMouseLock = false
 function ABB:Bar_OnEnter(bar, isFlyout)
 	local currentBarName = bar:GetParent().bar
+	if not currentBarName then return end
 	local currentBarDB = E.db.abb[currentBarName].customTriggers and E.db.abb[currentBarName] or E.db.abb.global
 
 	if currentBarDB.displayTriggers.mouseover then
@@ -222,6 +223,7 @@ end
 
 function ABB:Bar_OnLeave(bar, isFlyout)
 	local currentBarName = bar:GetParent().bar
+	if not currentBarName then return end
 	local currentBarDB = E.db.abb[currentBarName].customTriggers and E.db.abb[currentBarName] or E.db.abb.global
 
 	tempMouseLock = false
