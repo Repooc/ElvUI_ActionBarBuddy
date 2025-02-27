@@ -6,6 +6,10 @@ local module = E:NewModule('ABB-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v|cff00fc002.7|r 2/26/2025',
+		'• bump toc',
+		'• fix error with 11.1 and ElvUI 13.85',
+	' ',
 	'v|cff00fc002.6|r ??/??/2025',
 		'• bump toc',
 		'• flyouts are now supported and will follow the triggers for that bar or global if you are not using per bar options which is dependent on your setup',
