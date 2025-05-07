@@ -6,6 +6,9 @@ local module = E:NewModule('ABB-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v|cff00fc002.8|r 5/7/2025',
+		'• bump toc',
+	' ',
 	'v|cff00fc002.7|r 2/26/2025',
 		'• bump toc',
 		'• fix error with 11.1 and ElvUI 13.85',
