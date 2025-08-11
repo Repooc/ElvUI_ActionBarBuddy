@@ -1,6 +1,5 @@
 local E, L, _, P = unpack(ElvUI)
 local ABB = E:GetModule('ElvUI_ActionBarBuddy')
-local ABBCL = E:GetModule('ABB-Changelog')
 local RRP = LibStub('RepoocReforged-1.0'):LoadMainCategory()
 local AB = E.ActionBars
 local ACH = E.Libs.ACH
@@ -318,7 +317,6 @@ local function configTable()
 	Help.args.download = Download
 	Download.inline = true
 	Download.args.development = ACH:Execute(L["Development Version"], L["Link to the latest development version."], 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/Repooc/ElvUI_ActionBarBuddy/archive/refs/heads/main.zip') end, nil, nil, 140)
-	Download.args.changelog = ACH:Execute(L["Changelog"], nil, 3, function() if ABB_Changelog and ABB_Changelog:IsShown() then ABB:Print('|cff00FF98ActionBar|r |cffA330C9Buddy|r changelog is already being displayed.') else ABBCL:ToggleChangeLog() end end, nil, nil, 140)
 
 	local Credits = ACH:Group(L["Credits"], nil, 5)
 	Help.args.credits = Credits

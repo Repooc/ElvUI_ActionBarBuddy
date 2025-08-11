@@ -1,3 +1,3 @@
-v3.1 8/10/2025
+v3.2 8/10/2025
 
-• bump toc
+• missed some changelog stuff

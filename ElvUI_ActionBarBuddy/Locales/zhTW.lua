@@ -23,7 +23,6 @@ L["Transparency level when not in combat, no target exists, full health, not cas
 L["Wago Page"] = true
 
 --! Do not translate as they are in ElvUI Locales already
--- L["Changelog"]
 -- L["Credits"]
 -- L["Disabled"]
 -- L["Discord"]
