@@ -191,7 +191,7 @@ function ABB:Bar_OnEnter(bar, isFlyout)
 	end
 
 	do
-		if bar:GetParent() == ABB.fadeParentTable[currentBarName] and ((currentBarDB.displayTriggers.mouseover or isFlyout) and (not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[currentBarName]:GetAlpha() == 1)) then
+		if bar:GetParent() == ABB.fadeParentTable[currentBarName] and ((currentBarDB.displayTriggers.mouseover or isFlyout) and (currentBarDB.displayTriggers.mouseover and not ABB.fadeParentTable[currentBarName].mouseLock or ABB.fadeParentTable[currentBarName]:GetAlpha() == 1)) then
 			local alpha = (E.db.abb[currentBarName].followBarAlpha and bar and bar.db.alpha) or 1
 			E:UIFrameFadeIn(ABB.fadeParentTable[currentBarName], 0.2, ABB.fadeParentTable[currentBarName]:GetAlpha(), alpha)
 			AB:FadeBlings(1)
