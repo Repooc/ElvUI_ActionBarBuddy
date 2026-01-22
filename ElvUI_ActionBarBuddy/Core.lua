@@ -15,7 +15,7 @@ local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS or 10
 local ABB = E:NewModule(AddOnName, 'AceHook-3.0', 'AceEvent-3.0')
 _G[AddOnName] = Engine
 
-local GetAddOnMetadata = C_AddOns.GetAddOnMetadata or GetAddOnMetadata
+local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
 
 ABB.Title = GetAddOnMetadata(AddOnName, 'Title')
 
