@@ -173,6 +173,7 @@ local globalFadeOptions = {
 	notMaxHealth = {
 		name = L["Not Max Health"],
 		order = 50,
+		hidden = function() return E.Retail end,
 	},
 	playerCasting = {
 		name = L["Player Casting"],

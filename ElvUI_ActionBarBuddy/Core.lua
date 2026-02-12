@@ -460,7 +460,7 @@ do
 		or (db.displayTriggers.isPossessed and possessbar == '1')
 		or (db.displayTriggers.hasOverridebar and HasOverrideActionBar())
 		or (db.displayTriggers.inCombat == 2 and UnitAffectingCombat('player') or db.displayTriggers.inCombat == 1 and not UnitAffectingCombat('player'))
-		or (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player')))
+		or (not E.Retail and (db.displayTriggers.notMaxHealth and (UnitHealth('player') ~= UnitHealthMax('player'))))
 		or (db.displayTriggers.onTaxi == 2 and UnitOnTaxi('player') or db.displayTriggers.onTaxi == 1 and not UnitOnTaxi('player'))
 		or (E.Retail and (db.displayTriggers.isDragonRiding and not IsPassenger() and (canGlide or CanGlide(event))))
 		or (not E.Classic and (db.displayTriggers.inVehicle and UnitExists('vehicle') and (not db.displayTriggers.hideAsPassenger or db.displayTriggers.hideAsPassenger and not IsPassenger()))) then
